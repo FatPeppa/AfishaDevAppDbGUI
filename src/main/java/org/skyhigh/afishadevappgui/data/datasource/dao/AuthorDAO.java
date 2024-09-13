@@ -54,7 +54,8 @@ public interface AuthorDAO {
      * Метод получения всех авторов в системе
      * @return Список, содержащий объекты Author, или пустой список, если данные не были найдены
      * @param sortDirection Режим сортировки
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
      * @throws SQLException Ошибка при работе с БД
      */
-    List<Author> getAllAuthors(@NonNull SortDirection sortDirection) throws SQLException;
+    List<Author> getAllAuthors(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
 }

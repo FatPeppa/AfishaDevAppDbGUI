@@ -13,6 +13,6 @@ public interface CodeFileDAO {
     void updateCodeFileContentById(@NonNull UUID codeFileId, @NonNull String content) throws SQLException;
     void updateCodeFileProjectId(@NonNull UUID codeFileId, @NonNull UUID projectId) throws SQLException;
     CodeFile getCodeFileById(@NonNull UUID codeFileId) throws SQLException;
-    List<CodeFile> getAllCodeFilesByProjectId(@NonNull UUID projectId, @NonNull SortDirection sortDirection) throws SQLException;
-    List<CodeFile> getAllCodeFiles(@NonNull SortDirection sortDirection) throws SQLException;
+    List<CodeFile> getAllCodeFilesByProjectId(@NonNull UUID projectId, @NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<CodeFile> getAllCodeFiles(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
 }

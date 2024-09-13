@@ -60,31 +60,40 @@ public class AccessedRoleDAOImpl extends BaseTable implements AccessedRoleDAO {
     }
 
     @Override
-    public List<AccessedRole> getAccessedRolesByRequirementId(@NonNull UUID requirementId, @NonNull SortDirection sortDirection) throws SQLException {
+    public List<AccessedRole> getAccessedRolesByRequirementId(@NonNull UUID requirementId,
+                                                              @NonNull SortDirection sortDirection,
+                                                              String sortBy
+    ) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.requirement_id requirement_id, t.role_name role_name " +
                 " FROM " + super.getTableName() + " t WHERE t.requirement_id=?1",
-                sortDirection
+                sortDirection,
+                sortBy
         );
         ps.setObject(1, requirementId);
         return getAccessedRoles(ps);
     }
 
     @Override
-    public List<AccessedRole> getAllAccessedRoles(@NonNull SortDirection sortDirection) throws SQLException {
+    public List<AccessedRole> getAllAccessedRoles(@NonNull SortDirection sortDirection, String sortBy) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.requirement_id requirement_id, t.role_name role_name FROM " + super.getTableName(),
-                sortDirection
+                sortDirection,
+                sortBy
         );
         return getAccessedRoles(ps);
     }
 
     @Override
-    public List<AccessedRole> getAccessedRolesByRoleName(@NonNull String accessedRoleName, @NonNull SortDirection sortDirection) throws SQLException {
+    public List<AccessedRole> getAccessedRolesByRoleName(@NonNull String accessedRoleName,
+                                                         @NonNull SortDirection sortDirection,
+                                                         String sortBy
+    ) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.requirement_id requirement_id, t.role_name role_name FROM " + super.getTableName()
                 + " t WHERE t.role_name=?",
-                sortDirection
+                sortDirection,
+                sortBy
         );
         ps.setString(1, accessedRoleName);
         return getAccessedRoles(ps);

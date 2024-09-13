@@ -32,27 +32,36 @@ public interface AccessedRoleDAO {
      * Метод получения ролей, имующих доступ к требованию, по идентификатору этого требования
      * @param requirementId Идентификатор требования, доступ к которому имеют искомые роли
      * @param sortDirection Режим сортировки
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
      * @return Список ролей типа AccessedRole, имеющих доступ к указанному требованию
      * @throws SQLException Ошибка при работе с БД
      */
-    List<AccessedRole> getAccessedRolesByRequirementId(@NonNull UUID requirementId, @NonNull SortDirection sortDirection) throws SQLException;
+    List<AccessedRole> getAccessedRolesByRequirementId(@NonNull UUID requirementId,
+                                                       @NonNull SortDirection sortDirection,
+                                                       String sortBy
+    ) throws SQLException;
 
     /**
      * Метод получения всех имеющих доступ к требованиям ролей, которые хранятся в системе
-     * @return Список ролей типа AccessedRole
      * @param sortDirection Режим сортировки
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
+     * @return Список ролей типа AccessedRole
      * @throws SQLException Ошибка при работе с БД
      */
-    List<AccessedRole> getAllAccessedRoles(@NonNull SortDirection sortDirection) throws SQLException;
+    List<AccessedRole> getAllAccessedRoles(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
 
     /**
      * Метод получения ролей, имующих доступ к требованиям, по наименованию этих ролей
      * @param accessedRoleName Наименование искомых ролей
      * @param sortDirection Режим сортировки
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
      * @return Список ролей типа AccessedRole, имеющих имя, соответствующее указанному в параметре поиска
      * @throws SQLException Ошибка при работе с БД
      */
-    List<AccessedRole> getAccessedRolesByRoleName(@NonNull String accessedRoleName, @NonNull SortDirection sortDirection) throws SQLException;
+    List<AccessedRole> getAccessedRolesByRoleName(@NonNull String accessedRoleName,
+                                                  @NonNull SortDirection sortDirection,
+                                                  String sortBy
+    ) throws SQLException;
 
     /**
      * Метод получения роли, имеющей доступ к требованию, по идентификатору требования и наименованию роли

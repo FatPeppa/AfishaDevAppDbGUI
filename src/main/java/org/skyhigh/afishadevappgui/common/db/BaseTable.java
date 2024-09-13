@@ -31,12 +31,16 @@ public class BaseTable implements AutoCloseable {
      * Метод для получения подготовленного к выполнению SQL-выражения на чтение данных с параметрами
      * @param sql SQL-выражение на чтение данных в String формате
      * @param sortDirection - Режим сортировки
+     * @param sortBy - Наименование поля таблицы, по которому осуществляется сортировка
      * @return Подготовленное к выполнению SQL-выражение PreparedStatement
      * @throws SQLException Ошибка при работе с БД
      */
-    protected PreparedStatement prepareReadStatement(String sql, SortDirection sortDirection) throws SQLException {
+    protected PreparedStatement prepareReadStatement(String sql, SortDirection sortDirection, String sortBy) throws SQLException {
         if (sortDirection != SortDirection.NONE)
-            return connection.prepareStatement(sql + " ORDER BY " + sortDirection.toString());
+            return connection.prepareStatement(
+                    sql + " ORDER BY " + sortBy +
+                    " " + sortDirection.toString()
+            );
         return connection.prepareStatement(sql);
     }
 

@@ -27,14 +27,15 @@ public interface DeploymentDAO {
                                     @NonNull UUID projectId
     );
     Deployment getDeploymentById(@NonNull UUID deploymentId);
-    List<Deployment> getDeploymentsByProjectId(@NonNull UUID projectId, @NonNull SortDirection sortDirection);
-    List<Deployment> getDeploymentsByStatusId(@NonNull UUID deploymentStatusId, @NonNull SortDirection sortDirection);
-    List<Deployment> getAllDeployments(@NonNull SortDirection sortDirection);
-    List<Deployment> getDeploymentsByBuiltVersion(String builtVersion, @NonNull SortDirection sortDirection);
-    List<Deployment> getDeploymentsByPath(String deploymentPath, @NonNull SortDirection sortDirection);
+    List<Deployment> getDeploymentsByProjectId(@NonNull UUID projectId, @NonNull SortDirection sortDirection, String sortBy);
+    List<Deployment> getDeploymentsByStatusId(@NonNull UUID deploymentStatusId, @NonNull SortDirection sortDirection, String sortBy);
+    List<Deployment> getAllDeployments(@NonNull SortDirection sortDirection, String sortBy);
+    List<Deployment> getDeploymentsByBuiltVersion(String builtVersion, @NonNull SortDirection sortDirection, String sortBy);
+    List<Deployment> getDeploymentsByPath(String deploymentPath, @NonNull SortDirection sortDirection, String sortBy);
     List<Deployment> getDeploymentsByStatusIdAndProjectId(
             @NonNull UUID deploymentStatusId,
             @NonNull UUID projectId,
-            @NonNull SortDirection sortDirection
+            @NonNull SortDirection sortDirection,
+            String sortBy
     );
 }
