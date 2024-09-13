@@ -1,8 +1,10 @@
 package org.skyhigh.afishadevappgui.data.datasource.dao;
 
 import lombok.NonNull;
+import lombok.extern.java.Log;
 import org.skyhigh.afishadevappgui.common.db.BaseTable;
 import org.skyhigh.afishadevappgui.common.db.DbConnector;
+import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.data.datasource.entity.AccessedRole;
 
 import java.sql.PreparedStatement;
@@ -12,12 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import static java.util.logging.Logger.getLogger;
-
+@Log
 public class AccessedRoleDAOImpl extends BaseTable implements AccessedRoleDAO {
-    Logger log = getLogger(AccessedRoleDAOImpl.class.getName());
 
     /**
      * Конструктор для DAO с использованием имени таблицы по умолчанию ("accessed_role")
@@ -61,28 +60,31 @@ public class AccessedRoleDAOImpl extends BaseTable implements AccessedRoleDAO {
     }
 
     @Override
-    public List<AccessedRole> getAccessedRolesByRequirementId(@NonNull UUID requirementId) throws SQLException {
-        PreparedStatement ps = super.prepareStatement(
+    public List<AccessedRole> getAccessedRolesByRequirementId(@NonNull UUID requirementId, @NonNull SortDirection sortDirection) throws SQLException {
+        PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.requirement_id requirement_id, t.role_name role_name " +
-                " FROM " + super.getTableName() + " t WHERE t.requirement_id=?1"
+                " FROM " + super.getTableName() + " t WHERE t.requirement_id=?1",
+                sortDirection
         );
         ps.setObject(1, requirementId);
         return getAccessedRoles(ps);
     }
 
     @Override
-    public List<AccessedRole> getAllAccessedRoles() throws SQLException {
-        PreparedStatement ps = super.prepareStatement(
-                "SELECT t.requirement_id requirement_id, t.role_name role_name FROM " + super.getTableName()
+    public List<AccessedRole> getAllAccessedRoles(@NonNull SortDirection sortDirection) throws SQLException {
+        PreparedStatement ps = super.prepareReadStatement(
+                "SELECT t.requirement_id requirement_id, t.role_name role_name FROM " + super.getTableName(),
+                sortDirection
         );
         return getAccessedRoles(ps);
     }
 
     @Override
-    public List<AccessedRole> getAccessedRolesByRoleName(@NonNull String accessedRoleName) throws SQLException {
-        PreparedStatement ps = super.prepareStatement(
+    public List<AccessedRole> getAccessedRolesByRoleName(@NonNull String accessedRoleName, @NonNull SortDirection sortDirection) throws SQLException {
+        PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.requirement_id requirement_id, t.role_name role_name FROM " + super.getTableName()
-                + " t WHERE t.role_name=?"
+                + " t WHERE t.role_name=?",
+                sortDirection
         );
         ps.setString(1, accessedRoleName);
         return getAccessedRoles(ps);

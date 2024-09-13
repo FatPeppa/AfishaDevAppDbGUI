@@ -1,6 +1,7 @@
 package org.skyhigh.afishadevappgui.data.datasource.dao;
 
 import lombok.NonNull;
+import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.data.datasource.entity.AccessedRole;
 
 import java.sql.SQLException;
@@ -30,25 +31,28 @@ public interface AccessedRoleDAO {
     /**
      * Метод получения ролей, имующих доступ к требованию, по идентификатору этого требования
      * @param requirementId Идентификатор требования, доступ к которому имеют искомые роли
+     * @param sortDirection Режим сортировки
      * @return Список ролей типа AccessedRole, имеющих доступ к указанному требованию
      * @throws SQLException Ошибка при работе с БД
      */
-    List<AccessedRole> getAccessedRolesByRequirementId(@NonNull UUID requirementId) throws SQLException;
+    List<AccessedRole> getAccessedRolesByRequirementId(@NonNull UUID requirementId, @NonNull SortDirection sortDirection) throws SQLException;
 
     /**
      * Метод получения всех имеющих доступ к требованиям ролей, которые хранятся в системе
      * @return Список ролей типа AccessedRole
+     * @param sortDirection Режим сортировки
      * @throws SQLException Ошибка при работе с БД
      */
-    List<AccessedRole> getAllAccessedRoles() throws SQLException;
+    List<AccessedRole> getAllAccessedRoles(@NonNull SortDirection sortDirection) throws SQLException;
 
     /**
      * Метод получения ролей, имующих доступ к требованиям, по наименованию этих ролей
      * @param accessedRoleName Наименование искомых ролей
+     * @param sortDirection Режим сортировки
      * @return Список ролей типа AccessedRole, имеющих имя, соответствующее указанному в параметре поиска
      * @throws SQLException Ошибка при работе с БД
      */
-    List<AccessedRole> getAccessedRolesByRoleName(@NonNull String accessedRoleName) throws SQLException;
+    List<AccessedRole> getAccessedRolesByRoleName(@NonNull String accessedRoleName, @NonNull SortDirection sortDirection) throws SQLException;
 
     /**
      * Метод получения роли, имеющей доступ к требованию, по идентификатору требования и наименованию роли

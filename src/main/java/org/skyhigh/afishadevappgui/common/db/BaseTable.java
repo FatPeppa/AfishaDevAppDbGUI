@@ -1,5 +1,7 @@
 package org.skyhigh.afishadevappgui.common.db;
 
+import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+
 import java.sql.*;
 
 /**
@@ -23,6 +25,19 @@ public class BaseTable implements AutoCloseable {
     public void close() throws SQLException {
         if (connection != null && !connection.isClosed())
             connection.close();
+    }
+
+    /**
+     * Метод для получения подготовленного к выполнению SQL-выражения на чтение данных с параметрами
+     * @param sql SQL-выражение на чтение данных в String формате
+     * @param sortDirection - Режим сортировки
+     * @return Подготовленное к выполнению SQL-выражение PreparedStatement
+     * @throws SQLException Ошибка при работе с БД
+     */
+    protected PreparedStatement prepareReadStatement(String sql, SortDirection sortDirection) throws SQLException {
+        if (sortDirection != SortDirection.NONE)
+            return connection.prepareStatement(sql + " ORDER BY " + sortDirection.toString());
+        return connection.prepareStatement(sql);
     }
 
     /**
