@@ -1,4 +1,4 @@
-package org.skyhigh.afishadevappgui.properties.enums;
+package org.skyhigh.afishadevappgui.common.properties.enums;
 
 /**
  * Перечисление СУБД, к которым можно подключиться
