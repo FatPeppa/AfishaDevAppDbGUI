@@ -14,39 +14,39 @@ import java.util.UUID;
  */
 public interface RequirementAuthorDAO {
     /**
-     *
-     * @param requirementAuthor
+     * Метод сохранения сущности связи автор-требование
+     * @param requirementAuthor Сохраняемая сущность связи автор-требование
      * @throws SQLException Ошибка при работе с БД
      */
     void saveRequirementAuthor(@NonNull RequirementAuthor requirementAuthor) throws SQLException;
 
     /**
-     *
-     * @param requirementId
-     * @param authorId
+     * Метод удаления связи автор-требования по идентификаторам
+     * @param requirementId Идентификатор требования
+     * @param authorId Идентификатор автора
      * @throws SQLException Ошибка при работе с БД
      */
     void deleteRequirementAuthorByIds(@NonNull UUID requirementId, @NonNull UUID authorId) throws SQLException;
 
     /**
-     *
-     * @param requirementId
+     * Метод удаления связей автор-требования в пределах требования
+     * @param requirementId Идентификатор требования, связи с которым необходимо удалить
      * @throws SQLException Ошибка при работе с БД
      */
     void deleteRequirementAuthorsByRequirementId(@NonNull UUID requirementId) throws SQLException;
 
     /**
-     *
-     * @param authorId
+     * Метод удаления связей автор-требования в пределах автора
+     * @param authorId Идентификатор автора, связи с которым необходимо удалить
      * @throws SQLException Ошибка при работе с БД
      */
     void deleteRequirementAuthorsByAuthorId(@NonNull UUID authorId) throws SQLException;
 
     /**
-     *
-     * @param oldAuthorId
-     * @param requirementId
-     * @param newAuthorId
+     * Метод обновления идентификатора автора в связи автор-требование
+     * @param oldAuthorId Старый идентификатор автора (используется для определения обновляемой записи)
+     * @param requirementId Идентификатор требования
+     * @param newAuthorId Целевой идентификатор автора
      * @throws SQLException Ошибка при работе с БД
      */
     void updateRequirementAuthorAuthorId(
@@ -56,10 +56,10 @@ public interface RequirementAuthorDAO {
     ) throws SQLException;
 
     /**
-     *
-     * @param authorId
-     * @param oldRequirementId
-     * @param newRequirementId
+     * Метод обновления идентификатора требования в связи автор-требование
+     * @param authorId Идентификатор автора
+     * @param oldRequirementId Старый идентификатор требования (используется для определения обновляемой записи)
+     * @param newRequirementId Целевой идентификатор требования
      * @throws SQLException Ошибка при работе с БД
      */
     void updateRequirementAuthorRequirementId(
@@ -69,29 +69,29 @@ public interface RequirementAuthorDAO {
     ) throws SQLException;
 
     /**
-     *
-     * @param requirementId
-     * @param authorId
-     * @return
+     * Метод получения связи автор-требование по идентификаторам
+     * @param requirementId Идентификатор требования
+     * @param authorId Идентификатор автора
+     * @return Сущность связи автор-требование или null в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
     RequirementAuthor getRequirementAuthorByIds(@NonNull UUID requirementId, @NonNull UUID authorId) throws SQLException;
 
     /**
-     *
+     * Метод получения всех связей автор-требование в Системе
      * @param sortDirection Режим сортировки
-     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
-     * @return
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
+     * @return Список, содержащий связи автор-требование или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
     List<RequirementAuthor> getAllRequirementAuthors(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
 
     /**
-     *
-     * @param requirementId
+     * Метод получения всех связей автор-требование в пределах требования
+     * @param requirementId Идентификатор требования
      * @param sortDirection Режим сортировки
-     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
-     * @return
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
+     * @return Список, содержащий связи автор-требование или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
     List<RequirementAuthor> getRequirementAuthorsByRequirementId(
@@ -101,11 +101,11 @@ public interface RequirementAuthorDAO {
     ) throws SQLException;
 
     /**
-     *
-     * @param authorId
+     * Метод получения всех связей автор-требование в пределах автора
+     * @param authorId Идентификатор автора
      * @param sortDirection Режим сортировки
-     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
-     * @return
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
+     * @return Список, содержащий связи автор-требование или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
     List<RequirementAuthor> getRequirementAuthorsByAuthorId(

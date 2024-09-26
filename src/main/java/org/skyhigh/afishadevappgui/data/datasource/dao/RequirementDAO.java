@@ -15,65 +15,67 @@ import java.util.UUID;
  */
 public interface RequirementDAO {
     /**
-     *
-     * @param requirement
-     * @return
+     * Метод сохранения сущности требования в Системе
+     * @param requirement Сохраняемая сущность требования
+     * @return Идентификатор требования, сформированный при сохранении сущности в БД
      * @throws SQLException Ошибка при работе с БД
      */
     UUID saveRequirement(@NonNull Requirement requirement) throws SQLException;
 
     /**
-     *
-     * @param requirement
+     * Метод обновления требования в Системе
+     * @param requirement елевая сущность требования. Поле requirementId должно быть заполнено,
+     *                иначе будет сформировано исключение NullFieldsInDBEntityException/
+     *                Поиск обновляемой записи осуществляется именно по requirementId
      * @throws SQLException Ошибка при работе с БД
      */
     void updateRequirement(@NonNull Requirement requirement) throws SQLException;
 
     /**
-     *
-     * @param requirementId
-     * @param requirementTypeId
+     * Метод обновления типа требования по идентификатору
+     * @param requirementId Идентификатор требования
+     * @param requirementTypeId Идентификатор типа требования
      * @throws SQLException Ошибка при работе с БД
      */
     void updateRequirementTypeIdById(@NonNull UUID requirementId, @NonNull UUID requirementTypeId) throws SQLException;
 
     /**
-     *
-     * @param requirementId
-     * @param lastChangeDate
+     * Метод обновления даты последнего внесения изменений по идентификатору требования
+     * @param requirementId Идентификатор требования
+     * @param lastChangeDate Дата последнего внесения изменений в требование
      * @throws SQLException Ошибка при работе с БД
      */
     void updateLastChangeDateById(@NonNull UUID requirementId, @NonNull LocalDateTime lastChangeDate) throws SQLException;
 
     /**
-     *
-     * @param requirementId
-     * @param content
+     * Метод обновления содержимого требования по идентификатору
+     * @param requirementId Идентификатор требования
+     * @param content Целевое содержимое требования
      * @throws SQLException Ошибка при работе с БД
      */
     void updateContentById(@NonNull UUID requirementId, @NonNull JSONObject content) throws SQLException;
 
     /**
-     *
-     * @param requirementId
+     * Метод удаления требования по идентификатору
+     * @param requirementId Идентификатор удаляемого требования
      * @throws SQLException Ошибка при работе с БД
      */
     void deleteRequirementById(@NonNull UUID requirementId) throws SQLException;
 
     /**
-     *
-     * @param requirementId
-     * @return
+     * Метод получения требования по идентификатору
+     * @param requirementId Идентификатор требования
+     * @return Сущность требования или null в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
     Requirement getRequirementById(@NonNull UUID requirementId) throws SQLException;
 
     /**
-     *
-     * @param requirementTypeId
+     * Метод получения требований по типу
+     * @param requirementTypeId Идентификатор типа требования
      * @param sortDirection Режим сортировки
-     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
-     * @return
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
+     * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
     List<Requirement> getRequirementsByTypeId(
@@ -83,11 +85,11 @@ public interface RequirementDAO {
     ) throws SQLException;
 
     /**
-     *
-     * @param loadDate
+     * Метод получения требований по дате загрузки в Систему
+     * @param loadDate Дата загрузки требования в Систему
      * @param sortDirection Режим сортировки
-     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
-     * @return
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
+     * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
     List<Requirement> getRequirementsByLoadDate(
@@ -97,12 +99,12 @@ public interface RequirementDAO {
     ) throws SQLException;
 
     /**
-     *
-     * @param loadDateStart
-     * @param loadDateEnd
+     * Метод получения требований по диапазону дат загрузки в Систему
+     * @param loadDateStart Начало диапазона дат загрузки требований в Систему. Если не заполнено, то рассматривается отрезок до loadDateEnd
+     * @param loadDateEnd Конец диапазона дат загрузки требований в Систему. Если не заполнено, то рассматривается отрезок с loadDateStart
      * @param sortDirection Режим сортировки
-     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
-     * @return
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
+     * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
     List<Requirement> getRequirementsByLoadDateDiapason(
@@ -113,11 +115,11 @@ public interface RequirementDAO {
     ) throws SQLException;
 
     /**
-     *
-     * @param lastChangeDate
+     * Метод получения требований по дате последнего внесения изменений
+     * @param lastChangeDate Дата последнего внесения изменений
      * @param sortDirection Режим сортировки
-     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
-     * @return
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
+     * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
     List<Requirement> getRequirementsByLastChangeDate(
@@ -127,12 +129,12 @@ public interface RequirementDAO {
     ) throws SQLException;
 
     /**
-     *
-     * @param lastChangeDateStart
-     * @param lastChangeDateEnd
+     * Метод получения требований по диапазону дат последнего внесения изменений
+     * @param lastChangeDateStart Начало диапазона дат загрузки требований в Систему. Если не заполнено, то рассматривается отрезок до lastChangeDateEnd
+     * @param lastChangeDateEnd Конец диапазона дат загрузки требований в Систему. Если не заполнено, то рассматривается отрезок с lastChangeDateStart
      * @param sortDirection Режим сортировки
-     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
-     * @return
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
+     * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
     List<Requirement> getRequirementsByLastChangeDateDiapason(
@@ -143,10 +145,10 @@ public interface RequirementDAO {
     ) throws SQLException;
 
     /**
-     *
+     * Метод получения всех требований в Системе
      * @param sortDirection Режим сортировки
-     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
-     * @return
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
+     * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
     List<Requirement> getAllRequirements(

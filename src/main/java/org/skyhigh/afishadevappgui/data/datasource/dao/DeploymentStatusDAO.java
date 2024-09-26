@@ -20,7 +20,7 @@ public interface DeploymentStatusDAO {
 
     /**
      * Метод получения типа статуса развертывания
-     * @param deploymentStatusId Идентификатор типа статуса равзертывания
+     * @param deploymentStatusId Идентификатор типа статуса развертывания
      * @return Тип статуса развертывания
      * @throws SQLException Ошибка при работе с БД
      */
@@ -28,7 +28,7 @@ public interface DeploymentStatusDAO {
 
     /**
      * Метод получения типа статуса развертывания по его наименованию
-     * @param statusName Наименовния типа статуса развертывания
+     * @param statusName Наименования типа статуса развертывания
      * @return Тип статуса развертывания
      * @throws SQLException Ошибка при работе с БД
      */

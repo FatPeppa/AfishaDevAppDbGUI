@@ -21,7 +21,7 @@ public interface AuthorDAO {
     UUID saveAuthor(@NonNull Author author) throws SQLException;
 
     /**
-     * Метод обновлении имени автора по идентификатору
+     * Метод обновления имени автора по идентификатору
      * @param authorId Идентификатор автора
      * @param authorName Новое имя автора
      */
@@ -36,7 +36,7 @@ public interface AuthorDAO {
 
     /**
      * Метод получения записи автора по идентификатору
-     * @param authorId Илентификатор искомого автора
+     * @param authorId Идентификатор искомого автора
      * @return Объект Author или null, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
@@ -54,7 +54,7 @@ public interface AuthorDAO {
      * Метод получения всех авторов в системе
      * @return Список, содержащий объекты Author, или пустой список, если данные не были найдены
      * @param sortDirection Режим сортировки
-     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, заполнено значением null
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @throws SQLException Ошибка при работе с БД
      */
     List<Author> getAllAuthors(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
