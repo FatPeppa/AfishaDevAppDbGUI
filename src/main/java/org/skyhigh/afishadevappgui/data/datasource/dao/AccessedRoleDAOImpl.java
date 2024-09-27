@@ -5,7 +5,9 @@ import lombok.extern.java.Log;
 import org.skyhigh.afishadevappgui.common.db.BaseTable;
 import org.skyhigh.afishadevappgui.common.db.DbConnector;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.AccessedRole;
+import org.skyhigh.afishadevappgui.data.validation.args.Flk10010000;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,7 +49,11 @@ public class AccessedRoleDAOImpl extends BaseTable implements AccessedRoleDAO {
     }
 
     @Override
-    public void updateAccessedRoleNameByIdAndName(@NonNull UUID requirementId, @NonNull String oldAccessedRoleName, String newAccessedRoleName) throws SQLException {
+    public void updateAccessedRoleNameByIdAndName(
+            @NonNull UUID requirementId,
+            @NonNull String oldAccessedRoleName,
+            @NonNull String newAccessedRoleName
+    ) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
                 "UPDATE " + super.getTableName() +
                 " SET role_name=1 WHERE requirement_id=? AND role_name=?"
@@ -63,7 +69,15 @@ public class AccessedRoleDAOImpl extends BaseTable implements AccessedRoleDAO {
     public List<AccessedRole> getAccessedRolesByRequirementId(@NonNull UUID requirementId,
                                                               @NonNull SortDirection sortDirection,
                                                               String sortBy
-    ) throws SQLException {
+    ) throws SQLException, CommonFlkException {
+        Flk10010000 flk10010000 = new Flk10010000(
+                "AccessedRole",
+                "AccessedRoleDAO",
+                "getAccessedRolesByRequirementId",
+                sortDirection,
+                sortBy
+        );
+        flk10010000.validate();
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.requirement_id requirement_id, t.role_name role_name " +
                 " FROM " + super.getTableName() + " t WHERE t.requirement_id=?1",

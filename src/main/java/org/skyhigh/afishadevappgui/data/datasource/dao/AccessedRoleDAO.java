@@ -2,6 +2,7 @@ package org.skyhigh.afishadevappgui.data.datasource.dao;
 
 import lombok.NonNull;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.AccessedRole;
 
 import java.sql.SQLException;
@@ -26,7 +27,11 @@ public interface AccessedRoleDAO {
      * @param newAccessedRoleName Новое наименование роли
      * @throws SQLException Ошибка при работе с БД
      */
-    void updateAccessedRoleNameByIdAndName(@NonNull UUID requirementId, @NonNull String oldAccessedRoleName, String newAccessedRoleName) throws SQLException;
+    void updateAccessedRoleNameByIdAndName(
+            @NonNull UUID requirementId,
+            @NonNull String oldAccessedRoleName,
+            @NonNull String newAccessedRoleName
+    ) throws SQLException;
 
     /**
      * Метод получения ролей, имеющих доступ к требованию, по идентификатору этого требования
@@ -39,7 +44,7 @@ public interface AccessedRoleDAO {
     List<AccessedRole> getAccessedRolesByRequirementId(@NonNull UUID requirementId,
                                                        @NonNull SortDirection sortDirection,
                                                        String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения всех имеющих доступ к требованиям ролей, которые хранятся в системе
@@ -51,7 +56,7 @@ public interface AccessedRoleDAO {
     List<AccessedRole> getAllAccessedRoles(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
 
     /**
-     * Метод получения ролей, имующих доступ к требованиям, по наименованию этих ролей
+     * Метод получения ролей, имеющих доступ к требованиям, по наименованию этих ролей
      * @param accessedRoleName Наименование искомых ролей
      * @param sortDirection Режим сортировки
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null

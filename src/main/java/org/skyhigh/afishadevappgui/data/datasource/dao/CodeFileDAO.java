@@ -44,7 +44,7 @@ public interface CodeFileDAO {
     void deleteCodeFileById(@NonNull UUID codeFileId) throws SQLException;
 
     /**
-     * Метод получения файла по идентфиикатору
+     * Метод получения файла по идентификатору
      * @param codeFileId Идентификатор файла
      * @return Сущность типа CodeFile или null, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
