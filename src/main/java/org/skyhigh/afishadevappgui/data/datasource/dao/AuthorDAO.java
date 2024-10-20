@@ -2,6 +2,7 @@ package org.skyhigh.afishadevappgui.data.datasource.dao;
 
 import lombok.NonNull;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Author;
 
 import java.sql.SQLException;
@@ -17,15 +18,16 @@ public interface AuthorDAO {
      * @param author Сохраняемая в БД сущность автора
      * @return Идентификатор сохраненной записи
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    UUID saveAuthor(@NonNull Author author) throws SQLException;
+    UUID saveAuthor(@NonNull Author author) throws SQLException, CommonFlkException;
 
     /**
      * Метод обновления имени автора по идентификатору
      * @param authorId Идентификатор автора
-     * @param authorName Новое имя автора
+     * @param authorLogin Новое имя автора
      */
-    void updateAuthorNameById(@NonNull UUID authorId, @NonNull String authorName) throws SQLException;
+    void updateAuthorLoginById(@NonNull UUID authorId, @NonNull String authorLogin) throws SQLException;
 
     /**
      * Метод удаления записи автора по идентификатору
@@ -44,11 +46,11 @@ public interface AuthorDAO {
 
     /**
      * Метод получения записи автора по имени
-     * @param authorName Имя искомого автора
+     * @param authorLogin Имя искомого автора
      * @return Объект Author или null, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
-    Author getAuthorByName(@NonNull String authorName) throws SQLException;
+    Author getAuthorByName(@NonNull String authorLogin) throws SQLException;
 
     /**
      * Метод получения всех авторов в системе
@@ -56,6 +58,7 @@ public interface AuthorDAO {
      * @param sortDirection Режим сортировки
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<Author> getAllAuthors(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<Author> getAllAuthors(@NonNull SortDirection sortDirection, String sortBy) throws SQLException, CommonFlkException;
 }

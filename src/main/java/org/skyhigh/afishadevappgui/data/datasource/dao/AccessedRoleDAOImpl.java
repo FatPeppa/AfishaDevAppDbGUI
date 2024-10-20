@@ -7,7 +7,8 @@ import org.skyhigh.afishadevappgui.common.db.DbConnector;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.AccessedRole;
-import org.skyhigh.afishadevappgui.data.validation.args.Flk10010000;
+import org.skyhigh.afishadevappgui.data.validation.args.Flk10010000Validator;
+import org.skyhigh.afishadevappgui.data.validation.entity.inserting.fields_not_null.Flk10000002Validator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,7 +41,8 @@ public class AccessedRoleDAOImpl extends BaseTable implements AccessedRoleDAO {
     }
 
     @Override
-    public void saveAccessedRole(@NonNull AccessedRole accessedRole) throws SQLException {
+    public void saveAccessedRole(@NonNull AccessedRole accessedRole) throws SQLException, CommonFlkException {
+        Flk10000002Validator.validate(accessedRole);
         PreparedStatement ps = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (?, ?)");
         ps.setObject(1, accessedRole.getRequirementId());
         ps.setString(2, accessedRole.getRoleName());
@@ -70,14 +72,13 @@ public class AccessedRoleDAOImpl extends BaseTable implements AccessedRoleDAO {
                                                               @NonNull SortDirection sortDirection,
                                                               String sortBy
     ) throws SQLException, CommonFlkException {
-        Flk10010000 flk10010000 = new Flk10010000(
-                "AccessedRole",
-                "AccessedRoleDAO",
+        Flk10010000Validator.validate(
+                AccessedRole.class.getName(),
+                AccessedRoleDAO.class.getName(),
                 "getAccessedRolesByRequirementId",
                 sortDirection,
                 sortBy
         );
-        flk10010000.validate();
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.requirement_id requirement_id, t.role_name role_name " +
                 " FROM " + super.getTableName() + " t WHERE t.requirement_id=?1",
@@ -89,9 +90,17 @@ public class AccessedRoleDAOImpl extends BaseTable implements AccessedRoleDAO {
     }
 
     @Override
-    public List<AccessedRole> getAllAccessedRoles(@NonNull SortDirection sortDirection, String sortBy) throws SQLException {
+    public List<AccessedRole> getAllAccessedRoles(@NonNull SortDirection sortDirection, String sortBy) throws SQLException, CommonFlkException {
+        Flk10010000Validator.validate(
+                AccessedRole.class.getName(),
+                AccessedRoleDAO.class.getName(),
+                "getAllAccessedRoles",
+                sortDirection,
+                sortBy
+        );
+
         PreparedStatement ps = super.prepareReadStatement(
-                "SELECT t.requirement_id requirement_id, t.role_name role_name FROM " + super.getTableName(),
+                "SELECT t.requirement_id requirement_id, t.role_name role_name FROM " + super.getTableName() + " t",
                 sortDirection,
                 sortBy
         );
@@ -102,7 +111,14 @@ public class AccessedRoleDAOImpl extends BaseTable implements AccessedRoleDAO {
     public List<AccessedRole> getAccessedRolesByRoleName(@NonNull String accessedRoleName,
                                                          @NonNull SortDirection sortDirection,
                                                          String sortBy
-    ) throws SQLException {
+    ) throws SQLException, CommonFlkException {
+        Flk10010000Validator.validate(
+                AccessedRole.class.getName(),
+                AccessedRoleDAO.class.getName(),
+                "getAccessedRolesByRoleName",
+                sortDirection,
+                sortBy
+        );
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.requirement_id requirement_id, t.role_name role_name FROM " + super.getTableName()
                 + " t WHERE t.role_name=?",

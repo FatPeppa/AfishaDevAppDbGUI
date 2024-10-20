@@ -21,6 +21,7 @@ public class CommonFlkException extends Exception {
                         isCritical
                 )
         );
+
     }
 
     public CommonFlkException(String code, String message, List<String> attributesNames, boolean isCritical, Throwable cause) {

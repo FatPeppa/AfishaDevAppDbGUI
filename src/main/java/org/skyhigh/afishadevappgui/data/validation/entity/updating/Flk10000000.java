@@ -1,4 +1,4 @@
-package org.skyhigh.afishadevappgui.data.validation.entity;
+package org.skyhigh.afishadevappgui.data.validation.entity.updating;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

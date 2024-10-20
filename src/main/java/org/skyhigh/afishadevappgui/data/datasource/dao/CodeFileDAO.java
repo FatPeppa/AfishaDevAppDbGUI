@@ -2,6 +2,7 @@ package org.skyhigh.afishadevappgui.data.datasource.dao;
 
 import lombok.NonNull;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.CodeFile;
 
 import java.sql.SQLException;
@@ -17,8 +18,9 @@ public interface CodeFileDAO {
      * @param codeFile Сохраняемая сущность CodeFile
      * @return Уникальный идентификатор, присвоенный созданной записи
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    UUID saveCodeFile(@NonNull CodeFile codeFile) throws SQLException;
+    UUID saveCodeFile(@NonNull CodeFile codeFile) throws SQLException, CommonFlkException;
 
     /**
      * Метод обновления содержимого файла
@@ -58,8 +60,13 @@ public interface CodeFileDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий файлы проекта, или пустой список, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<CodeFile> getAllCodeFilesByProjectId(@NonNull UUID projectId, @NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<CodeFile> getAllCodeFilesByProjectId(
+            @NonNull UUID projectId,
+            @NonNull SortDirection sortDirection,
+            String sortBy
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения всех файлов в Системе
@@ -67,6 +74,7 @@ public interface CodeFileDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий файлы, хранимые в Системе, или пустой список, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<CodeFile> getAllCodeFiles(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<CodeFile> getAllCodeFiles(@NonNull SortDirection sortDirection, String sortBy) throws SQLException, CommonFlkException;
 }

@@ -2,7 +2,7 @@ package org.skyhigh.afishadevappgui.data.datasource.dao;
 
 import lombok.NonNull;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
-import org.skyhigh.afishadevappgui.data.datasource.entity.ProjectAuthor;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.RequirementAuthor;
 
 import java.sql.SQLException;
@@ -17,8 +17,9 @@ public interface RequirementAuthorDAO {
      * Метод сохранения сущности связи автор-требование
      * @param requirementAuthor Сохраняемая сущность связи автор-требование
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    void saveRequirementAuthor(@NonNull RequirementAuthor requirementAuthor) throws SQLException;
+    void saveRequirementAuthor(@NonNull RequirementAuthor requirementAuthor) throws SQLException, CommonFlkException;
 
     /**
      * Метод удаления связи автор-требования по идентификаторам
@@ -83,8 +84,12 @@ public interface RequirementAuthorDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий связи автор-требование или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<RequirementAuthor> getAllRequirementAuthors(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<RequirementAuthor> getAllRequirementAuthors(
+            @NonNull SortDirection sortDirection,
+            String sortBy
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения всех связей автор-требование в пределах требования
@@ -93,12 +98,13 @@ public interface RequirementAuthorDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий связи автор-требование или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<RequirementAuthor> getRequirementAuthorsByRequirementId(
             @NonNull UUID requirementId,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения всех связей автор-требование в пределах автора
@@ -107,10 +113,11 @@ public interface RequirementAuthorDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий связи автор-требование или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<RequirementAuthor> getRequirementAuthorsByAuthorId(
             @NonNull UUID authorId,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 }

@@ -2,6 +2,7 @@ package org.skyhigh.afishadevappgui.data.datasource.dao;
 
 import lombok.NonNull;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Secret;
 
 import java.sql.SQLException;
@@ -15,11 +16,14 @@ public interface SecretDAO {
 
     /**
      * Метод сохранения сущности доступа к развертыванию в Системе
-     * @param secret Сохраняемая сущность доступа к развертыванию
+     * @param secret Сохраняемая сущность доступа к развертыванию. Если поле password заполнено, то при сохранении
+     *               записи осуществляется только проверка надежности пароля. Если поле password не заполнено, то значение
+     *               для данного поля генерируется автоматически в соответствии с правилами заполнения на дату сохранения
      * @return Идентификатор доступа к развертыванию, сформированный при сохранении сущности в Системе
-     * @throws SQLException Ошибка при работе с БД
+     * @throws SQLException Ошибка при работе с БД (включая несоответствие надежности пароля правилам заполнения на дату сохранения)
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    UUID saveSecret(@NonNull Secret secret) throws SQLException;
+    UUID saveSecret(@NonNull Secret secret) throws SQLException, CommonFlkException;
 
     /**
      * Метод обновления доступа к развертыванию
@@ -27,8 +31,9 @@ public interface SecretDAO {
      *               иначе будет сформировано исключение NullFieldsInDBEntityException/
      *               Поиск обновляемой записи осуществляется именно по secretId
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    void updateSecret(@NonNull Secret secret) throws SQLException;
+    void updateSecret(@NonNull Secret secret) throws SQLException, CommonFlkException;
 
     /**
      * Метод обновления идентификатора развертывания доступа к развертыванию по идентификатору
@@ -59,8 +64,9 @@ public interface SecretDAO {
      * @param secretId Идентификатор доступа к развертыванию
      * @param password Целевой пароль
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    void updateSecretPassword(@NonNull UUID secretId, @NonNull String password) throws SQLException;
+    void updateSecretPassword(@NonNull UUID secretId, String password) throws SQLException, CommonFlkException;
 
     /**
      * Метод удаления доступа к развертыванию по идентификатору
@@ -84,12 +90,13 @@ public interface SecretDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий доступы к развертыванию или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Secret> getSecretsByDeploymentId(
             @NonNull UUID deploymentId,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения доступов к развертыванию по адресу
@@ -98,12 +105,13 @@ public interface SecretDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий доступы к развертыванию или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Secret> getSecretsByAddress(
             @NonNull String address,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения доступов к развертыванию по логину
@@ -112,10 +120,21 @@ public interface SecretDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий доступы к развертыванию или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Secret> getSecretsByLogin(
             @NonNull String login,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
+
+    /**
+     * Метод получения всех доступов к развертываниям в системе
+     * @return Список, содержащий объекты Secret, или пустой список, если данные не были найдены
+     * @param sortDirection Режим сортировки
+     * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
+     * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
+     */
+    List<Secret> getAllAuthors(@NonNull SortDirection sortDirection, String sortBy) throws SQLException, CommonFlkException;
 }

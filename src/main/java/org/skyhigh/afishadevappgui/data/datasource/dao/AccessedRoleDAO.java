@@ -17,8 +17,9 @@ public interface AccessedRoleDAO {
      * Метод создания имеющей доступ к требованию роли
      * @param accessedRole Объект роли с заполненными requirementId и roleName
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    void saveAccessedRole(@NonNull AccessedRole accessedRole) throws SQLException;
+    void saveAccessedRole(@NonNull AccessedRole accessedRole) throws SQLException, CommonFlkException;
 
     /**
      * Метод обновления наименования роли по идентификатору требования и старому имени роли
@@ -40,6 +41,7 @@ public interface AccessedRoleDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список ролей типа AccessedRole, имеющих доступ к указанному требованию
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<AccessedRole> getAccessedRolesByRequirementId(@NonNull UUID requirementId,
                                                        @NonNull SortDirection sortDirection,
@@ -52,8 +54,9 @@ public interface AccessedRoleDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список ролей типа AccessedRole
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<AccessedRole> getAllAccessedRoles(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<AccessedRole> getAllAccessedRoles(@NonNull SortDirection sortDirection, String sortBy) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения ролей, имеющих доступ к требованиям, по наименованию этих ролей
@@ -62,11 +65,12 @@ public interface AccessedRoleDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список ролей типа AccessedRole, имеющих имя, соответствующее указанному в параметре поиска
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<AccessedRole> getAccessedRolesByRoleName(@NonNull String accessedRoleName,
                                                   @NonNull SortDirection sortDirection,
                                                   String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения роли, имеющей доступ к требованию, по идентификатору требования и наименованию роли

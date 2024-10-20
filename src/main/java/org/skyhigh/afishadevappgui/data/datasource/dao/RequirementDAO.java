@@ -3,6 +3,7 @@ package org.skyhigh.afishadevappgui.data.datasource.dao;
 import lombok.NonNull;
 import org.json.JSONObject;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Requirement;
 
 import java.sql.SQLException;
@@ -19,8 +20,9 @@ public interface RequirementDAO {
      * @param requirement Сохраняемая сущность требования
      * @return Идентификатор требования, сформированный при сохранении сущности в БД
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    UUID saveRequirement(@NonNull Requirement requirement) throws SQLException;
+    UUID saveRequirement(@NonNull Requirement requirement) throws SQLException, CommonFlkException;
 
     /**
      * Метод обновления требования в Системе
@@ -28,8 +30,9 @@ public interface RequirementDAO {
      *                иначе будет сформировано исключение NullFieldsInDBEntityException/
      *                Поиск обновляемой записи осуществляется именно по requirementId
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    void updateRequirement(@NonNull Requirement requirement) throws SQLException;
+    void updateRequirement(@NonNull Requirement requirement) throws SQLException, CommonFlkException;
 
     /**
      * Метод обновления типа требования по идентификатору
@@ -77,12 +80,13 @@ public interface RequirementDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Requirement> getRequirementsByTypeId(
             @NonNull UUID requirementTypeId,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения требований по дате загрузки в Систему
@@ -91,12 +95,13 @@ public interface RequirementDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Requirement> getRequirementsByLoadDate(
             @NonNull LocalDateTime loadDate,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения требований по диапазону дат загрузки в Систему
@@ -106,13 +111,14 @@ public interface RequirementDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Requirement> getRequirementsByLoadDateDiapason(
             LocalDateTime loadDateStart,
             LocalDateTime loadDateEnd,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения требований по дате последнего внесения изменений
@@ -121,12 +127,13 @@ public interface RequirementDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Requirement> getRequirementsByLastChangeDate(
             @NonNull LocalDateTime lastChangeDate,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения требований по диапазону дат последнего внесения изменений
@@ -136,13 +143,14 @@ public interface RequirementDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Requirement> getRequirementsByLastChangeDateDiapason(
             LocalDateTime lastChangeDateStart,
             LocalDateTime lastChangeDateEnd,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения всех требований в Системе
@@ -150,9 +158,10 @@ public interface RequirementDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности требований или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Requirement> getAllRequirements(
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 }

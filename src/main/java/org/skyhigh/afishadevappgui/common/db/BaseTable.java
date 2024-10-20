@@ -2,7 +2,10 @@ package org.skyhigh.afishadevappgui.common.db;
 
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Класс базовой таблицы, использующийся в качестве родителя при реализации DataSource-классов
@@ -71,6 +74,7 @@ public class BaseTable implements AutoCloseable {
     protected int executeSqlStatementUpdate(PreparedStatement sqlStatement) throws SQLException {
         reopenConnection();
         int result = sqlStatement.executeUpdate();
+       // sqlStatement.ex
         sqlStatement.close();
         connection.close();
         return result;

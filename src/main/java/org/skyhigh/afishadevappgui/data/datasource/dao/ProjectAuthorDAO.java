@@ -2,6 +2,7 @@ package org.skyhigh.afishadevappgui.data.datasource.dao;
 
 import lombok.NonNull;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.ProjectAuthor;
 
 import java.sql.SQLException;
@@ -16,8 +17,9 @@ public interface ProjectAuthorDAO {
      * Метод сохранения связи автор-проект
      * @param projectAuthor Сущность связи автор-проект
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    void saveProjectAuthor(@NonNull ProjectAuthor projectAuthor) throws SQLException;
+    void saveProjectAuthor(@NonNull ProjectAuthor projectAuthor) throws SQLException, CommonFlkException;
 
     /**
      * Метод удаления связи автор-проект
@@ -74,8 +76,12 @@ public interface ProjectAuthorDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список с сущностями ProjectAuthor или пустой список в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<ProjectAuthor> getAllProjectAuthors(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<ProjectAuthor> getAllProjectAuthors(
+            @NonNull SortDirection sortDirection,
+            String sortBy
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения всех связей автор-проект, относящихся к проекту
@@ -84,12 +90,13 @@ public interface ProjectAuthorDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список с сущностями ProjectAuthor или пустой список в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<ProjectAuthor> getProjectAuthorsByProjectId(
             @NonNull UUID projectId,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения всех связей автор-проект, относящихся к автору
@@ -103,5 +110,5 @@ public interface ProjectAuthorDAO {
             @NonNull UUID authorId,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 }

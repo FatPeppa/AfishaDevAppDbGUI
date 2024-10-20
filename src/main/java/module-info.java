@@ -4,7 +4,7 @@ module org.skyhigh.afishadevappgui {
     requires static lombok;
     requires java.sql;
     requires org.json;
-
+    requires org.slf4j;
 
     opens org.skyhigh.afishadevappgui to javafx.fxml;
     exports org.skyhigh.afishadevappgui;

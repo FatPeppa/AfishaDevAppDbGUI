@@ -1,4 +1,4 @@
-package org.skyhigh.afishadevappgui.data.validation.entity;
+package org.skyhigh.afishadevappgui.data.validation.entity.updating;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class Flk10000001 implements CommonFlk {
     private final String entityName = "Requirement";
     private final String code = "10000001";
     private final String message = "При обновлении сущности Requirement поле requirementId должно быть заполнено";
-    private final List<String> attributesNames = List.of("projectId");
+    private final List<String> attributesNames = List.of("requirementId");
     private final boolean isCritical = true;
 
     private Requirement requirement;

@@ -3,6 +3,7 @@ package org.skyhigh.afishadevappgui.data.datasource.dao;
 import lombok.NonNull;
 import org.json.JSONObject;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Deployment;
 
 import java.io.File;
@@ -19,8 +20,9 @@ public interface DeploymentDAO {
      * @param deployment Объект развертывания
      * @return Уникальный идентификатор, присвоенный записи развертывания в Системе
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    UUID saveDeployment(@NonNull Deployment deployment) throws SQLException;
+    UUID saveDeployment(@NonNull Deployment deployment) throws SQLException, CommonFlkException;
 
     /**
      * Метод удаления записи развертывания по идентификатору
@@ -59,7 +61,7 @@ public interface DeploymentDAO {
      * @param built Целевая сборка в развертывании
      * @throws SQLException Ошибка при работе с БД
      */
-    void updateDeploymentBuiltById(@NonNull UUID deploymentId, File built) throws SQLException;
+    void updateDeploymentBuiltById(@NonNull UUID deploymentId, File built) throws SQLException, CommonFlkException;
 
     /**
      * Метод обновления проекта, используемого для сборки в развертывании
@@ -89,7 +91,7 @@ public interface DeploymentDAO {
                                     JSONObject builtSettings,
                                     File built,
                                     @NonNull UUID projectId
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения развертывания по идентификатору
@@ -97,7 +99,7 @@ public interface DeploymentDAO {
      * @return Запись развертывания или null, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
      */
-    Deployment getDeploymentById(@NonNull UUID deploymentId) throws SQLException;
+    Deployment getDeploymentById(@NonNull UUID deploymentId) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения записей развертывания по идентификатору проекта
@@ -106,8 +108,13 @@ public interface DeploymentDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список записей развертывания, удовлетворяющих критериям поиска, или пустой список, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<Deployment> getDeploymentsByProjectId(@NonNull UUID projectId, @NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<Deployment> getDeploymentsByProjectId(
+            @NonNull UUID projectId,
+            @NonNull SortDirection sortDirection,
+            String sortBy
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения записей развертывания по статусу
@@ -116,8 +123,13 @@ public interface DeploymentDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список записей развертывания, удовлетворяющих критериям поиска, или пустой список, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<Deployment> getDeploymentsByStatusId(@NonNull UUID deploymentStatusId, @NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<Deployment> getDeploymentsByStatusId(
+            @NonNull UUID deploymentStatusId,
+            @NonNull SortDirection sortDirection,
+            String sortBy
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения всех записей развертываний, хранимых в Системе
@@ -125,8 +137,9 @@ public interface DeploymentDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список записей развертывания, удовлетворяющих критериям поиска, или пустой список, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<Deployment> getAllDeployments(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<Deployment> getAllDeployments(@NonNull SortDirection sortDirection, String sortBy) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения записей развертываний по версии сборки
@@ -135,8 +148,13 @@ public interface DeploymentDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список записей развертывания, удовлетворяющих критериям поиска, или пустой список, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<Deployment> getDeploymentsByBuiltVersion(String builtVersion, @NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<Deployment> getDeploymentsByBuiltVersion(
+            String builtVersion,
+            @NonNull SortDirection sortDirection,
+            String sortBy
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения записей развертываний по пути развертывания
@@ -145,8 +163,13 @@ public interface DeploymentDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список записей развертывания, удовлетворяющих критериям поиска, или пустой список, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<Deployment> getDeploymentsByPath(String deploymentPath, @NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<Deployment> getDeploymentsByPath(
+            String deploymentPath,
+            @NonNull SortDirection sortDirection,
+            String sortBy
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения записей развертывания по идентификатору проекта и статусу сборки
@@ -156,11 +179,30 @@ public interface DeploymentDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список записей развертывания, удовлетворяющих критериям поиска, или пустой список, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Deployment> getDeploymentsByStatusIdAndProjectId(
             @NonNull UUID deploymentStatusId,
             @NonNull UUID projectId,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
+
+    /**
+     * Метод развертывания сборки (меняет статус развертывания, создает сущность сикрета)
+     * @param deploymentId Идентификатор развертывания
+     * @param address Адрес доступа к развертыванию
+     * @param login Логин доступа к развертыванию
+     * @param password Пароль доступа к развертыванию. Должен соответствовать текущим (на дату сохранения)
+     *                 правилам заполнения паролей. Если пуст, то генерируется автоматически
+     * @return Идентификатор доступа к развертыванию в Системе
+     * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
+     */
+    UUID deployBuilt(
+        @NonNull UUID deploymentId,
+        @NonNull String address,
+        @NonNull String login,
+        String password
+    ) throws SQLException, CommonFlkException;
 }

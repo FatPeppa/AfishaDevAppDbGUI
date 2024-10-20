@@ -3,6 +3,7 @@ package org.skyhigh.afishadevappgui.data.validation.args;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.skyhigh.afishadevappgui.common.db.validation.CommonArgsException;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlk;
@@ -10,11 +11,13 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlk;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Универсальная проверка аргументов метода чтения данных из таблицы с сортировкой, что поле, по которому сортируются записи,
  *  содержится в списке полей сущности
  */
+@Slf4j
 @Setter
 @Getter
 @AllArgsConstructor
@@ -34,10 +37,24 @@ public class Flk10010000 implements CommonFlk {
 
     @Override
     public void validate() throws CommonArgsException {
+        log.debug("Flk " + code + " started for method {} in dao {} with sortDirection {} and sortBy {}",
+                daoMethodName,
+                daoClassName,
+                sortDirection,
+                sortBy
+        );
         if (sortDirection != SortDirection.NONE) {
             try {
-                if (sortBy == null || Arrays.stream(Class.forName(entityClassName).getFields())
-                        .noneMatch(field -> field.getName().equals(sortBy)))
+                if (sortBy == null || Arrays.stream(Class.forName(entityClassName).getDeclaredFields())
+                        .noneMatch(field -> field.getName().equals(sortBy))) {
+
+                    log.debug("Flk " + code + " for method {} in dao {} with sortDirection {} and sortBy {} finished with error",
+                            daoMethodName,
+                            daoClassName,
+                            sortDirection,
+                            sortBy
+                    );
+
                     throw new CommonArgsException(
                             entityClassName,
                             daoClassName,
@@ -46,15 +63,28 @@ public class Flk10010000 implements CommonFlk {
                             String.format(
                                     message,
                                     entityClassName,
-                                    Arrays.stream(Class.forName(entityClassName).getFields())
-                                            .map(Field::getName).toString()
+                                    Arrays.stream(Class.forName(entityClassName).getDeclaredFields())
+                                            .map(Field::getName).collect(Collectors.joining(", "))
                             ),
                             attributesNames,
                             isCritical
                     );
+                }
             } catch (ClassNotFoundException e) {
+                log.debug("Flk " + code + " for method {} in dao {} with sortDirection {} and sortBy {} finished with ClassNotFoundException",
+                        daoMethodName,
+                        daoClassName,
+                        sortDirection,
+                        sortBy
+                );
                 throw new RuntimeException(e);
             }
         }
+        log.debug("Flk " + code + " for method {} in dao {} with sortDirection {} and sortBy {} finished successfully",
+                daoMethodName,
+                daoClassName,
+                sortDirection,
+                sortBy
+        );
     }
 }

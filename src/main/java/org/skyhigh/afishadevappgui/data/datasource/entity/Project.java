@@ -18,5 +18,6 @@ public class Project {
     private LocalDateTime lastChangeDate;
     private JSONObject structure;
     private JSONObject settings;
+    private JSONObject content;
     private String versionNumber;
 }

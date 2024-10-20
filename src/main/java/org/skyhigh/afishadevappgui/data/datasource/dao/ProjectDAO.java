@@ -3,6 +3,7 @@ package org.skyhigh.afishadevappgui.data.datasource.dao;
 import lombok.NonNull;
 import org.json.JSONObject;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Project;
 
 import java.sql.SQLException;
@@ -19,8 +20,9 @@ public interface ProjectDAO {
      * @param project Сохраняемая сущность проекта типа Project
      * @return Идентификатор сохраненной сущности в БД
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    UUID saveProject(@NonNull Project project) throws SQLException;
+    UUID saveProject(@NonNull Project project) throws SQLException, CommonFlkException;
 
     /**
      * Метод обновления проекта в Системе
@@ -28,8 +30,9 @@ public interface ProjectDAO {
      *                иначе будет сформировано исключение NullFieldsInDBEntityException/
      *                Поиск обновляемой записи осуществляется именно по projectId
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    void updateProject(@NonNull Project project) throws SQLException;
+    void updateProject(@NonNull Project project) throws SQLException, CommonFlkException;
 
     /**
      * Метод обновления наименования проекта по идентификатору
@@ -108,8 +111,9 @@ public interface ProjectDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности проекта или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<Project> getAllProjects(@NonNull SortDirection sortDirection, String sortBy) throws SQLException;
+    List<Project> getAllProjects(@NonNull SortDirection sortDirection, String sortBy) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения проектов по дате загрузки в Систему
@@ -118,12 +122,13 @@ public interface ProjectDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности проекта или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Project> getProjectsByLoadDate(
             @NonNull LocalDateTime loadDate,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения проектов по диапазону дат загрузки в Систему
@@ -133,13 +138,14 @@ public interface ProjectDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности проекта или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Project> getProjectsByLoadDateDiapason(
             LocalDateTime loadDateDiapasonStart,
             LocalDateTime loadDateDiapasonEnd,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения проектов по дате последнего внесения изменений
@@ -148,12 +154,13 @@ public interface ProjectDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности проекта или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Project> getProjectsByLastChangeDate(
             @NonNull LocalDateTime lastChangeDate,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения проектов по диапазону дат последнего внесения изменений
@@ -163,13 +170,14 @@ public interface ProjectDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности проекта или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Project> getProjectsByLastChangeDateDiapason(
             LocalDateTime lastChangeDateDiapasonStart,
             LocalDateTime lastChangeDateDiapasonEnd,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения проектов по номеру версии
@@ -178,10 +186,11 @@ public interface ProjectDAO {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @return Список, содержащий сущности проекта или пустой в случае, если данные не были найдены
      * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
      */
     List<Project> getProjectsByVersionNumber(
             @NonNull String versionNumber,
             @NonNull SortDirection sortDirection,
             String sortBy
-    ) throws SQLException;
+    ) throws SQLException, CommonFlkException;
 }
