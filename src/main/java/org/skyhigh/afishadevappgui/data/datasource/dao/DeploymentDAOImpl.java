@@ -10,6 +10,7 @@ import org.skyhigh.afishadevappgui.common.db.validation.CommonSystemException;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Deployment;
+import org.skyhigh.afishadevappgui.data.datasource.entity.Secret;
 import org.skyhigh.afishadevappgui.data.validation.args.Flk10010000Validator;
 import org.skyhigh.afishadevappgui.data.validation.entity.inserting.fields_not_null.Flk10000005Validator;
 import org.skyhigh.afishadevappgui.data.validation.entity.inserting.files.Flk10020000Validator;
@@ -428,6 +429,31 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
         ps.setObject(1, deploymentStatusId);
         ps.setObject(1, projectId);
         return getDeployments(ps);
+    }
+
+    @Override
+    public UUID deployBuilt(@NonNull UUID deploymentId, @NonNull String address, @NonNull String login, String password) throws SQLException, CommonFlkException {
+        PreparedStatement ps = super.prepareStatement(
+                "CALL deploy_built(?, ?, ?, ?);"
+        );
+        ps.setObject(1, deploymentId);
+        ps.setString(2, address);
+        ps.setString(3, login);
+        if (password != null) {
+            ps.setString(4, password);
+        } else {
+            ps.setNull(4, Types.VARCHAR);
+        }
+        SecretDAO secretDAO = new SecretDAOImpl(
+                this.dbConnector
+        );
+        List<Secret> secrets = secretDAO.getSecretsByDeploymentId(deploymentId, SortDirection.NONE, null);
+        for (Secret secret : secrets) {
+            if (secret.getAddress().equals(address)
+                && secret.getLogin().equals(login))
+                return secret.getSecretId();
+        }
+        return null;
     }
 
     /**

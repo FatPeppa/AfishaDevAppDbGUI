@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class BaseTable implements AutoCloseable {
     Connection connection;
     String tableName;
-    DbConnector dbConnector;
+    protected DbConnector dbConnector;
 
     public BaseTable(String tableName, DbConnector dbConnector) throws SQLException { // Для реальной таблицы передадим в конструктор её имя
         this.tableName = tableName;
