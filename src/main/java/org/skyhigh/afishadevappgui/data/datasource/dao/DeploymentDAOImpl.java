@@ -444,6 +444,16 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
         } else {
             ps.setNull(4, Types.VARCHAR);
         }
+        try {
+            super.executeSqlStatementUpdate(ps);
+        } catch (SQLException e) {
+            throw new CommonSystemException(
+                    "Системная ошибка при деплое развертывания с deploymentId: '" +
+                            deploymentId.toString() + "'. Текст ошибки: '" + e.getMessage() + "'",
+                    e.getCause(),
+                    false
+            );
+        }
         SecretDAO secretDAO = new SecretDAOImpl(
                 this.dbConnector
         );
@@ -478,8 +488,8 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
                 out.close();
             } catch (IOException e) {
                 throw new CommonSystemException(
-                        "Ошибка при создании временного файла для сборки в сущности Deployment с id: " +
-                                deploymentId.toString(),
+                        "Ошибка при создании временного файла для сборки в сущности Deployment с id: '" +
+                                deploymentId.toString() + "'. Текст ошибки: '" + e.getMessage() + "'",
                         e.getCause(),
                         false
                 );
@@ -524,8 +534,8 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
                 out.close();
             } catch (IOException e) {
                 throw new CommonSystemException(
-                        "Ошибка при создании временного файла для сборки в сущности Deployment с id: " +
-                                deploymentId.toString(),
+                        "Ошибка при создании временного файла для сборки в сущности Deployment с id: '" +
+                                deploymentId.toString() + "'. Текст ошибки: '" + e.getMessage() + "'",
                         e.getCause(),
                         false
                 );

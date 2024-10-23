@@ -76,7 +76,7 @@ public class PasswordGenRuleDAOImpl extends BaseTable implements PasswordGenRule
     @Override
     public void updatePasswordGenRule(@NonNull PasswordGenRule passwordGenRule) throws SQLException, CommonFlkException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " SET t.repeatable_characters_amount = ?1, t.capital_letters_amount = ?2, " +
+                "UPDATE " + super.getTableName() + " t SET t.repeatable_characters_amount = ?1, t.capital_letters_amount = ?2, " +
                         "t.spec_symbols_amount = ?3, t.begin_date = ?4, t.end_date = ?5, t.create_date = ?6, t.numeric_symbols_amount = ?7" +
                         " WHERE t.rule_id = ?8"
         );

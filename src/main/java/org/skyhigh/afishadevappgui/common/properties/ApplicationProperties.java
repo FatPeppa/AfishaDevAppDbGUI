@@ -2,7 +2,6 @@ package org.skyhigh.afishadevappgui.common.properties;
 
 import org.skyhigh.afishadevappgui.common.properties.enums.DbmsType;
 
-
 /**
  * Запись с основными параметрами приложения
  * @param DB_URL URL для подключения к БД
@@ -18,4 +17,5 @@ public record ApplicationProperties(
         String DB_PASSWORD,
         DbmsType DB_TYPE,
         String DB_DRIVER,
-        boolean DB_INIT) {}
+        boolean DB_INIT
+) {}

@@ -2,8 +2,6 @@ package org.skyhigh.afishadevappgui.common.db.validation;
 
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 
-import java.util.List;
-
 public class CommonSystemException extends CommonFlkException {
     private static final String code = "99999999";
     private static final boolean isCritical = true;

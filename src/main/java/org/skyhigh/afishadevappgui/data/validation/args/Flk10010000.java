@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.skyhigh.afishadevappgui.common.db.validation.CommonArgsException;
+import org.skyhigh.afishadevappgui.common.db.validation.CommonSystemException;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlk;
 
@@ -36,7 +37,7 @@ public class Flk10010000 implements CommonFlk {
     private String sortBy;
 
     @Override
-    public void validate() throws CommonArgsException {
+    public void validate() throws CommonArgsException, CommonSystemException {
         log.debug("Flk " + code + " started for method {} in dao {} with sortDirection {} and sortBy {}",
                 daoMethodName,
                 daoClassName,
@@ -77,7 +78,11 @@ public class Flk10010000 implements CommonFlk {
                         sortDirection,
                         sortBy
                 );
-                throw new RuntimeException(e);
+                throw new CommonSystemException(
+                        "Произошла системная ошибка. Текст ошибки: '" + e.getMessage() + "'",
+                        e.getCause(),
+                        false
+                );
             }
         }
         log.debug("Flk " + code + " for method {} in dao {} with sortDirection {} and sortBy {} finished successfully",
@@ -85,6 +90,6 @@ public class Flk10010000 implements CommonFlk {
                 daoClassName,
                 sortDirection,
                 sortBy
-        );
+        );//orm
     }
 }

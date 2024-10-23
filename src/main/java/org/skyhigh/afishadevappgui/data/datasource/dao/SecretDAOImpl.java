@@ -58,7 +58,17 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
             ps.setString(5, generatedPassword);
         }
 
-        int stRes = super.executeSqlStatementUpdate(ps);
+        int stRes = 0;
+        try {
+            stRes = super.executeSqlStatementUpdate(ps);
+        } catch (SQLException e) {
+            throw new CommonSystemException(
+                    "Системная ошибка при сохранении доступа к развертыванию с secretId: '" +
+                            secret.getSecretId().toString() + "'. Текст ошибки: '" + e.getMessage() + "'",
+                    e.getCause(),
+                    false
+            );
+        }
         log.log(Level.INFO, "database logging: " + stRes + " rows inserted into " + super.getTableName());
         return secretId;
     }
@@ -83,7 +93,18 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
             ps.setString(4, generatedPassword);
         }
 
-        int stRes = super.executeSqlStatementUpdate(ps);
+        int stRes = 0;
+        try {
+            stRes = super.executeSqlStatementUpdate(ps);
+        } catch (SQLException e) {
+            throw new CommonSystemException(
+                    "Системная ошибка при обновлении доступа к развертыванию с secretId: '" +
+                            secret.getSecretId().toString() + "'. Текст ошибки: '" + e.getMessage() + "'",
+                    e.getCause(),
+                    false
+            );
+        }
+
         log.log(Level.INFO, "database logging: " + stRes + " rows updated in " + super.getTableName());
     }
 
@@ -132,7 +153,19 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
             ps.setString(4, generatedPassword);
         }
         ps.setObject(2, secretId);
-        int stRes = super.executeSqlStatementUpdate(ps);
+
+        int stRes = 0;
+        try {
+            stRes = super.executeSqlStatementUpdate(ps);
+        } catch (SQLException e) {
+            throw new CommonSystemException(
+                    "Системная ошибка при обновлении пароля доступа к развертыванию с secretId: '" +
+                            secretId.toString() + "'. Текст ошибки: '" + e.getMessage() + "'",
+                    e.getCause(),
+                    false
+            );
+        }
+
         log.log(Level.INFO, "database logging: " + stRes + " rows updated in " + super.getTableName());
     }
 

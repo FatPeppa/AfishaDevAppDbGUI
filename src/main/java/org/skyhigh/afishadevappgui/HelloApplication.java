@@ -7,19 +7,12 @@ import javafx.stage.Stage;
 import org.skyhigh.afishadevappgui.common.db.DbConnector;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationProperties;
 import org.skyhigh.afishadevappgui.common.properties.enums.DbmsType;
-import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
-import org.skyhigh.afishadevappgui.data.datasource.dao.AccessedRoleDAO;
-import org.skyhigh.afishadevappgui.data.datasource.dao.AccessedRoleDAOImpl;
 import org.skyhigh.afishadevappgui.data.datasource.dao.DeploymentDAO;
 import org.skyhigh.afishadevappgui.data.datasource.dao.DeploymentDAOImpl;
-import org.skyhigh.afishadevappgui.data.datasource.entity.AccessedRole;
-import org.skyhigh.afishadevappgui.data.datasource.entity.Deployment;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.UUID;
 
 public class HelloApplication extends Application {
@@ -41,7 +34,7 @@ public class HelloApplication extends Application {
 
         try {
             DeploymentDAO dao = new DeploymentDAOImpl(dbConnector);
-            dao.saveDeployment(
+            /*dao.saveDeployment(
                     new Deployment(
                             null,
                             UUID.fromString("923b475d-4e83-40c8-95f2-58bbfadddfc3"),
@@ -52,6 +45,12 @@ public class HelloApplication extends Application {
                             new File("D:\\test_built_file.txt"),
                             UUID.fromString("ff16517f-8b07-4e78-8fa9-1f1c2992bb42")
                     )
+            );*/
+            dao.deployBuilt(
+                UUID.fromString("5ce9b8c5-29c5-460c-9111-0649e0225b4f"),
+                "test_addddd",
+                "dfsa",
+                null
             );
         } catch (SQLException | CommonFlkException e) {
             throw new RuntimeException(e);
