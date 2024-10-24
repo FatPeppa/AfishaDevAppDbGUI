@@ -2,7 +2,7 @@ package org.skyhigh.afishadevappgui.data.repository;
 
 import lombok.NonNull;
 import org.json.JSONObject;
-import org.skyhigh.afishadevappgui.common.db.validation.CommonSystemException;
+import org.skyhigh.afishadevappgui.common.validation.CommonSystemException;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationProperties;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;

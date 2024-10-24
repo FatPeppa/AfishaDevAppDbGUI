@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.skyhigh.afishadevappgui.common.db.validation.CommonArgsException;
-import org.skyhigh.afishadevappgui.common.db.validation.CommonSystemException;
+import org.skyhigh.afishadevappgui.common.validation.CommonSystemException;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlk;
 

@@ -8,4 +8,6 @@ module org.skyhigh.afishadevappgui {
 
     opens org.skyhigh.afishadevappgui to javafx.fxml;
     exports org.skyhigh.afishadevappgui;
+    exports org.skyhigh.afishadevappgui.controller;
+    opens org.skyhigh.afishadevappgui.controller to javafx.fxml;
 }

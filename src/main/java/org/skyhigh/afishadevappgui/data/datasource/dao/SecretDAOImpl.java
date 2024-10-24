@@ -4,7 +4,7 @@ import lombok.NonNull;
 import lombok.extern.java.Log;
 import org.skyhigh.afishadevappgui.common.db.BaseTable;
 import org.skyhigh.afishadevappgui.common.db.DbConnector;
-import org.skyhigh.afishadevappgui.common.db.validation.CommonSystemException;
+import org.skyhigh.afishadevappgui.common.validation.CommonSystemException;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Secret;

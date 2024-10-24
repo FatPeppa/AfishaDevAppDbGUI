@@ -1,6 +1,4 @@
-package org.skyhigh.afishadevappgui.common.db.validation;
-
-import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
+package org.skyhigh.afishadevappgui.common.validation;
 
 public class CommonSystemException extends CommonFlkException {
     private static final String code = "99999999";

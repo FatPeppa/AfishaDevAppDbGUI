@@ -1,4 +1,4 @@
-package org.skyhigh.afishadevappgui;
+package org.skyhigh.afishadevappgui.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
