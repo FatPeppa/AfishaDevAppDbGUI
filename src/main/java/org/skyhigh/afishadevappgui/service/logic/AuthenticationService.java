@@ -5,7 +5,17 @@ import org.skyhigh.afishadevappgui.data.datasource.entity.DbUser;
 
 public interface AuthenticationService {
 
-    public DbUser authenticate(String login, String password) throws CommonFlkException;
+    /**
+     *  Метод аутентификации пользователя в Системе. Выполняет проверки введенных логина и пароля пользователя.
+     *      В случае успешного прохождения указанных проверок, приступает к поиску записи пользователя по логину. Затем, если
+     *      запись была найдена, осуществляет проверку совпадения хэшей паролей посредством алгоритма Bcrypt.
+     *      Если все проверки пройдены успешно, выдает запись найденного пользователя как результат выполнения
+     * @param login Логин пользователя для аутентификации в Системе (длина: от 8 до 20 символов)
+     * @param password Пароль пользователя для аутентификации в Системе (длина: от 8 до 20 символов)
+     * @return Запись аутентифицированного пользователя или null
+     * @throws CommonFlkException Ошибки при проверках ФЛК
+     */
+    DbUser authenticate(String login, String password) throws CommonFlkException;
 
     /**
      * Метод регистрации пользователя в Системе. Выполняет проверки целевых логина и пароля пользователя, а
@@ -17,5 +27,5 @@ public interface AuthenticationService {
      * @return Созданная запись пользователя (объект DbUser) или null
      * @throws CommonFlkException Ошибки при проверках ФЛК
      */
-    public DbUser register(String login, String password) throws CommonFlkException;
+    DbUser register(String login, String password) throws CommonFlkException;
 }

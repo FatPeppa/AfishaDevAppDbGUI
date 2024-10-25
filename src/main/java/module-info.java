@@ -5,6 +5,7 @@ module org.skyhigh.afishadevappgui {
     requires java.sql;
     requires org.json;
     requires org.slf4j;
+    requires bcrypt;
 
     opens org.skyhigh.afishadevappgui to javafx.fxml;
     exports org.skyhigh.afishadevappgui;
