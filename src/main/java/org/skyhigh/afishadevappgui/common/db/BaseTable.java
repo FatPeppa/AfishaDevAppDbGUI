@@ -39,6 +39,7 @@ public class BaseTable implements AutoCloseable {
      * @throws SQLException Ошибка при работе с БД
      */
     protected PreparedStatement prepareReadStatement(String sql, SortDirection sortDirection, String sortBy) throws SQLException {
+        reopenConnection();
         if (sortDirection != SortDirection.NONE)
             return connection.prepareStatement(
                     sql + " ORDER BY " + sortBy +
@@ -54,6 +55,7 @@ public class BaseTable implements AutoCloseable {
      * @throws SQLException Ошибка при работе с БД
      */
     protected PreparedStatement prepareStatement(String sql) throws SQLException {
+        reopenConnection();
         return connection.prepareStatement(sql);
     }
 

@@ -26,7 +26,7 @@ public class Flk10030006 implements CommonFlk {
     public void validate() throws CommonFlkException {
         log.debug("Flk " + code + " started for password: {}", password);
 
-        if (password != null && (!password.matches(".*\\d.*") || !password.matches("[a-zA-Z]+"))) {
+        if (password != null && !password.matches("^[A-Za-z0-9]*$")) {
             log.debug("Flk " + code + " for password: {} finished with error", password);
 
             throw new CommonFlkException(

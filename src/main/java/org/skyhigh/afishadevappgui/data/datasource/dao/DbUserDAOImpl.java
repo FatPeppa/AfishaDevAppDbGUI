@@ -9,6 +9,7 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Author;
 import org.skyhigh.afishadevappgui.data.datasource.entity.DbUser;
 import org.skyhigh.afishadevappgui.data.validation.args.Flk10010000Validator;
+import org.skyhigh.afishadevappgui.data.validation.entity.inserting.fields_not_null.Flk10000003Validator;
 import org.skyhigh.afishadevappgui.data.validation.entity.inserting.fields_not_null.Flk10000015Validator;
 
 import java.sql.PreparedStatement;
@@ -42,14 +43,17 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
 
     @Override
     public int saveDbUser(@NonNull DbUser dbUser) throws SQLException, CommonFlkException {
-        Flk10000015Validator.validate(dbUser);
+        Author savingAuthor = new Author(
+                null,
+                dbUser.getUserLogin()
+        );
+        Flk10000003Validator.validate(savingAuthor);
         AuthorDAO authorDAO = new AuthorDAOImpl(dbConnector);
         UUID savedAuthorId = authorDAO.saveAuthor(
-                new Author(
-                        null,
-                        dbUser.getUserLogin()
-                )
+                savingAuthor
         );
+        dbUser.setAuthorId(savedAuthorId);
+        Flk10000015Validator.validate(dbUser);
         PreparedStatement psForUserSave = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (nextval('db_user_id'), ?, ?, ?)");
         psForUserSave.setObject(1, savedAuthorId);
         psForUserSave.setString(2, dbUser.getUserLogin());
@@ -77,7 +81,7 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
     @Override
     public void deleteDbUserById(int userId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.user_id = ?1"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.user_id = ?"
         );
         ps.setInt(1, userId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -88,7 +92,7 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
     public DbUser getDbUserById(int userId) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.user_id, t.author_id, t.user_login, t.user_pass" +
-                        " FROM " + super.getTableName() + " t WHERE t.user_id=?1",
+                        " FROM " + super.getTableName() + " t WHERE t.user_id=?",
                 SortDirection.NONE,
                 null
         );
@@ -100,7 +104,7 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
     public DbUser getDbUserByLogin(@NonNull String login) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.user_id, t.author_id, t.user_login, t.user_pass" +
-                        " FROM " + super.getTableName() + " t WHERE t.user_login=?1",
+                        " FROM " + super.getTableName() + " t WHERE t.user_login=?",
                 SortDirection.NONE,
                 null
         );
@@ -112,7 +116,7 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
     public DbUser getDbUserByAuthorId(UUID authorId) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.user_id, t.author_id, t.user_login, t.user_pass" +
-                        " FROM " + super.getTableName() + " t WHERE t.author_id=?1",
+                        " FROM " + super.getTableName() + " t WHERE t.author_id=?",
                 SortDirection.NONE,
                 null
         );

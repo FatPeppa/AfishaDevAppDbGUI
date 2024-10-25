@@ -30,17 +30,17 @@ public class Flk10030002 implements CommonFlk {
             try {
                 Integer.parseInt(login.substring(0, 1));
             } catch (NumberFormatException e) {
-                log.debug("Flk " + code + " for login: {} finished with error", login);
-
-                throw new CommonFlkException(
-                        code,
-                        message,
-                        attributesNames,
-                        isCritical
-                );
+                log.debug("Flk " + code + " for login: {}  finished successfully", login);
+                return;
             }
-        }
+            log.debug("Flk " + code + " for login: {} finished with error", login);
 
-        log.debug("Flk " + code + " for login: {}  finished successfully", login);
+            throw new CommonFlkException(
+                    code,
+                    message,
+                    attributesNames,
+                    isCritical
+            );
+        }
     }
 }
