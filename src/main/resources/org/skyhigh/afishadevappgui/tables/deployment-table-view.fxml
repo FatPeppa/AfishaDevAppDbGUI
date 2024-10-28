@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="217.0" prefWidth="941.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.tables.DeploymentTableController">
+    <children>
+        <TableView fx:id="deploymentTable" layoutY="1.0" prefHeight="214.0" prefWidth="941.0">
+            <columns>
+                <TableColumn fx:id="deploymentIdDeploymentTableColumn" prefWidth="136.00002133846283" text="Идентификатор развертывания" />
+                <TableColumn fx:id="deploymentStatusIdDeploymentTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Идентификатор статуса развертывания" />
+                <TableColumn fx:id="deploymentPathDeploymentTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Путь развертывания" />
+                <TableColumn fx:id="settingsDeploymentTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Настройки развертывания" />
+                <TableColumn fx:id="builtVersionDeploymentTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Версия сборки" />
+                <TableColumn fx:id="builtSettingsDeploymentTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Настройки сборки" />
+                <TableColumn fx:id="builtDeploymentTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Сборка" />
+                <TableColumn fx:id="projectIdDeploymentTableColumn" minWidth="9.20001220703125" prefWidth="125.79998779296875" text="Идентификатор проекта" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

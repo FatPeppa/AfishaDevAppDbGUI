@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="209.0" prefWidth="265.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.tables.DeploymentStatusTableController">
+    <children>
+        <TableView fx:id="deploymentStatusTable" prefHeight="218.0" prefWidth="277.0">
+            <columns>
+                <TableColumn fx:id="deploymentStatusIdDSTableColumn" prefWidth="136.00002133846283" text="Идентификатор статуса развертывания" />
+                <TableColumn fx:id="statusNameDSTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Наименование статуса развертывания" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

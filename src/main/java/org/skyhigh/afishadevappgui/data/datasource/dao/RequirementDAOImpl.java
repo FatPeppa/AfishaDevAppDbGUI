@@ -48,7 +48,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
         UUID requirementId = UUID.randomUUID();
         PreparedStatement ps = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (?, ?, ?, ?, ?)");
         ps.setObject(1, requirementId);
-        ps.setObject(2, requirement.getRequirementType());
+        ps.setObject(2, requirement.getRequirementTypeId());
         ps.setObject(3, requirement.getLoadDate());
         ps.setObject(4, requirement.getLastChangeDate());
         ps.setString(5, requirement.getContent().toString());
@@ -66,7 +66,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
                         "t.content = ?4 " +
                         "WHERE t.requirement_id = ?5"
         );
-        ps.setObject(1, requirement.getRequirementType());
+        ps.setObject(1, requirement.getRequirementTypeId());
         ps.setObject(2, requirement.getLoadDate());
         ps.setObject(3, requirement.getLastChangeDate());
         ps.setString(4, requirement.getContent().toString());

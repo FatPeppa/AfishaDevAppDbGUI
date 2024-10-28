@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Requirement {
     private UUID requirementId;
-    private UUID requirementType;
+    private UUID requirementTypeId;
     private LocalDateTime loadDate;
     private LocalDateTime lastChangeDate;
     private JSONObject content;

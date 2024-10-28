@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="197.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.tables.RequirementTableController">
+    <children>
+        <TableView fx:id="requirementTable" layoutY="1.0" prefHeight="197.0" prefWidth="591.0">
+            <columns>
+                <TableColumn fx:id="requirementIdRequirementTableColumn" prefWidth="136.00002133846283" text="Идентификатор требования" />
+                <TableColumn fx:id="requirementTypeIdRequirementTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Идентификатор типа требования" />
+                <TableColumn fx:id="loadDateRequirementTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Дата загрузки" />
+                <TableColumn fx:id="lastChangeDateRequirementTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Дата последнего внесения изменений" />
+                <TableColumn fx:id="contentRequirementTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Содержимое" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

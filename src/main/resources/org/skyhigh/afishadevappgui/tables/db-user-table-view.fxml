@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="214.0" prefWidth="557.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.tables.DbUserTableController">
+    <children>
+        <TableView fx:id="dbUserTable" prefHeight="217.0" prefWidth="562.0">
+            <columns>
+                <TableColumn fx:id="userIdDbUserTableColumn" prefWidth="136.00002133846283" text="Идентификатор пользователя" />
+                <TableColumn fx:id="authorIdDbUserTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Идентификатор автора" />
+                <TableColumn fx:id="userLoginDbUserTableColumn" prefWidth="184.99998474121094" text="Логин" />
+                <TableColumn fx:id="userPassDbUserTableColumn" prefWidth="126.0" text="Пароль" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

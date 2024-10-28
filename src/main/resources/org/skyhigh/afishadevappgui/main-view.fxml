@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="538.0" prefWidth="841.0" spacing="5.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.MainController">
+    <padding>
+        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+    </padding>
+    <children>
+      <HBox prefHeight="530.0" prefWidth="832.0">
+         <children>
+              <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="495.0" prefWidth="256.0">
+                  <children>
+                  <Label alignment="TOP_CENTER" prefHeight="15.0" prefWidth="130.0" text="Доступные таблицы:" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="Calibri Bold" size="12.0" />
+                     </font>
+                  </Label>
+                      <Button fx:id="usersBt" mnemonicParsing="false" prefHeight="24.0" prefWidth="316.0" text="Пользователи" />
+                  <Button fx:id="authorsBt" mnemonicParsing="false" prefHeight="20.0" prefWidth="256.0" text="Авторы" />
+                  <Button fx:id="requirementsBt" mnemonicParsing="false" prefHeight="27.0" prefWidth="301.0" text="Требования" />
+                  <Button fx:id="requirementTypesBt" mnemonicParsing="false" prefHeight="26.0" prefWidth="280.0" text="Типы требований" />
+                  <Button fx:id="projectsBt" mnemonicParsing="false" prefHeight="24.0" prefWidth="270.0" text="Проекты" />
+                  <Button fx:id="codeFilesBt" mnemonicParsing="false" prefHeight="22.0" prefWidth="270.0" text="Файлы с кодом" />
+                  <Button fx:id="deploymentsBt" mnemonicParsing="false" prefHeight="22.0" prefWidth="254.0" text="Развертывания" />
+                  <Button fx:id="deploymentStatusesBt" mnemonicParsing="false" prefHeight="26.0" prefWidth="270.0" text="Статусы развертываний" />
+                  <Button fx:id="projectAuthorsBt" mnemonicParsing="false" prefHeight="28.0" prefWidth="321.0" text="Авторы проектов" />
+                  <Button fx:id="requirementAuthorsBt" mnemonicParsing="false" prefHeight="10.0" prefWidth="302.0" text="Авторы требований" />
+                  <Button fx:id="accessibleRolesBt" mnemonicParsing="false" prefHeight="26.0" prefWidth="268.0" text="Роли, имеющие доступ к требованиям" />
+                  <Button fx:id="secretsBt" mnemonicParsing="false" prefHeight="24.0" prefWidth="290.0" text="Доступы к развертываниям" />
+                  <Button fx:id="passGenRuleBt" mnemonicParsing="false" prefHeight="21.0" prefWidth="275.0" text="Правила генерации (заполнения) паролей" />
+                  </children>
+              </VBox>
+            <VBox prefHeight="518.0" prefWidth="578.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="32.0" prefWidth="578.0">
+                     <children>
+                        <Label text="Текущий пользователь:">
+                           <HBox.margin>
+                              <Insets right="25.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Calibri Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="currentUserLogin" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="25.0" prefWidth="578.0">
+                     <children>
+                        <Label alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="373.0" text="Таблица">
+                           <font>
+                              <Font name="Calibri Bold" size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="openedTableName" prefHeight="81.0" prefWidth="368.0" />
+                     </children></HBox>
+                  <HBox alignment="CENTER" prefHeight="53.0" prefWidth="578.0">
+                     <children>
+                        <Label alignment="CENTER" text="Доступные фильтры:">
+                           <font>
+                              <Font name="Calibri Bold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </Label>
+                        <Pane fx:id="filtersPane" prefHeight="54.0" prefWidth="436.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="16.0" prefWidth="578.0">
+                     <children>
+                        <Button fx:id="filterTableRowsBt" alignment="CENTER" mnemonicParsing="false" text="Фильтровать" />
+                     </children>
+                  </HBox>
+                  <BorderPane fx:id="tablePane" prefHeight="200.0" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin></BorderPane>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="saveTableChangesBt" mnemonicParsing="false" text="Сохранить изменения">
+                           <HBox.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </HBox.margin></Button>
+                        <Button fx:id="addNewRowToTableBt" mnemonicParsing="false" text="Добавить запись" />
+                     </children>
+                  </HBox>
+               </children></VBox>
+         </children>
+      </HBox>
+    </children>
+</VBox>

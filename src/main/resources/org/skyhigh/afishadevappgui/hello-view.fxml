@@ -3,12 +3,38 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="org.skyhigh.afishadevappgui.controller.HelloController">
+<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="538.0" prefWidth="841.0" spacing="5.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.HelloController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
     </padding>
-
-    <Label fx:id="welcomeText" />
-    <Button onAction="#onHelloButtonClick" text="Hello!" />
+   <children>
+      <Label text="Добро пожаловать в AfishaDevAppGUI!" textAlignment="CENTER">
+         <font>
+            <Font name="Calibri Bold" size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </Label>
+      <Label text="Пожалуйста, авторизуйтесь или зарегистрируйтесь в Системе.">
+         <font>
+            <Font name="Calibri" size="14.0" />
+         </font></Label>
+      <HBox alignment="CENTER" prefHeight="33.0" prefWidth="832.0">
+         <children>
+            <Button fx:id="registerChooseBt" mnemonicParsing="false" onAction="#onRegisterChooseBtClicked" text="Зарегистрироваться">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="authenticateChooseBt" mnemonicParsing="false" onAction="#onAuthenticateChooseBt" text="Авторизоваться">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
 </VBox>

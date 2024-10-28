@@ -2,7 +2,7 @@ package org.skyhigh.afishadevappgui.common.validation;
 
 import java.util.List;
 
-public class CommonFlkException extends Exception {
+public class CommonFlkException extends Throwable {
     public CommonFlkException(String message) {
         super(message);
     }

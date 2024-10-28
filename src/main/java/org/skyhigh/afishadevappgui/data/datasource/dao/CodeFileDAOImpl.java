@@ -13,6 +13,7 @@ import org.skyhigh.afishadevappgui.data.validation.entity.inserting.fields_not_n
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -47,6 +48,10 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
         ps.setObject(1, codeFileId);
         ps.setObject(2, codeFile.getProjectId());
         ps.setString(3, codeFile.getFileContent());
+        if (codeFile.getLoadDate() == null)
+            ps.setNull(4, Types.TIMESTAMP);
+        else
+            ps.setObject(4, codeFile.getLoadDate());
         int stRes = super.executeSqlStatementUpdate(ps);
         log.log(Level.INFO, "database logging: " + stRes + " rows inserted into " + super.getTableName());
         return codeFileId;
@@ -151,7 +156,8 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
             codeFile = new CodeFile(
                     rs.getObject(1, UUID.class),
                     rs.getObject(2, UUID.class),
-                    rs.getString(3)
+                    rs.getString(3),
+                    rs.getTimestamp(4).toLocalDateTime()
             );
         }
 
@@ -174,7 +180,8 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
             codeFiles.add(new CodeFile(
                     rs.getObject(1, UUID.class),
                     rs.getObject(2, UUID.class),
-                    rs.getString(3)
+                    rs.getString(3),
+                    rs.getTimestamp(4).toLocalDateTime()
             ));
         }
 

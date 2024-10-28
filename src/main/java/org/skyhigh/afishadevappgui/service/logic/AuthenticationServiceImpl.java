@@ -7,6 +7,8 @@ import org.skyhigh.afishadevappgui.data.datasource.entity.DbUser;
 import org.skyhigh.afishadevappgui.data.repository.DbUserRepository;
 import org.skyhigh.afishadevappgui.service.validation.authentication.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final DbUserRepository dbUserRepository;
@@ -17,7 +19,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Flk10030001Validator.validate(login);
         Flk10030004Validator.validate(password);
         DbUser foundDbuser = dbUserRepository.getDbUserByLogin(login);
-        if (foundDbuser == null) return null;
+        if (foundDbuser == null) {
+            throw new CommonFlkException(
+                    "10030008",
+                    "Указан некорректный логин/пароль",
+                    List.of("login", "password"),
+                    true
+            );
+        }
         Flk10030008Validator.validate(login, password, foundDbuser);
         return foundDbuser;
     }

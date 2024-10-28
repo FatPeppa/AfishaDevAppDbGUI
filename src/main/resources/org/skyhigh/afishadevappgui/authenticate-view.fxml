@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="538.0" prefWidth="841.0" spacing="5.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.AuthenticateController">
+    <padding>
+        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+    </padding>
+    <children>
+        <Label text="Авторизация пользователя">
+            <font>
+                <Font name="Calibri Bold" size="24.0" />
+            </font>
+        </Label>
+        <Label text="Пожалуйста, введите данные для авторизации.">
+            <font>
+                <Font name="Calibri" size="12.0" />
+            </font>
+        </Label>
+        <HBox alignment="CENTER" prefHeight="39.0" prefWidth="832.0">
+            <children>
+                <Label text="Логин:">
+                    <HBox.margin>
+                        <Insets right="18.0" />
+                    </HBox.margin>
+                </Label>
+                <TextField fx:id="loginInputAuthTxtField" />
+            </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="40.0" prefWidth="832.0">
+            <children>
+                <Label text="Пароль:">
+                    <HBox.margin>
+                        <Insets right="10.0" />
+                    </HBox.margin>
+                </Label>
+                <TextField fx:id="passwordInputAuthTxtField" />
+            </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="41.0" prefWidth="832.0">
+            <children>
+                <Button fx:id="goBackAuthBt" mnemonicParsing="false" onAction="#onBackAuthBtClicked" text="Назад">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <HBox.margin>
+                        <Insets right="15.0" />
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="AuthenticateAuthBt" mnemonicParsing="false" onAction="#onAuthenticateAuthBtClicked" text="Войти" />
+            </children>
+        </HBox>
+    </children>
+</VBox>

@@ -9,7 +9,6 @@ import org.skyhigh.afishadevappgui.common.db.validation.CommonEntityException;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlk;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Requirement;
-import org.skyhigh.afishadevappgui.data.datasource.entity.RequirementType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class Flk10000009 implements CommonFlk {
         log.debug("Flk " + code + " started for requirement: {}", requirement);
 
         List<String> tempAttributesNames = new ArrayList<>();
-        if (requirement.getRequirementType() == null) {
+        if (requirement.getRequirementTypeId() == null) {
             tempAttributesNames.addAll(attributesNames.stream().filter(x -> !x.equals("requirementType")).toList());
         }
         if (requirement.getLoadDate() == null) {

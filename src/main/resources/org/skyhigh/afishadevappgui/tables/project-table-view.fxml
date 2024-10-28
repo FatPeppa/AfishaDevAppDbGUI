@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="213.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.tables.ProjectTableController">
+    <children>
+        <TableView fx:id="projectTable" layoutY="1.0" prefHeight="214.0" prefWidth="941.0">
+            <columns>
+                <TableColumn fx:id="projectIdProjectTableColumn" prefWidth="136.00002133846283" text="Идентификатор проекта" />
+                <TableColumn fx:id="projectNameProjectTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Наименование" />
+                <TableColumn fx:id="loadDateProjectTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Дата загрузки" />
+                <TableColumn fx:id="lastChangeDateProjectTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Дата последнего внесения изменений" />
+                <TableColumn fx:id="structureProjectTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Структура" />
+                <TableColumn fx:id="contentProjectTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Содержимое" />
+                <TableColumn fx:id="settingsProjectTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Настройки" />
+                <TableColumn fx:id="versionNumberProjectTableColumn" minWidth="9.20001220703125" prefWidth="125.79998779296875" text="Номер версии" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>
