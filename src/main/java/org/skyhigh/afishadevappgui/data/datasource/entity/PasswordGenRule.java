@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +13,7 @@ public class PasswordGenRule {
     /**
      * Идентификатор правила заполнения паролей
      */
-    private UUID ruleId;
+    private Integer ruleId;
     /**
      * Максимальное допустимое количество идущих подряд повторяющихся символов
      */

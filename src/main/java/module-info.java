@@ -16,6 +16,7 @@ module org.skyhigh.afishadevappgui {
     exports org.skyhigh.afishadevappgui.controller.filters;
     exports org.skyhigh.afishadevappgui.controller.baseviews;
     exports org.skyhigh.afishadevappgui.common.validation;
+    exports org.skyhigh.afishadevappgui.data.datasource.entity;
     opens org.skyhigh.afishadevappgui.controller to javafx.fxml;
     opens org.skyhigh.afishadevappgui.common.validation to javafx.fxml;
     opens org.skyhigh.afishadevappgui.controller.tables to javafx.fxml;

@@ -29,7 +29,7 @@ public class PasswordGenRuleRepositoryImpl implements PasswordGenRuleRepository 
     }
 
     @Override
-    public UUID savePasswordGenRule(@NonNull PasswordGenRule passwordGenRule) throws CommonFlkException {
+    public Integer savePasswordGenRule(@NonNull PasswordGenRule passwordGenRule) throws CommonFlkException {
         try {
             return passwordGenRuleDAO.savePasswordGenRule(passwordGenRule);
         } catch (SQLException e) {

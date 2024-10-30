@@ -347,7 +347,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
                 "SELECT t.deployment_id deployment_id, t.deployment_status_id deployment_status_id, " +
                         "t.deployment_path deployment_path, t.settings settings, t.built_version built_version, " +
                         "t.built_settings built_settings, t.built built, t.project_id project_id " +
-                        "FROM " + super.getTableName(),
+                        "FROM " + super.getTableName() + " t",
                 sortDirection,
                 sortBy
         );
@@ -478,29 +478,32 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
         if (rs.next()) {
             UUID deploymentId = rs.getObject(1, UUID.class);
             File tempBuiltFile = null;
-            InputStream iSBuilt = rs.getBinaryStream(7);
-            try {
-                tempBuiltFile = File.createTempFile("B" + (int) ((Math.random() * 98) + 1), ".tmp");
-                tempBuiltFile.deleteOnExit();
-                FileOutputStream out = new FileOutputStream(tempBuiltFile);
-                iSBuilt.transferTo(out);
-                iSBuilt.close();
-                out.close();
-            } catch (IOException e) {
-                throw new CommonSystemException(
-                        "Ошибка при создании временного файла для сборки в сущности Deployment с id: '" +
-                                deploymentId.toString() + "'. Текст ошибки: '" + e.getMessage() + "'",
-                        e.getCause(),
-                        false
-                );
+            if (rs.getBinaryStream(7) != null) {
+                InputStream iSBuilt = rs.getBinaryStream(7);
+                try {
+                    tempBuiltFile = File.createTempFile("B" + (int) ((Math.random() * 98) + 1), ".txt");
+                    tempBuiltFile.deleteOnExit();
+                    FileOutputStream out = new FileOutputStream(tempBuiltFile);
+                    iSBuilt.transferTo(out);
+                    iSBuilt.close();
+                    out.close();
+                } catch (IOException e) {
+                    throw new CommonSystemException(
+                            "Ошибка при создании временного файла для сборки в сущности Deployment с id: '" +
+                                    deploymentId.toString() + "'. Текст ошибки: '" + e.getMessage() + "'",
+                            e.getCause(),
+                            false
+                    );
+                }
             }
+
             deployment = new Deployment(
                     deploymentId,
                     rs.getObject(2, UUID.class),
                     rs.getString(3),
-                    new JSONObject(rs.getString(4)),
+                    rs.getString(4) == null ? null : new JSONObject(rs.getString(4)),
                     rs.getString(5),
-                    new JSONObject(rs.getString(6)),
+                    rs.getString(6) == null ? null : new JSONObject(rs.getString(6)),
                     tempBuiltFile,
                     rs.getObject(8, UUID.class)
             );
@@ -524,30 +527,32 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
         while (rs.next()) {
             UUID deploymentId = rs.getObject(1, UUID.class);
             File tempBuiltFile = null;
-            InputStream iSBuilt = rs.getBinaryStream(7);
-            try {
-                tempBuiltFile = File.createTempFile("B" + (int) ((Math.random() * 98) + 1), ".tmp");
-                tempBuiltFile.deleteOnExit();
-                FileOutputStream out = new FileOutputStream(tempBuiltFile);
-                iSBuilt.transferTo(out);
-                iSBuilt.close();
-                out.close();
-            } catch (IOException e) {
-                throw new CommonSystemException(
-                        "Ошибка при создании временного файла для сборки в сущности Deployment с id: '" +
-                                deploymentId.toString() + "'. Текст ошибки: '" + e.getMessage() + "'",
-                        e.getCause(),
-                        false
-                );
+            if (rs.getBinaryStream(7) != null) {
+                InputStream iSBuilt = rs.getBinaryStream(7);
+                try {
+                    tempBuiltFile = File.createTempFile("B" + (int) ((Math.random() * 98) + 1), ".txt");
+                    tempBuiltFile.deleteOnExit();
+                    FileOutputStream out = new FileOutputStream(tempBuiltFile);
+                    iSBuilt.transferTo(out);
+                    iSBuilt.close();
+                    out.close();
+                } catch (IOException e) {
+                    throw new CommonSystemException(
+                            "Ошибка при создании временного файла для сборки в сущности Deployment с id: '" +
+                                    deploymentId.toString() + "'. Текст ошибки: '" + e.getMessage() + "'",
+                            e.getCause(),
+                            false
+                    );
+                }
             }
             deployments.add(
                 new Deployment(
                     deploymentId,
                     rs.getObject(2, UUID.class),
                     rs.getString(3),
-                    new JSONObject(rs.getString(4)),
+                    rs.getString(4) == null ? null : new JSONObject(rs.getString(4)),
                     rs.getString(5),
-                    new JSONObject(rs.getString(6)),
+                    rs.getString(6) == null ? null : new JSONObject(rs.getString(6)),
                     tempBuiltFile,
                     rs.getObject(8, UUID.class)
                 )

@@ -10,10 +10,7 @@ import org.skyhigh.afishadevappgui.data.datasource.entity.CodeFile;
 import org.skyhigh.afishadevappgui.data.validation.args.Flk10010000Validator;
 import org.skyhigh.afishadevappgui.data.validation.entity.inserting.fields_not_null.Flk10000004Validator;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -44,7 +41,7 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
     public UUID saveCodeFile(@NonNull CodeFile codeFile) throws SQLException, CommonFlkException {
         Flk10000004Validator.validate(codeFile);
         UUID codeFileId = UUID.randomUUID();
-        PreparedStatement ps = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (?, ?, ?)");
+        PreparedStatement ps = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (?, ?, ?, ?)");
         ps.setObject(1, codeFileId);
         ps.setObject(2, codeFile.getProjectId());
         ps.setString(3, codeFile.getFileContent());
@@ -92,8 +89,8 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
     @Override
     public CodeFile getCodeFileById(@NonNull UUID codeFileId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "SELECT t.code_file_id code_file_id, t.project_id project_id " +
-                        "t.file_content file_content FROM " + super.getTableName() + " t WHERE t.code_file_id = ?1"
+                "SELECT t.code_file_id code_file_id, t.project_id project_id, " +
+                        "t.file_content file_content, t.load_date load_date FROM " + super.getTableName() + " t WHERE t.code_file_id = ?1"
         );
         ps.setObject(1, codeFileId);
         return getSingleCodeFile(ps);
@@ -113,8 +110,8 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
                 sortBy
         );
         PreparedStatement ps = super.prepareReadStatement(
-                "SELECT t.code_file_id code_file_id, t.project_id project_id " +
-                        "t.file_content file_content FROM " + super.getTableName() + " t WHERE t.project_id = ?1",
+                "SELECT t.code_file_id code_file_id, t.project_id project_id, " +
+                        "t.file_content file_content, t.load_date load_date FROM " + super.getTableName() + " t WHERE t.project_id = ?1",
                 sortDirection,
                 sortBy
         );
@@ -135,8 +132,8 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
                 sortBy
         );
         PreparedStatement ps = super.prepareReadStatement(
-                "SELECT t.code_file_id code_file_id, t.project_id project_id " +
-                        "t.file_content file_content FROM " + super.getTableName() + " t",
+                "SELECT t.code_file_id code_file_id, t.project_id project_id, " +
+                        "t.file_content file_content, t.load_date load_date FROM " + super.getTableName() + " t",
                 sortDirection,
                 sortBy
         );
@@ -157,8 +154,7 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
                     rs.getObject(1, UUID.class),
                     rs.getObject(2, UUID.class),
                     rs.getString(3),
-                    rs.getTimestamp(4).toLocalDateTime()
-            );
+                    rs.getTimestamp(4) == null ? null : rs.getTimestamp(4).toLocalDateTime()            );
         }
 
         rs.close();
@@ -181,7 +177,7 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
                     rs.getObject(1, UUID.class),
                     rs.getObject(2, UUID.class),
                     rs.getString(3),
-                    rs.getTimestamp(4).toLocalDateTime()
+                    rs.getTimestamp(4) == null ? null : rs.getTimestamp(4).toLocalDateTime()
             ));
         }
 

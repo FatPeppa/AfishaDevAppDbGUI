@@ -42,6 +42,21 @@ public class AuthenticateController {
 
     @FXML
     protected void onAuthenticateAuthBtClicked() throws IOException, CommonFlkException {
+        DbUser authenticatedUser = login();
+        FXMLLoader loader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("main-view.fxml"));
+        Parent root = loader.load();
+        MainController controller = loader.getController();
+        controller.initialize();
+        controller.setCurrentDbUser(authenticatedUser);
+        controller.setDefaultTableViewAndFilters();
+
+        Stage stage = (Stage) AuthenticateAuthBt.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private DbUser login() throws CommonFlkException {
         String inputLogin = loginInputAuthTxtField.getText();
         String inputPassword = passwordInputAuthTxtField.getText();
         AuthenticationService authenticationService = new AuthenticationServiceImpl(
@@ -53,15 +68,6 @@ public class AuthenticateController {
                     "Произошла непредвиденная ошибка. Пользователь не найден",
                     true
             );
-        FXMLLoader loader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("main-view.fxml"));
-        Parent root = loader.load();
-        MainController controller = loader.getController();
-        controller.setCurrentDbUser(authenticatedUser);
-        controller.setDefaultTableViewAndFilters();
-
-        Stage stage = (Stage) AuthenticateAuthBt.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        return authenticatedUser;
     }
 }

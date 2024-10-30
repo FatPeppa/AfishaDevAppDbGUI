@@ -1,10 +1,19 @@
 package org.skyhigh.afishadevappgui.controller.tables;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
+import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.DeploymentStatus;
+import org.skyhigh.afishadevappgui.data.repository.DeploymentStatusRepository;
+import org.skyhigh.afishadevappgui.data.repository.DeploymentStatusRepositoryImpl;
 
+import java.util.List;
 import java.util.UUID;
 
 public class DeploymentStatusTableController {
@@ -16,4 +25,23 @@ public class DeploymentStatusTableController {
 
     @FXML
     private TableColumn<DeploymentStatus, String> statusNameDSTableColumn;
+
+    private final DeploymentStatusRepository deploymentStatusRepository = new DeploymentStatusRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
+
+    public DeploymentStatusTableController() throws CommonFlkException {}
+
+    public void initialize() {
+        deploymentStatusIdDSTableColumn.setCellValueFactory(new PropertyValueFactory<>("deploymentStatusId"));
+        statusNameDSTableColumn.setCellValueFactory(new PropertyValueFactory<>("statusName"));
+    }
+
+    public void fillTable() throws CommonFlkException {
+        ObservableList<DeploymentStatus> deploymentStatusesListView = FXCollections.observableArrayList();
+        List<DeploymentStatus> deploymentStatuses = deploymentStatusRepository.getAllDeploymentStatuses(
+                SortDirection.NONE,
+                null
+        );
+        deploymentStatusesListView.addAll(deploymentStatuses);
+        deploymentStatusTable.setItems(deploymentStatusesListView);
+    }
 }

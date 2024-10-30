@@ -47,6 +47,11 @@
                            </font>
                         </Label>
                         <Label fx:id="currentUserLogin" />
+                        <Button fx:id="logOutBt" mnemonicParsing="false" text="Выйти">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                        </Button>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="25.0" prefWidth="578.0">
@@ -85,11 +90,16 @@
                      </VBox.margin></BorderPane>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="saveTableChangesBt" mnemonicParsing="false" text="Сохранить изменения">
+                        <Button fx:id="saveTableChangesBt" mnemonicParsing="false" text="Сохранить добавленные/измененные записи">
                            <HBox.margin>
                               <Insets left="15.0" right="15.0" />
                            </HBox.margin></Button>
                         <Button fx:id="addNewRowToTableBt" mnemonicParsing="false" text="Добавить запись" />
+                        <Button fx:id="deleteChosenRowFromTableBt" mnemonicParsing="false" text="Удалить запись">
+                           <HBox.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </HBox.margin>
+                        </Button>
                      </children>
                   </HBox>
                </children></VBox>

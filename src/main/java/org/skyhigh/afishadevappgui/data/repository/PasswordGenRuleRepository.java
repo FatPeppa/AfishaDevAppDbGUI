@@ -14,7 +14,7 @@ public interface PasswordGenRuleRepository {
      * @param passwordGenRule Сущность правила генерации паролей
      * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    UUID savePasswordGenRule(@NonNull PasswordGenRule passwordGenRule) throws CommonFlkException;
+    Integer savePasswordGenRule(@NonNull PasswordGenRule passwordGenRule) throws CommonFlkException;
 
     /**
      * Метод обновления правила генерации паролей в Системе

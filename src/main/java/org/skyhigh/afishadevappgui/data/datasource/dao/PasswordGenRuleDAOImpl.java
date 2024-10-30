@@ -10,10 +10,7 @@ import org.skyhigh.afishadevappgui.data.datasource.entity.PasswordGenRule;
 import org.skyhigh.afishadevappgui.data.validation.args.Flk10010000Validator;
 import org.skyhigh.afishadevappgui.data.validation.entity.inserting.fields_not_null.Flk10000014Validator;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,9 +38,9 @@ public class PasswordGenRuleDAOImpl extends BaseTable implements PasswordGenRule
     }
 
     @Override
-    public UUID savePasswordGenRule(@NonNull PasswordGenRule passwordGenRule) throws SQLException, CommonFlkException {
+    public Integer savePasswordGenRule(@NonNull PasswordGenRule passwordGenRule) throws SQLException, CommonFlkException {
         Flk10000014Validator.validate(passwordGenRule);
-        UUID ruleId = null;
+        Integer ruleId = null;
         PreparedStatement ps = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (nextval('password_gen_rule_id'), ?, ?, ?, ?, ?, ?, ?)");
         ps.setInt(1, passwordGenRule.getRepeatableCharactersAmount().intValue());
         ps.setInt(2, passwordGenRule.getCapitalLettersAmount().intValue());
@@ -151,12 +148,12 @@ public class PasswordGenRuleDAOImpl extends BaseTable implements PasswordGenRule
         PasswordGenRule passwordGenRule = null;
         if (rs.next()) {
             passwordGenRule = new PasswordGenRule(
-                    rs.getObject(1, UUID.class),
+                    Integer.valueOf(rs.getInt(1)),
                     Integer.valueOf(rs.getInt(2)),
                     Integer.valueOf(rs.getInt(3)),
                     Integer.valueOf(rs.getInt(4)),
-                    rs.getTimestamp(5).toLocalDateTime(),
-                    rs.getTimestamp(6).toLocalDateTime(),
+                    rs.getTimestamp(5) == null ? null : rs.getTimestamp(5).toLocalDateTime(),
+                    rs.getTimestamp(6) == null ? null : rs.getTimestamp(6).toLocalDateTime(),
                     rs.getTimestamp(7).toLocalDateTime(),
                     Integer.valueOf(rs.getInt(8))
             );
@@ -179,12 +176,12 @@ public class PasswordGenRuleDAOImpl extends BaseTable implements PasswordGenRule
         List<PasswordGenRule> passwordGenRules = new ArrayList<>();
         while (rs.next()) {
             passwordGenRules.add(new PasswordGenRule(
-                    rs.getObject(1, UUID.class),
+                    Integer.valueOf(rs.getInt(1)),
                     Integer.valueOf(rs.getInt(2)),
                     Integer.valueOf(rs.getInt(3)),
                     Integer.valueOf(rs.getInt(4)),
-                    rs.getTimestamp(5).toLocalDateTime(),
-                    rs.getTimestamp(6).toLocalDateTime(),
+                    rs.getTimestamp(5) == null ? null : rs.getTimestamp(5).toLocalDateTime(),
+                    rs.getTimestamp(6) == null ? null : rs.getTimestamp(6).toLocalDateTime(),
                     rs.getTimestamp(7).toLocalDateTime(),
                     Integer.valueOf(rs.getInt(8))
             ));

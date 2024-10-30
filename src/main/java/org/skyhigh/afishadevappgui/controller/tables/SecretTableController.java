@@ -1,10 +1,19 @@
 package org.skyhigh.afishadevappgui.controller.tables;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
+import org.skyhigh.afishadevappgui.common.sort.SortDirection;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Secret;
+import org.skyhigh.afishadevappgui.data.repository.SecretRepository;
+import org.skyhigh.afishadevappgui.data.repository.SecretRepositoryImpl;
 
+import java.util.List;
 import java.util.UUID;
 
 public class SecretTableController {
@@ -25,4 +34,26 @@ public class SecretTableController {
 
     @FXML
     private TableColumn<Secret, String> passwordSecretTableColumn;
+
+    private final SecretRepository secretRepository = new SecretRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
+
+    public SecretTableController() throws CommonFlkException {}
+
+    public void initialize() {
+        secretIdSecretTableColumn.setCellValueFactory(new PropertyValueFactory<>("secretId"));
+        deploymentIdSecretTableColumn.setCellValueFactory(new PropertyValueFactory<>("deploymentId"));
+        addressSecretTableColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        loginSecretTableColumn.setCellValueFactory(new PropertyValueFactory<>("login"));
+        passwordSecretTableColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+    }
+
+    public void fillTable() throws CommonFlkException {
+        ObservableList<Secret> secretsListView = FXCollections.observableArrayList();
+        List<Secret> secrets = secretRepository.getAllAuthors(
+                SortDirection.NONE,
+                null
+        );
+        secretsListView.addAll(secrets);
+        secretTable.setItems(secretsListView);
+    }
 }

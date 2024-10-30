@@ -57,6 +57,7 @@ public class RegisterController {
         FXMLLoader loader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("main-view.fxml"));
         Parent root = loader.load();
         MainController controller = loader.getController();
+        controller.initialize();
         controller.setCurrentDbUser(registeredDbUser);
         controller.setDefaultTableViewAndFilters();
 

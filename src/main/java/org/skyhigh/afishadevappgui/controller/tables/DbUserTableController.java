@@ -32,13 +32,18 @@ public class DbUserTableController {
     @FXML
     private TableColumn<DbUser, String> userPassDbUserTableColumn;
 
-    public void fillTable() throws CommonFlkException {
+    private final DbUserRepository dbUserRepository = new DbUserRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
+
+    public DbUserTableController() throws CommonFlkException {}
+
+    public void initialize() {
         userIdDbUserTableColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
         authorIdDbUserTableColumn.setCellValueFactory(new PropertyValueFactory<>("authorId"));
         userLoginDbUserTableColumn.setCellValueFactory(new PropertyValueFactory<>("userLogin"));
         userPassDbUserTableColumn.setCellValueFactory(new PropertyValueFactory<>("userPass"));
+    }
 
-        DbUserRepository dbUserRepository = new DbUserRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
+    public void fillTable() throws CommonFlkException {
         ObservableList<DbUser> usersListView = FXCollections.observableArrayList();
         List<DbUser> users = dbUserRepository.getAllDbUsers(
                 SortDirection.NONE,

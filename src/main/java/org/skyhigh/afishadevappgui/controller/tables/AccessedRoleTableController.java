@@ -26,19 +26,24 @@ public class AccessedRoleTableController {
     @FXML
     private TableColumn<AccessedRole, String> roleNameAccessedRoleColumn;
 
-    public void fillTable() throws CommonFlkException {
+    private final AccessedRoleRepository accessedRoleRepository = new AccessedRoleRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
+
+    public AccessedRoleTableController() throws CommonFlkException {}
+
+    public void initialize() {
         requirementIdAccessedRoleColumn.setCellValueFactory(new PropertyValueFactory<>("requirementId"));
         roleNameAccessedRoleColumn.setCellValueFactory(new PropertyValueFactory<>("roleName"));
+    }
 
-        AccessedRoleRepository accessedRoleRepository = new AccessedRoleRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
-        ObservableList<AccessedRole> authorsListView = FXCollections.observableArrayList();
+    public void fillTable() throws CommonFlkException {
+        ObservableList<AccessedRole> accessedRolesListView = FXCollections.observableArrayList();
         List<AccessedRole> roles = accessedRoleRepository.getAllAccessedRoles(
                 SortDirection.NONE,
                 null
         );
-        authorsListView.addAll(roles);
+        accessedRolesListView.addAll(roles);
         //tableExample.getItems().add(new Author(UUID.randomUUID(), "afs"));
         //tableExample.refresh();
-        accessedRoleTableView.setItems(authorsListView);
+        accessedRoleTableView.setItems(accessedRolesListView);
     }
 }

@@ -19,7 +19,7 @@ public interface PasswordGenRuleDAO {
      * @throws SQLException Ошибка при работе с БД
      * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    UUID savePasswordGenRule(@NonNull PasswordGenRule passwordGenRule) throws SQLException, CommonFlkException;
+    Integer savePasswordGenRule(@NonNull PasswordGenRule passwordGenRule) throws SQLException, CommonFlkException;
 
     /**
      * Метод обновления правила генерации паролей в Системе
