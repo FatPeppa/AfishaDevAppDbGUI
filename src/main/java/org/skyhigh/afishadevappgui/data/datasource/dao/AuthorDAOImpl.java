@@ -54,7 +54,7 @@ public class AuthorDAOImpl extends BaseTable implements AuthorDAO {
     @Override
     public void updateAuthorLoginById(@NonNull UUID authorId, @NonNull String authorLogin) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " SET login = ?1 WHERE author_id = ?2"
+                "UPDATE " + super.getTableName() + " SET login = ? WHERE author_id = ?"
         );
         ps.setString(1, authorLogin);
         ps.setObject(2, authorId);
@@ -65,7 +65,7 @@ public class AuthorDAOImpl extends BaseTable implements AuthorDAO {
     @Override
     public void deleteAuthorById(@NonNull UUID authorId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " WHERE author_id = ?1"
+                "DELETE FROM " + super.getTableName() + " WHERE author_id = ?"
         );
         ps.setObject(1, authorId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -76,7 +76,7 @@ public class AuthorDAOImpl extends BaseTable implements AuthorDAO {
     public Author getAuthorById(@NonNull UUID authorId) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.author_id author_id, t.login login " +
-                        " FROM " + super.getTableName() + " t WHERE t.author_id=?1",
+                        " FROM " + super.getTableName() + " t WHERE t.author_id=?",
                 SortDirection.NONE,
                 null
         );
@@ -88,7 +88,7 @@ public class AuthorDAOImpl extends BaseTable implements AuthorDAO {
     public Author getAuthorByName(@NonNull String authorLogin) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.author_id author_id, t.login login " +
-                        " FROM " + super.getTableName() + " t WHERE t.login=?1",
+                        " FROM " + super.getTableName() + " t WHERE t.login=?",
                 SortDirection.NONE,
                 null
         );

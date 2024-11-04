@@ -57,7 +57,7 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
     @Override
     public void updateCodeFileContentById(@NonNull UUID codeFileId, @NonNull String content) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " SET file_content = ?1 WHERE code_file_id = ?2"
+                "UPDATE " + super.getTableName() + " SET file_content = ? WHERE code_file_id = ?"
         );
         ps.setString(1, content);
         ps.setObject(2, codeFileId);
@@ -68,7 +68,7 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
     @Override
     public void updateCodeFileProjectId(@NonNull UUID codeFileId, @NonNull UUID projectId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " SET project_id = ?1 WHERE code_file_id = ?2"
+                "UPDATE " + super.getTableName() + " SET project_id = ? WHERE code_file_id = ?"
         );
         ps.setObject(1, projectId);
         ps.setObject(2, codeFileId);
@@ -79,7 +79,7 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
     @Override
     public void deleteCodeFileById(@NonNull UUID codeFileId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " WHERE code_file_id = ?1"
+                "DELETE FROM " + super.getTableName() + " WHERE code_file_id = ?"
         );
         ps.setObject(1, codeFileId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -90,7 +90,7 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
     public CodeFile getCodeFileById(@NonNull UUID codeFileId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
                 "SELECT t.code_file_id code_file_id, t.project_id project_id, " +
-                        "t.file_content file_content, t.load_date load_date FROM " + super.getTableName() + " t WHERE t.code_file_id = ?1"
+                        "t.file_content file_content, t.load_date load_date FROM " + super.getTableName() + " t WHERE t.code_file_id = ?"
         );
         ps.setObject(1, codeFileId);
         return getSingleCodeFile(ps);
@@ -111,7 +111,7 @@ public class CodeFileDAOImpl extends BaseTable implements CodeFileDAO {
         );
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.code_file_id code_file_id, t.project_id project_id, " +
-                        "t.file_content file_content, t.load_date load_date FROM " + super.getTableName() + " t WHERE t.project_id = ?1",
+                        "t.file_content file_content, t.load_date load_date FROM " + super.getTableName() + " t WHERE t.project_id = ?",
                 sortDirection,
                 sortBy
         );

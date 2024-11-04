@@ -44,4 +44,10 @@ public class DeploymentStatusTableController {
         deploymentStatusesListView.addAll(deploymentStatuses);
         deploymentStatusTable.setItems(deploymentStatusesListView);
     }
+
+    public void fillTable(List<DeploymentStatus> deploymentStatuses) {
+        ObservableList<DeploymentStatus> deploymentStatusObservableList = FXCollections.observableArrayList();
+        deploymentStatusObservableList.addAll(deploymentStatuses);
+        deploymentStatusTable.setItems(deploymentStatusObservableList);
+    }
 }

@@ -58,7 +58,7 @@ public class AccessedRoleDAOImpl extends BaseTable implements AccessedRoleDAO {
     ) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
                 "UPDATE " + super.getTableName() +
-                " SET role_name=1 WHERE requirement_id=? AND role_name=?"
+                " SET role_name=? WHERE requirement_id=? AND role_name=?"
         );
         ps.setString(1, newAccessedRoleName);
         ps.setObject(2, requirementId);
@@ -81,7 +81,7 @@ public class AccessedRoleDAOImpl extends BaseTable implements AccessedRoleDAO {
         );
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.requirement_id requirement_id, t.role_name role_name " +
-                " FROM " + super.getTableName() + " t WHERE t.requirement_id=?1",
+                " FROM " + super.getTableName() + " t WHERE t.requirement_id=?",
                 sortDirection,
                 sortBy
         );

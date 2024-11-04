@@ -54,7 +54,7 @@ public class RequirementTypeDAOImpl extends BaseTable implements RequirementType
     @Override
     public RequirementType getRequirementTypeById(@NonNull UUID requirementTypeId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "SELECT t.requirement_type_id, t.requirement_type_name FROM " + super.getTableName() + " t WHERE t.requirement_type_id = ?1"
+                "SELECT t.requirement_type_id, t.requirement_type_name FROM " + super.getTableName() + " t WHERE t.requirement_type_id = ?"
         );
         ps.setObject(1, requirementTypeId);
         return getSingleRequirementType(ps);
@@ -63,7 +63,7 @@ public class RequirementTypeDAOImpl extends BaseTable implements RequirementType
     @Override
     public RequirementType getRequirementTypeByName(@NonNull String requirementTypeName) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "SELECT t.requirement_type_id, t.requirement_type_name FROM " + super.getTableName() + " t WHERE t.requirement_type_name = ?1"
+                "SELECT t.requirement_type_id, t.requirement_type_name FROM " + super.getTableName() + " t WHERE t.requirement_type_name = ?"
         );
         ps.setString(1, requirementTypeName);
         return getSingleRequirementType(ps);
@@ -90,7 +90,7 @@ public class RequirementTypeDAOImpl extends BaseTable implements RequirementType
     @Override
     public void updateRequirementTypeNameById(@NonNull UUID requirementTypeId, @NonNull String newRequirementTypeName) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.requirement_type_name = ?1 WHERE t.requirement_type_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.requirement_type_name = ? WHERE t.requirement_type_id = ?"
         );
         ps.setString(1, newRequirementTypeName);
         ps.setObject(2, requirementTypeId);
@@ -101,7 +101,7 @@ public class RequirementTypeDAOImpl extends BaseTable implements RequirementType
     @Override
     public void deleteRequirementTypeById(@NonNull UUID requirementTypeId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.requirement_type_id = ?1"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.requirement_type_id = ?"
         );
         ps.setObject(1, requirementTypeId);
         int stRes = super.executeSqlStatementUpdate(ps);

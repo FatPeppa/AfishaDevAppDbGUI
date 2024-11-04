@@ -53,4 +53,10 @@ public class CodeFileTableController {
         codeFilesListView.addAll(codeFiles);
         codeFileTable.setItems(codeFilesListView);
     }
+
+    public void fillTable(List<CodeFile> codeFiles) {
+        ObservableList<CodeFile> codeFileObservableList = FXCollections.observableArrayList();
+        codeFileObservableList.addAll(codeFiles);
+        codeFileTable.setItems(codeFileObservableList);
+    }
 }

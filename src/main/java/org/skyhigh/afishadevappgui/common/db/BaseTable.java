@@ -42,7 +42,7 @@ public class BaseTable implements AutoCloseable {
         reopenConnection();
         if (sortDirection != SortDirection.NONE)
             return connection.prepareStatement(
-                    sql + " ORDER BY " + convertClassFieldToBdAttribute(sortBy) +
+                    sql + " ORDER BY " + convertClassFieldToDbAttribute(sortBy) +
                     " " + sortDirection.toString()
             );
         return connection.prepareStatement(sql);
@@ -103,7 +103,7 @@ public class BaseTable implements AutoCloseable {
         }
     }
 
-    private String convertClassFieldToBdAttribute(String classField) {
+    private String convertClassFieldToDbAttribute(String classField) {
         if (classField != null)
             return classField.replaceAll("([A-Z])", "_$1").toLowerCase();
         return null;

@@ -6,8 +6,8 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.PasswordGenRule;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * DAO для работы с сущностью ProjectAuthor
@@ -36,14 +36,22 @@ public interface PasswordGenRuleDAO {
      * @param ruleId Идентификатор правила генерации паролей
      * @throws SQLException Ошибка при работе с БД
      */
-    void deletePasswordGenRuleById(@NonNull UUID ruleId) throws SQLException;
+    void deletePasswordGenRuleById(@NonNull Integer ruleId) throws SQLException;
 
     /**
      * Метод получения правила генерации паролей по идентификатору
      * @param ruleId Идентификатор правила генерации паролей
      * @throws SQLException Ошибка при работе с БД
      */
-    PasswordGenRule getPasswordGenRuleById(@NonNull UUID ruleId) throws SQLException;
+    PasswordGenRule getPasswordGenRuleById(@NonNull Integer ruleId) throws SQLException;
+
+    /**
+     * Метод получения актуального правила генерации паролей по дате актуальности (если не заполнена, то определяется как текущая дата на момент получения сервером СУБД запроса)
+     * @param actualizationDate Дата актуальности, на которую осуществляется поиск правила
+     * @throws SQLException Ошибка при работе с БД
+     * @throws CommonFlkException Ошибка при проверке ФЛК
+     */
+    PasswordGenRule getActualPasswordGenRuleByDate(LocalDateTime actualizationDate) throws SQLException, CommonFlkException;
 
     /**
      * Метод получения всех правил генерации паролей в Системе

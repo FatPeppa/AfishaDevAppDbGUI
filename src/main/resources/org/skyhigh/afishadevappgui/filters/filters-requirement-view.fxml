@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.skyhigh.afishadevappgui.controller.filters.RequirementFiltersController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="248.0" prefWidth="890.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.filters.RequirementFiltersController">
+    <children>
+        <TextField fx:id="requirementIdInputField" layoutX="320.0" layoutY="14.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите идентификатор требования (UUID)" />
+        <TextField fx:id="requirementTypeIdInputField" layoutX="320.0" layoutY="53.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите идентификатор типа требования (UUID)" />
+        <TextField fx:id="loadDateStartInputField" layoutX="320.0" layoutY="91.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату начала диапазона дат загрузки (ГГГГ-ММ-ДД ЧЧ:ММ:СС)" />
+        <TextField fx:id="loadDateEndInputField" layoutX="320.0" layoutY="130.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату окончания диапазона дат загрузки (ГГГГ-ММ-ДД ЧЧ:ММ:СС)" />
+        <TextField fx:id="lastChangeDateStartInputField" layoutX="320.0" layoutY="168.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату начала диапазона дат последнего внесения изменений (ГГГГ-ММ-ДД ЧЧ:ММ:СС)" />
+        <TextField fx:id="lastChangeDateEndInputField" layoutX="320.0" layoutY="207.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату окончания диапазона дат последнего внесения изменений (ГГГГ-ММ-ДД ЧЧ:ММ:СС)" />
+        <Label fx:id="requirementTypeIdLabel" layoutX="101.0" layoutY="58.0" text="ID типа требования:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="requirementIdLabel" layoutX="117.0" layoutY="19.0" text="ID требования:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="loadDateEndLabel" layoutX="80.0" layoutY="135.0" text="Дата загрузки (окончание):">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="loadDateBeginLabel" layoutX="91.0" layoutY="96.0" text="Дата загрузки (начало):">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="lastChangeDateBeginLabel" layoutX="19.0" layoutY="173.0" text="Дата последнего внесения изменений (начало):">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="lastChangeDateEndLabel" layoutX="9.0" layoutY="212.0" text="Дата последнего внесения изменений (окончание):">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+    </children>
 </AnchorPane>

@@ -14,13 +14,19 @@ module org.skyhigh.afishadevappgui {
     exports org.skyhigh.afishadevappgui.controller;
     exports org.skyhigh.afishadevappgui.controller.tables;
     exports org.skyhigh.afishadevappgui.controller.filters;
-    exports org.skyhigh.afishadevappgui.controller.baseviews;
     exports org.skyhigh.afishadevappgui.common.validation;
+    exports org.skyhigh.afishadevappgui.common.service;
+    exports org.skyhigh.afishadevappgui.common.controller;
     exports org.skyhigh.afishadevappgui.data.datasource.entity;
+    exports org.skyhigh.afishadevappgui.service.logic.authentication;
+    exports org.skyhigh.afishadevappgui.service.logic.search;
     opens org.skyhigh.afishadevappgui.controller to javafx.fxml;
+    opens org.skyhigh.afishadevappgui.common.service to javafx.fxml;
     opens org.skyhigh.afishadevappgui.common.validation to javafx.fxml;
     opens org.skyhigh.afishadevappgui.controller.tables to javafx.fxml;
     opens org.skyhigh.afishadevappgui.controller.filters to javafx.fxml;
-    opens org.skyhigh.afishadevappgui.controller.baseviews to javafx.fxml;
+    opens org.skyhigh.afishadevappgui.common.controller to javafx.fxml;
     opens org.skyhigh.afishadevappgui.data.datasource.entity to javafx.base;
+    opens org.skyhigh.afishadevappgui.service.logic.authentication to javafx.base;
+    opens org.skyhigh.afishadevappgui.service.logic.search to javafx.base;
 }

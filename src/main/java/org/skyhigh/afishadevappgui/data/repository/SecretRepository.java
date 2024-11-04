@@ -124,5 +124,5 @@ public interface SecretRepository {
      * @param sortBy Наименование поля, по которому осуществляется сортировка. Если сортировка не осуществляется, поле игнорируется. В ином случае должно быть не null
      * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<Secret> getAllAuthors(@NonNull SortDirection sortDirection, String sortBy) throws CommonFlkException;
+    List<Secret> getAllSecret(@NonNull SortDirection sortDirection, String sortBy) throws CommonFlkException;
 }

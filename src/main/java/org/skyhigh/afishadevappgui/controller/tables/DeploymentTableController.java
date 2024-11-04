@@ -3,6 +3,7 @@ package org.skyhigh.afishadevappgui.controller.tables;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,6 +20,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class DeploymentTableController {
+    @FXML
+    Button deployChosenBuiltBt;
+
     @FXML
     private TableView<Deployment> deploymentTable;
 
@@ -69,5 +73,11 @@ public class DeploymentTableController {
         );
         deploymentListView.addAll(deployments);
         deploymentTable.setItems(deploymentListView);
+    }
+
+    public void fillTable(List<Deployment> deployments) {
+        ObservableList<Deployment> deploymentObservableList = FXCollections.observableArrayList();
+        deploymentObservableList.addAll(deployments);
+        deploymentTable.setItems(deploymentObservableList);
     }
 }

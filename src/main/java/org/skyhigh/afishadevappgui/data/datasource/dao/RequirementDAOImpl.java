@@ -62,9 +62,9 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
         Flk10000001Validator.validate(requirement);
         Flk10000009Validator.validate(requirement);
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.requirement_type_id = ?1, t.load_date = ?2, t.last_change_date = ?3, " +
-                        "t.content = ?4 " +
-                        "WHERE t.requirement_id = ?5"
+                "UPDATE " + super.getTableName() + " t SET t.requirement_type_id = ?, t.load_date = ?, t.last_change_date = ?, " +
+                        "t.content = ? " +
+                        "WHERE t.requirement_id = ?"
         );
         ps.setObject(1, requirement.getRequirementTypeId());
         ps.setObject(2, requirement.getLoadDate());
@@ -78,7 +78,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
     @Override
     public void updateRequirementTypeIdById(@NonNull UUID requirementId, @NonNull UUID requirementTypeId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.requirement_type_id = ?1 WHERE t.requirement_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.requirement_type_id = ? WHERE t.requirement_id = ?"
         );
         ps.setObject(1, requirementTypeId);
         ps.setObject(2, requirementId);
@@ -89,7 +89,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
     @Override
     public void updateLastChangeDateById(@NonNull UUID requirementId, @NonNull LocalDateTime lastChangeDate) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.last_change_date = ?1 WHERE t.requirement_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.last_change_date = ? WHERE t.requirement_id = ?"
         );
         ps.setObject(1, lastChangeDate);
         ps.setObject(2, requirementId);
@@ -100,7 +100,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
     @Override
     public void updateContentById(@NonNull UUID requirementId, @NonNull JSONObject content) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.content = ?1 WHERE t.requirement_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.content = ? WHERE t.requirement_id = ?"
         );
         ps.setString(1, content.toString());
         ps.setObject(2, requirementId);
@@ -111,7 +111,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
     @Override
     public void deleteRequirementById(@NonNull UUID requirementId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.requirement_id = ?1"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.requirement_id = ?"
         );
         ps.setObject(1, requirementId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -123,7 +123,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
         PreparedStatement ps = super.prepareStatement(
                 "SELECT t.requirement_id, t.requirement_type_id, t.load_date, t.last_change_date, t.content " +
                         "FROM " + super.getTableName() + " " +
-                        "t WHERE t.requirement_id = ?1"
+                        "t WHERE t.requirement_id = ?"
         );
         ps.setObject(1, requirementId);
         return getSingleRequirement(ps);
@@ -141,7 +141,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
         PreparedStatement ps = super.prepareStatement(
                 "SELECT t.requirement_id, t.requirement_type_id, t.load_date, t.last_change_date, t.content " +
                         "FROM " + super.getTableName() + " " +
-                        "t WHERE t.requirement_type_id = ?1"
+                        "t WHERE t.requirement_type_id = ?"
         );
         ps.setObject(1, requirementTypeId);
 
@@ -160,7 +160,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
         PreparedStatement ps = super.prepareStatement(
                 "SELECT t.requirement_id, t.requirement_type_id, t.load_date, t.last_change_date, t.content " +
                         "FROM " + super.getTableName() + " " +
-                        "t WHERE t.load_date = ?1"
+                        "t WHERE t.load_date = ?"
         );
         ps.setObject(1, loadDate);
 
@@ -183,7 +183,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
             ps = super.prepareStatement(
                     "SELECT t.requirement_id, t.requirement_type_id, t.load_date, t.last_change_date, t.content " +
                             "FROM " + super.getTableName() + " " +
-                            "t WHERE t.load_date <= ?1 AND t.load_date >= ?2"
+                            "t WHERE t.load_date <= ? AND t.load_date >= ?"
             );
             ps.setObject(1, loadDateEnd);
             ps.setObject(2, loadDateStart);
@@ -192,15 +192,15 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
             ps = super.prepareStatement(
                     "SELECT t.requirement_id, t.requirement_type_id, t.load_date, t.last_change_date, t.content " +
                             "FROM " + super.getTableName() + " " +
-                            "t WHERE t.load_date >= ?2"
+                            "t WHERE t.load_date >= ?"
             );
-            ps.setObject(2, loadDateStart);
+            ps.setObject(1, loadDateStart);
         }
         else if (loadDateEnd != null) {
             ps = super.prepareStatement(
                     "SELECT t.requirement_id, t.requirement_type_id, t.load_date, t.last_change_date, t.content " +
                             "FROM " + super.getTableName() + " " +
-                            "t WHERE t.load_date <= ?1"
+                            "t WHERE t.load_date <= ?"
             );
             ps.setObject(1, loadDateEnd);
         }
@@ -227,7 +227,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
         PreparedStatement ps = super.prepareStatement(
                 "SELECT t.requirement_id, t.requirement_type_id, t.load_date, t.last_change_date, t.content " +
                         "FROM " + super.getTableName() + " " +
-                        "t WHERE t.last_change_date = ?1"
+                        "t WHERE t.last_change_date = ?"
         );
         ps.setObject(1, lastChangeDate);
 
@@ -250,7 +250,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
             ps = super.prepareStatement(
                     "SELECT t.requirement_id, t.requirement_type_id, t.load_date, t.last_change_date, t.content " +
                             "FROM " + super.getTableName() + " " +
-                            "t WHERE t.last_change_date <= ?1 AND t.last_change_date >= ?2"
+                            "t WHERE t.last_change_date <= ? AND t.last_change_date >= ?"
             );
             ps.setObject(1, lastChangeDateEnd);
             ps.setObject(2, lastChangeDateStart);
@@ -259,15 +259,15 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
             ps = super.prepareStatement(
                     "SELECT t.requirement_id, t.requirement_type_id, t.load_date, t.last_change_date, t.content " +
                             "FROM " + super.getTableName() + " " +
-                            "t WHERE t.last_change_date >= ?2"
+                            "t WHERE t.last_change_date >= ?"
             );
-            ps.setObject(2, lastChangeDateStart);
+            ps.setObject(1, lastChangeDateStart);
         }
         else if (lastChangeDateEnd != null) {
             ps = super.prepareStatement(
                     "SELECT t.requirement_id, t.requirement_type_id, t.load_date, t.last_change_date, t.content " +
                             "FROM " + super.getTableName() + " " +
-                            "t WHERE t.last_change_date <= ?1"
+                            "t WHERE t.last_change_date <= ?"
             );
             ps.setObject(1, lastChangeDateEnd);
         }

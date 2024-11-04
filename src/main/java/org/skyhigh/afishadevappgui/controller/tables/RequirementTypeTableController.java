@@ -44,4 +44,10 @@ public class RequirementTypeTableController {
         requirementTypesListView.addAll(requirementTypes);
         requirementTypeTable.setItems(requirementTypesListView);
     }
+
+    public void fillTable(List<RequirementType> requirementTypes) {
+        ObservableList<RequirementType> requirementTypeObservableList = FXCollections.observableArrayList();
+        requirementTypeObservableList.addAll(requirementTypes);
+        requirementTypeTable.setItems(requirementTypeObservableList);
+    }
 }

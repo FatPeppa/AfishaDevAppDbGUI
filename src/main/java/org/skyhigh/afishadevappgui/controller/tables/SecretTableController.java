@@ -49,11 +49,17 @@ public class SecretTableController {
 
     public void fillTable() throws CommonFlkException {
         ObservableList<Secret> secretsListView = FXCollections.observableArrayList();
-        List<Secret> secrets = secretRepository.getAllAuthors(
+        List<Secret> secrets = secretRepository.getAllSecret(
                 SortDirection.NONE,
                 null
         );
         secretsListView.addAll(secrets);
         secretTable.setItems(secretsListView);
+    }
+
+    public void fillTable(List<Secret> secrets) {
+        ObservableList<Secret> secretObservableList = FXCollections.observableArrayList();
+        secretObservableList.addAll(secrets);
+        secretTable.setItems(secretObservableList);
     }
 }

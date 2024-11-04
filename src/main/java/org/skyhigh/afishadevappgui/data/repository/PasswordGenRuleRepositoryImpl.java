@@ -10,6 +10,7 @@ import org.skyhigh.afishadevappgui.data.datasource.dao.PasswordGenRuleDAO;
 import org.skyhigh.afishadevappgui.data.datasource.entity.PasswordGenRule;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,7 +56,7 @@ public class PasswordGenRuleRepositoryImpl implements PasswordGenRuleRepository 
     }
 
     @Override
-    public void deletePasswordGenRuleById(@NonNull UUID ruleId) throws CommonFlkException {
+    public void deletePasswordGenRuleById(@NonNull Integer ruleId) throws CommonFlkException {
         try {
             passwordGenRuleDAO.deletePasswordGenRuleById(ruleId);
         } catch (SQLException e) {
@@ -68,9 +69,22 @@ public class PasswordGenRuleRepositoryImpl implements PasswordGenRuleRepository 
     }
 
     @Override
-    public PasswordGenRule getPasswordGenRuleById(@NonNull UUID ruleId) throws CommonFlkException {
+    public PasswordGenRule getPasswordGenRuleById(@NonNull Integer ruleId) throws CommonFlkException {
         try {
             return passwordGenRuleDAO.getPasswordGenRuleById(ruleId);
+        } catch (SQLException e) {
+            throw new CommonSystemException(
+                    "Произошла системная ошибка. Текст ошибки: '" + e.getMessage() + "'",
+                    e.getCause(),
+                    false
+            );
+        }
+    }
+
+    @Override
+    public PasswordGenRule getActualPasswordGenRuleByDate(LocalDateTime actualizationDate) throws CommonFlkException {
+        try {
+            return passwordGenRuleDAO.getActualPasswordGenRuleByDate(actualizationDate);
         } catch (SQLException e) {
             throw new CommonSystemException(
                     "Произошла системная ошибка. Текст ошибки: '" + e.getMessage() + "'",

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="org.skyhigh.afishadevappgui.controller.baseviews.FlkExceptionMessageController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="org.skyhigh.afishadevappgui.common.controller.FlkExceptionMessageController">
     <center>
         <ScrollPane>
             <content>

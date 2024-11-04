@@ -5,7 +5,7 @@
 
 <AnchorPane prefHeight="178.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.tables.RequirementTypeTableController">
     <children>
-        <TableView fx:id="requirementTypeTable" layoutY="1.0" prefHeight="177.0" prefWidth="252.0">
+        <TableView fx:id="requirementTypeTable" layoutY="1.0" prefHeight="189.0" prefWidth="646.0">
             <columns>
                 <TableColumn fx:id="requirementTypeIdRequirementTypeTableColumn" prefWidth="136.00002133846283" text="Идентификатор типа требования" />
                 <TableColumn fx:id="requirementTypeNameRequirementTypeTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Наименование" />

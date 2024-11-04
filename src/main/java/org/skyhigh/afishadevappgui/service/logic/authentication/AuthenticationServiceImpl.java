@@ -1,4 +1,4 @@
-package org.skyhigh.afishadevappgui.service.logic;
+package org.skyhigh.afishadevappgui.service.logic.authentication;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import lombok.AllArgsConstructor;

@@ -99,7 +99,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
     @Override
     public void deleteDeploymentById(@NonNull UUID deploymentId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " WHERE deployment_id = ?1"
+                "DELETE FROM " + super.getTableName() + " WHERE deployment_id = ?"
         );
         ps.setObject(1, deploymentId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -112,7 +112,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
             @NonNull UUID deploymentStatusId
     ) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " SET deployment_status_id = ?1 WHERE deployment_id = ?2"
+                "UPDATE " + super.getTableName() + " SET deployment_status_id = ? WHERE deployment_id = ?"
         );
         ps.setObject(1, deploymentStatusId);
         ps.setObject(2, deploymentId);
@@ -126,7 +126,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
             String builtVersion
     ) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " SET built_version = ?1 WHERE deployment_id = ?2"
+                "UPDATE " + super.getTableName() + " SET built_version = ? WHERE deployment_id = ?"
         );
         if (builtVersion == null)
             ps.setNull(1, Types.VARCHAR);
@@ -143,7 +143,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
             JSONObject builtSettings
     ) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " SET built_settings = ?1 WHERE deployment_id = ?2"
+                "UPDATE " + super.getTableName() + " SET built_settings = ? WHERE deployment_id = ?"
         );
         if (builtSettings == null)
             ps.setNull(1, Types.OTHER);
@@ -161,7 +161,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
     ) throws SQLException, CommonFlkException {
         Flk10020001Validator.validate(deploymentId, built);
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " SET built = ?1 WHERE deployment_id = ?2"
+                "UPDATE " + super.getTableName() + " SET built = ? WHERE deployment_id = ?"
         );
 
         if (built == null)
@@ -217,14 +217,14 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
         Flk10020001Validator.validate(deploymentId, built);
         PreparedStatement ps = super.prepareStatement(
                 "UPDATE " + super.getTableName() + " " +
-                        "SET deployment_status_id = ?1" +
-                        "deployment_path = ?2, " +
-                        "settings = ?3, " +
-                        "built_version = ?4, " +
-                        "built_settings = ?5, " +
-                        "built = ?6, " +
-                        "project_id = ?7 " +
-                        "WHERE deployment_id = ?8"
+                        "SET deployment_status_id = ?" +
+                        "deployment_path = ?, " +
+                        "settings = ?, " +
+                        "built_version = ?, " +
+                        "built_settings = ?, " +
+                        "built = ?, " +
+                        "project_id = ? " +
+                        "WHERE deployment_id = ?"
         );
 
         ps.setObject(1, deploymentStatusId);
@@ -275,7 +275,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
                 "SELECT t.deployment_id deployment_id, t.deployment_status_id deployment_status_id, " +
                         "t.deployment_path deployment_path, t.settings settings, t.built_version built_version, " +
                         "t.built_settings built_settings, t.built built, t.project_id project_id " +
-                        "FROM " + super.getTableName() + " t WHERE t.deployment_id = ?1"
+                        "FROM " + super.getTableName() + " t WHERE t.deployment_id = ?"
         );
         ps.setObject(1, deploymentId);
         return getSingleDeployment(ps);
@@ -298,7 +298,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
                 "SELECT t.deployment_id deployment_id, t.deployment_status_id deployment_status_id, " +
                         "t.deployment_path deployment_path, t.settings settings, t.built_version built_version, " +
                         "t.built_settings built_settings, t.built built, t.project_id project_id " +
-                        "FROM " + super.getTableName() + " t WHERE t.project_id = ?1",
+                        "FROM " + super.getTableName() + " t WHERE t.project_id = ?",
                 sortDirection,
                 sortBy
         );
@@ -323,7 +323,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
                 "SELECT t.deployment_id deployment_id, t.deployment_status_id deployment_status_id, " +
                         "t.deployment_path deployment_path, t.settings settings, t.built_version built_version, " +
                         "t.built_settings built_settings, t.built built, t.project_id project_id " +
-                        "FROM " + super.getTableName() + " t WHERE t.deployment_status_id = ?1",
+                        "FROM " + super.getTableName() + " t WHERE t.deployment_status_id = ?",
                 sortDirection,
                 sortBy
         );
@@ -371,7 +371,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
                 "SELECT t.deployment_id deployment_id, t.deployment_status_id deployment_status_id, " +
                         "t.deployment_path deployment_path, t.settings settings, t.built_version built_version, " +
                         "t.built_settings built_settings, t.built built, t.project_id project_id " +
-                        "FROM " + super.getTableName() + " t WHERE t.built_version = ?1",
+                        "FROM " + super.getTableName() + " t WHERE t.built_version = ?",
                 sortDirection,
                 sortBy
         );
@@ -396,7 +396,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
                 "SELECT t.deployment_id deployment_id, t.deployment_status_id deployment_status_id, " +
                         "t.deployment_path deployment_path, t.settings settings, t.built_version built_version, " +
                         "t.built_settings built_settings, t.built built, t.project_id project_id " +
-                        "FROM " + super.getTableName() + " t WHERE t.deployment_path = ?1",
+                        "FROM " + super.getTableName() + " t WHERE t.deployment_path = ?",
                 sortDirection,
                 sortBy
         );
@@ -422,7 +422,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
                 "SELECT t.deployment_id deployment_id, t.deployment_status_id deployment_status_id, " +
                         "t.deployment_path deployment_path, t.settings settings, t.built_version built_version, " +
                         "t.built_settings built_settings, t.built built, t.project_id project_id " +
-                        "FROM " + super.getTableName() + " t WHERE t.deployment_status_id = ?1 AND t.projectId = ?2",
+                        "FROM " + super.getTableName() + " t WHERE t.deployment_status_id = ? AND t.projectId = ?",
                 sortDirection,
                 sortBy
         );
@@ -481,7 +481,10 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
             if (rs.getBinaryStream(7) != null) {
                 InputStream iSBuilt = rs.getBinaryStream(7);
                 try {
-                    tempBuiltFile = File.createTempFile("B" + (int) ((Math.random() * 98) + 1), ".txt");
+                    String tempFileNamePrefix = "";
+                    while (tempFileNamePrefix.length() <= 3)
+                        tempFileNamePrefix = "B" + (int) ((Math.random() * 98) + 1);
+                    tempBuiltFile = File.createTempFile(tempFileNamePrefix, ".txt");
                     tempBuiltFile.deleteOnExit();
                     FileOutputStream out = new FileOutputStream(tempBuiltFile);
                     iSBuilt.transferTo(out);
@@ -530,7 +533,10 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
             if (rs.getBinaryStream(7) != null) {
                 InputStream iSBuilt = rs.getBinaryStream(7);
                 try {
-                    tempBuiltFile = File.createTempFile("B" + (int) ((Math.random() * 98) + 1), ".txt");
+                    String tempFileNamePrefix = "";
+                    while (tempFileNamePrefix.length() <= 2)
+                        tempFileNamePrefix = "B" + (int) ((Math.random() * 98) + 1);
+                    tempBuiltFile = File.createTempFile(tempFileNamePrefix, ".txt");
                     tempBuiltFile.deleteOnExit();
                     FileOutputStream out = new FileOutputStream(tempBuiltFile);
                     iSBuilt.transferTo(out);

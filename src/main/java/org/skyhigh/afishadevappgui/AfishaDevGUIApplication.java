@@ -9,7 +9,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
-import org.skyhigh.afishadevappgui.controller.baseviews.FlkExceptionMessageController;
+import org.skyhigh.afishadevappgui.common.controller.FlkExceptionMessageController;
 
 import java.io.IOException;
 import java.io.PrintWriter;

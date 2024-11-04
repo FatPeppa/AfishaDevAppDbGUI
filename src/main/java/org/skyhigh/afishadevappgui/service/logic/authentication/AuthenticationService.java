@@ -1,4 +1,4 @@
-package org.skyhigh.afishadevappgui.service.logic;
+package org.skyhigh.afishadevappgui.service.logic.authentication;
 
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.DbUser;

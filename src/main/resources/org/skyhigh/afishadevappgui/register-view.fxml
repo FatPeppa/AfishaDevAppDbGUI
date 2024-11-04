@@ -37,7 +37,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </Label>
-            <TextField fx:id="passwordInputRegTxtField" />
+            <PasswordField fx:id="passwordInputRegTxtField" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="41.0" prefWidth="832.0">

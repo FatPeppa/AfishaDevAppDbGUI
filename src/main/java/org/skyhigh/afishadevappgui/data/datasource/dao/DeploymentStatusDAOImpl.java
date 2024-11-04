@@ -54,7 +54,7 @@ public class DeploymentStatusDAOImpl extends BaseTable implements DeploymentStat
     @Override
     public DeploymentStatus getDeploymentStatusById(@NonNull UUID deploymentStatusId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "SELECT t.deployment_status_id, t.status_name FROM " + super.getTableName() + " t WHERE t.deployment_status_id = ?1"
+                "SELECT t.deployment_status_id, t.status_name FROM " + super.getTableName() + " t WHERE t.deployment_status_id = ?"
         );
         ps.setObject(1, deploymentStatusId);
         return getSingleDeploymentStatus(ps);
@@ -63,7 +63,7 @@ public class DeploymentStatusDAOImpl extends BaseTable implements DeploymentStat
     @Override
     public DeploymentStatus getDeploymentStatusByName(@NonNull String statusName) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "SELECT t.deployment_status_id, t.status_name FROM " + super.getTableName() + " t WHERE t.status_name = ?1"
+                "SELECT t.deployment_status_id, t.status_name FROM " + super.getTableName() + " t WHERE t.status_name = ?"
         );
         ps.setString(1, statusName);
         return getSingleDeploymentStatus(ps);
@@ -90,7 +90,7 @@ public class DeploymentStatusDAOImpl extends BaseTable implements DeploymentStat
     @Override
     public void updateDeploymentStatusNameById(@NonNull UUID deploymentStatusId, @NonNull String newStatusName) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " SET status_name = ?1 WHERE deployment_status_id = ?2"
+                "UPDATE " + super.getTableName() + " SET status_name = ? WHERE deployment_status_id = ?"
         );
         ps.setString(1, newStatusName);
         ps.setObject(2, deploymentStatusId);
@@ -101,7 +101,7 @@ public class DeploymentStatusDAOImpl extends BaseTable implements DeploymentStat
     @Override
     public void deleteDeploymentStatusById(@NonNull UUID deploymentStatusId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " WHERE deployment_status_id = ?1"
+                "DELETE FROM " + super.getTableName() + " WHERE deployment_status_id = ?"
         );
         ps.setObject(1, deploymentStatusId);
         int stRes = super.executeSqlStatementUpdate(ps);

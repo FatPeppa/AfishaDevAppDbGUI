@@ -11,6 +11,7 @@ import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Project;
+import org.skyhigh.afishadevappgui.data.datasource.entity.ProjectAuthor;
 import org.skyhigh.afishadevappgui.data.repository.ProjectRepository;
 import org.skyhigh.afishadevappgui.data.repository.ProjectRepositoryImpl;
 
@@ -69,5 +70,11 @@ public class ProjectTableController {
         );
         projectsListView.addAll(projects);
         projectTable.setItems(projectsListView);
+    }
+
+    public void fillTable(List<Project> projects) {
+        ObservableList<Project> projectObservableList = FXCollections.observableArrayList();
+        projectObservableList.addAll(projects);
+        projectTable.setItems(projectObservableList);
     }
 }

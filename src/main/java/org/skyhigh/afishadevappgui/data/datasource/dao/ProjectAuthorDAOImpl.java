@@ -53,7 +53,7 @@ public class ProjectAuthorDAOImpl extends BaseTable implements ProjectAuthorDAO 
     @Override
     public void deleteProjectAuthorByIds(@NonNull UUID projectId, @NonNull UUID authorId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.project_id = ?1 AND t.author_id = ?2"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.project_id = ? AND t.author_id = ?"
         );
         ps.setObject(1, projectId);
         ps.setObject(2, authorId);
@@ -64,7 +64,7 @@ public class ProjectAuthorDAOImpl extends BaseTable implements ProjectAuthorDAO 
     @Override
     public void deleteProjectAuthorsByProjectId(@NonNull UUID projectId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.project_id = ?1"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.project_id = ?"
         );
         ps.setObject(1, projectId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -74,7 +74,7 @@ public class ProjectAuthorDAOImpl extends BaseTable implements ProjectAuthorDAO 
     @Override
     public void deleteProjectAuthorsByAuthorId(@NonNull UUID authorId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.author_id = ?1"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.author_id = ?"
         );
         ps.setObject(1, authorId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -84,7 +84,7 @@ public class ProjectAuthorDAOImpl extends BaseTable implements ProjectAuthorDAO 
     @Override
     public void updateProjectAuthorAuthorId(@NonNull UUID oldAuthorId, @NonNull UUID projectId, @NonNull UUID newAuthorId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.author_id = ?1 WHERE t.author_id = ?2 AND t.project_id = ?3"
+                "UPDATE " + super.getTableName() + " t SET t.author_id = ? WHERE t.author_id = ? AND t.project_id = ?"
         );
         ps.setObject(1, newAuthorId);
         ps.setObject(2, oldAuthorId);
@@ -96,7 +96,7 @@ public class ProjectAuthorDAOImpl extends BaseTable implements ProjectAuthorDAO 
     @Override
     public void updateProjectAuthorProjectId(@NonNull UUID authorId, @NonNull UUID oldProjectId, @NonNull UUID newProjectId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.project_id = ?1 WHERE t.author_id = ?2 AND t.project_id = ?3"
+                "UPDATE " + super.getTableName() + " t SET t.project_id = ? WHERE t.author_id = ? AND t.project_id = ?"
         );
         ps.setObject(1, newProjectId);
         ps.setObject(2, authorId);
@@ -108,7 +108,7 @@ public class ProjectAuthorDAOImpl extends BaseTable implements ProjectAuthorDAO 
     @Override
     public ProjectAuthor getProjectAuthorByIds(@NonNull UUID projectId, @NonNull UUID authorId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "SELECT t.project_id, t.author_id FROM " + super.getTableName() + " t WHERE t.project_id = ?1 AND t.author_id = ?2"
+                "SELECT t.project_id, t.author_id FROM " + super.getTableName() + " t WHERE t.project_id = ? AND t.author_id = ?"
         );
         ps.setObject(1, projectId);
         ps.setObject(2, authorId);
@@ -143,7 +143,7 @@ public class ProjectAuthorDAOImpl extends BaseTable implements ProjectAuthorDAO 
                 sortBy
         );
         PreparedStatement ps = super.prepareReadStatement(
-                "SELECT t.project_id, t.author_id FROM " + super.getTableName() + " t WHERE t.project_id = ?1",
+                "SELECT t.project_id, t.author_id FROM " + super.getTableName() + " t WHERE t.project_id = ?",
                 sortDirection,
                 sortBy
         );
@@ -162,7 +162,7 @@ public class ProjectAuthorDAOImpl extends BaseTable implements ProjectAuthorDAO 
                 sortBy
         );
         PreparedStatement ps = super.prepareReadStatement(
-                "SELECT t.project_id, t.author_id FROM " + super.getTableName() + " t WHERE t.author_id = ?1",
+                "SELECT t.project_id, t.author_id FROM " + super.getTableName() + " t WHERE t.author_id = ?",
                 sortDirection,
                 sortBy
         );

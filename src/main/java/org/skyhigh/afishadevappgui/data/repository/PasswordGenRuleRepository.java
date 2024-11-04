@@ -5,8 +5,8 @@ import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.PasswordGenRule;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 public interface PasswordGenRuleRepository {
     /**
@@ -30,14 +30,21 @@ public interface PasswordGenRuleRepository {
      * @param ruleId Идентификатор правила генерации паролей
      * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    void deletePasswordGenRuleById(@NonNull UUID ruleId) throws CommonFlkException;
+    void deletePasswordGenRuleById(@NonNull Integer ruleId) throws CommonFlkException;
 
     /**
      * Метод получения правила генерации паролей по идентификатору
      * @param ruleId Идентификатор правила генерации паролей
      * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    PasswordGenRule getPasswordGenRuleById(@NonNull UUID ruleId) throws CommonFlkException;
+    PasswordGenRule getPasswordGenRuleById(@NonNull Integer ruleId) throws CommonFlkException;
+
+    /**
+     * Метод получения актуального правила генерации паролей по дате актуальности (если не заполнена, то определяется как текущая дата на момент получения сервером СУБД запроса)
+     * @param actualizationDate Дата актуальности, на которую осуществляется поиск правила
+     * @throws CommonFlkException Ошибка при проверке ФЛК
+     */
+    PasswordGenRule getActualPasswordGenRuleByDate(LocalDateTime actualizationDate) throws CommonFlkException;
 
     /**
      * Метод получения всех правил генерации паролей в Системе

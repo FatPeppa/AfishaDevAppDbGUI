@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.skyhigh.afishadevappgui.controller.filters.DbUserFiltersController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="132.0" prefWidth="488.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.filters.DbUserFiltersController">
+    <children>
+        <TextField fx:id="userIdInputField" layoutX="170.0" layoutY="14.0" prefHeight="27.0" prefWidth="307.0" promptText="Введите идентификатор пользователя (Целое число)" />
+        <TextField fx:id="authorIdInputField" layoutX="170.0" layoutY="54.0" prefHeight="27.0" prefWidth="307.0" promptText="Введите идентификатор автора (UUID)" />
+        <Label fx:id="userIdLabel" layoutX="38.0" layoutY="19.0" text="ID пользователя:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="authorIdLabel" layoutX="59.0" layoutY="59.0" text="ID автора:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+      <Label fx:id="loginLabel" layoutX="27.0" layoutY="94.0" text="Логин пользователя:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField fx:id="userLoginInputField" layoutX="170.0" layoutY="90.0" prefHeight="27.0" prefWidth="307.0" promptText="Введите логин пользователя (Строка)" />
+    </children>
 </AnchorPane>

@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.skyhigh.afishadevappgui.controller.filters.DeploymentStatusFiltersController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="96.0" prefWidth="519.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.filters.DeploymentStatusFiltersController">
+    <children>
+        <TextField fx:id="deploymentStatusIdInputField" layoutX="182.0" layoutY="14.0" prefHeight="27.0" prefWidth="326.0" promptText="Введите идентификатор статуса развертывания (UUID)" />
+        <TextField fx:id="deploymentStatusNameInputField" layoutX="182.0" layoutY="54.0" prefHeight="27.0" prefWidth="325.0" promptText="Введите наименование статуса развертывания (Строка)" />
+        <Label fx:id="deploymentStatusIdLabel" layoutX="14.0" layoutY="19.0" text="ID статуса развертывания:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="statusNameLabel" layoutX="23.0" layoutY="59.0" text="Наименование статуса:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+    </children>
 </AnchorPane>

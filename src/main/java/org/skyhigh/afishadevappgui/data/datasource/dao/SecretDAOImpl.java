@@ -78,9 +78,9 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
         Flk10000015Validator.validate(secret);
         Flk10000012Validator.validate(secret);
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.deployment_id = ?1, t.address = ?2" +
-                        " t.login = ?3, t.password = ?4 " +
-                        "WHERE t.secret_id = ?5"
+                "UPDATE " + super.getTableName() + " t SET t.deployment_id = ?, t.address = ?" +
+                        " t.login = ?, t.password = ? " +
+                        "WHERE t.secret_id = ?"
         );
         ps.setObject(5, secret.getSecretId());
         ps.setObject(1, secret.getDeploymentId());
@@ -111,7 +111,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
     @Override
     public void updateSecretDeploymentIdById(@NonNull UUID secretId, @NonNull UUID deploymentId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.deployment_id = ?1 WHERE t.secret_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.deployment_id = ? WHERE t.secret_id = ?"
         );
         ps.setObject(1, deploymentId);
         ps.setObject(2, secretId);
@@ -122,7 +122,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
     @Override
     public void updateSecretAddressById(@NonNull UUID secretId, @NonNull String address) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.address = ?1 WHERE t.secret_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.address = ? WHERE t.secret_id = ?"
         );
         ps.setString(1, address);
         ps.setObject(2, secretId);
@@ -133,7 +133,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
     @Override
     public void updateSecretLogin(@NonNull UUID secretId, @NonNull String login) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.login = ?1 WHERE t.secret_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.login = ? WHERE t.secret_id = ?"
         );
         ps.setString(1, login);
         ps.setObject(2, secretId);
@@ -144,7 +144,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
     @Override
     public void updateSecretPassword(@NonNull UUID secretId, String password) throws SQLException, CommonFlkException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.password = ?1 WHERE t.secret_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.password = ? WHERE t.secret_id = ?"
         );
         if (password != null)
             ps.setString(1, password);
@@ -172,7 +172,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
     @Override
     public void deleteSecretById(@NonNull UUID secretId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.secret_id = ?1"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.secret_id = ?"
         );
         ps.setObject(1, secretId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -183,7 +183,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
     public Secret getSecretById(UUID secretId) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.secret_id, t.deployment_id, t.address, t.login, t.password " +
-                        " FROM " + super.getTableName() + " t WHERE t.secret_id=?1",
+                        " FROM " + super.getTableName() + " t WHERE t.secret_id=?",
                 SortDirection.NONE,
                 null
         );
@@ -202,7 +202,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
         );
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.secret_id, t.deployment_id, t.address, t.login, t.password " +
-                        " FROM " + super.getTableName() + " t WHERE t.deployment_id=?1",
+                        " FROM " + super.getTableName() + " t WHERE t.deployment_id=?",
                 sortDirection,
                 sortBy
         );
@@ -221,7 +221,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
         );
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.secret_id, t.deployment_id, t.address, t.login, t.password " +
-                        " FROM " + super.getTableName() + " t WHERE t.address=?1",
+                        " FROM " + super.getTableName() + " t WHERE t.address=?",
                 sortDirection,
                 sortBy
         );
@@ -240,7 +240,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
         );
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.secret_id, t.deployment_id, t.address, t.login, t.password " +
-                        " FROM " + super.getTableName() + " t WHERE t.login=?1",
+                        " FROM " + super.getTableName() + " t WHERE t.login=?",
                 sortDirection,
                 sortBy
         );
@@ -249,7 +249,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
     }
 
     @Override
-    public List<Secret> getAllAuthors(@NonNull SortDirection sortDirection, String sortBy) throws SQLException, CommonFlkException {
+    public List<Secret> getAllSecret(@NonNull SortDirection sortDirection, String sortBy) throws SQLException, CommonFlkException {
         Flk10010000Validator.validate(
                 Secret.class.getName(),
                 SecretDAO.class.getName(),

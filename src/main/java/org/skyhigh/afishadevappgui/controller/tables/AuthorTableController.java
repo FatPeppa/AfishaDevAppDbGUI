@@ -44,4 +44,10 @@ public class AuthorTableController {
         authorsListView.addAll(authors);
         authorTable.setItems(authorsListView);
     }
+
+    public void fillTable(List<Author> authors) {
+        ObservableList<Author> authorsListView = FXCollections.observableArrayList();
+        authorsListView.addAll(authors);
+        authorTable.setItems(authorsListView);
+    }
 }

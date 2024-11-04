@@ -136,5 +136,5 @@ public interface SecretDAO {
      * @throws SQLException Ошибка при работе с БД
      * @throws CommonFlkException Ошибка при проверке ФЛК
      */
-    List<Secret> getAllAuthors(@NonNull SortDirection sortDirection, String sortBy) throws SQLException, CommonFlkException;
+    List<Secret> getAllSecret(@NonNull SortDirection sortDirection, String sortBy) throws SQLException, CommonFlkException;
 }

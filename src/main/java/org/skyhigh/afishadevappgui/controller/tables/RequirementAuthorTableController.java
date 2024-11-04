@@ -44,4 +44,10 @@ public class RequirementAuthorTableController {
         requirementAuthorsListView.addAll(requirementAuthors);
         requirementAuthorTable.setItems(requirementAuthorsListView);
     }
+
+    public void fillTable(List<RequirementAuthor> requirementAuthors) {
+        ObservableList<RequirementAuthor> requirementAuthorObservableList = FXCollections.observableArrayList();
+        requirementAuthorObservableList.addAll(requirementAuthors);
+        requirementAuthorTable.setItems(requirementAuthorObservableList);
+    }
 }

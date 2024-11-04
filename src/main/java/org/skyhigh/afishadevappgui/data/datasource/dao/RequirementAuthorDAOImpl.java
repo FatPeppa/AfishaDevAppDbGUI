@@ -53,7 +53,7 @@ public class RequirementAuthorDAOImpl extends BaseTable implements RequirementAu
     @Override
     public void deleteRequirementAuthorByIds(@NonNull UUID requirementId, @NonNull UUID authorId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.requirement_id = ?1 AND t.author_id = ?2"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.requirement_id = ? AND t.author_id = ?"
         );
         ps.setObject(1, requirementId);
         ps.setObject(2, authorId);
@@ -64,7 +64,7 @@ public class RequirementAuthorDAOImpl extends BaseTable implements RequirementAu
     @Override
     public void deleteRequirementAuthorsByRequirementId(@NonNull UUID requirementId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.requirement_id = ?1"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.requirement_id = ?"
         );
         ps.setObject(1, requirementId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -74,7 +74,7 @@ public class RequirementAuthorDAOImpl extends BaseTable implements RequirementAu
     @Override
     public void deleteRequirementAuthorsByAuthorId(@NonNull UUID authorId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.author_id = ?1"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.author_id = ?"
         );
         ps.setObject(1, authorId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -84,7 +84,7 @@ public class RequirementAuthorDAOImpl extends BaseTable implements RequirementAu
     @Override
     public void updateRequirementAuthorAuthorId(@NonNull UUID oldAuthorId, @NonNull UUID requirementId, @NonNull UUID newAuthorId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.author_id = ?1 WHERE t.author_id = ?2 AND t.requirement_id = ?3"
+                "UPDATE " + super.getTableName() + " t SET t.author_id = ? WHERE t.author_id = ? AND t.requirement_id = ?"
         );
         ps.setObject(1, newAuthorId);
         ps.setObject(2, oldAuthorId);
@@ -96,7 +96,7 @@ public class RequirementAuthorDAOImpl extends BaseTable implements RequirementAu
     @Override
     public void updateRequirementAuthorRequirementId(@NonNull UUID authorId, @NonNull UUID oldRequirementId, @NonNull UUID newRequirementId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.requirement_id = ?1 WHERE t.requirement_id = ?2 AND t.author_id = ?3"
+                "UPDATE " + super.getTableName() + " t SET t.requirement_id = ? WHERE t.requirement_id = ? AND t.author_id = ?"
         );
         ps.setObject(1, newRequirementId);
         ps.setObject(2, oldRequirementId);
@@ -108,7 +108,7 @@ public class RequirementAuthorDAOImpl extends BaseTable implements RequirementAu
     @Override
     public RequirementAuthor getRequirementAuthorByIds(@NonNull UUID requirementId, @NonNull UUID authorId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "SELECT t.requirement_id, t.author_id FROM " + super.getTableName() + " t WHERE t.requirement_id = ?1 AND t.author_id = ?2"
+                "SELECT t.requirement_id, t.author_id FROM " + super.getTableName() + " t WHERE t.requirement_id = ? AND t.author_id = ?"
         );
         ps.setObject(1, requirementId);
         ps.setObject(2, authorId);
@@ -143,7 +143,7 @@ public class RequirementAuthorDAOImpl extends BaseTable implements RequirementAu
                 sortBy
         );
         PreparedStatement ps = super.prepareReadStatement(
-                "SELECT t.requirement_id, t.author_id FROM " + super.getTableName() + " t WHERE t.requirement_id = ?1",
+                "SELECT t.requirement_id, t.author_id FROM " + super.getTableName() + " t WHERE t.requirement_id = ?",
                 sortDirection,
                 sortBy
         );
@@ -162,7 +162,7 @@ public class RequirementAuthorDAOImpl extends BaseTable implements RequirementAu
                 sortBy
         );
         PreparedStatement ps = super.prepareReadStatement(
-                "SELECT t.requirement_id, t.author_id FROM " + super.getTableName() + " t WHERE t.author_id = ?1",
+                "SELECT t.requirement_id, t.author_id FROM " + super.getTableName() + " t WHERE t.author_id = ?",
                 sortDirection,
                 sortBy
         );

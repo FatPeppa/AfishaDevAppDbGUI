@@ -11,6 +11,7 @@ import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Requirement;
+import org.skyhigh.afishadevappgui.data.datasource.entity.RequirementAuthor;
 import org.skyhigh.afishadevappgui.data.repository.RequirementRepository;
 import org.skyhigh.afishadevappgui.data.repository.RequirementRepositoryImpl;
 
@@ -57,5 +58,11 @@ public class RequirementTableController {
         );
         requirementsListView.addAll(requirements);
         requirementTable.setItems(requirementsListView);
+    }
+
+    public void fillTable(List<Requirement> requirements) {
+        ObservableList<Requirement> requirementObservableList = FXCollections.observableArrayList();
+        requirementObservableList.addAll(requirements);
+        requirementTable.setItems(requirementObservableList);
     }
 }

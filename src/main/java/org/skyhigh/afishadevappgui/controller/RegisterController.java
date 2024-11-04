@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.skyhigh.afishadevappgui.AfishaDevGUIApplication;
@@ -13,15 +14,15 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.common.validation.CommonSystemException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.DbUser;
 import org.skyhigh.afishadevappgui.data.repository.DbUserRepositoryImpl;
-import org.skyhigh.afishadevappgui.service.logic.AuthenticationService;
-import org.skyhigh.afishadevappgui.service.logic.AuthenticationServiceImpl;
+import org.skyhigh.afishadevappgui.service.logic.authentication.AuthenticationService;
+import org.skyhigh.afishadevappgui.service.logic.authentication.AuthenticationServiceImpl;
 
 import java.io.IOException;
 
 public class RegisterController {
     @FXML private TextField loginInputRegTxtField;
 
-    @FXML private TextField passwordInputRegTxtField;
+    @FXML private PasswordField passwordInputRegTxtField;
 
     @FXML
     private Button goBackRegBt;

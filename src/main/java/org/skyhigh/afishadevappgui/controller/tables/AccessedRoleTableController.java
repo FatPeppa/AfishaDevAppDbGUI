@@ -42,8 +42,12 @@ public class AccessedRoleTableController {
                 null
         );
         accessedRolesListView.addAll(roles);
-        //tableExample.getItems().add(new Author(UUID.randomUUID(), "afs"));
-        //tableExample.refresh();
+        accessedRoleTableView.setItems(accessedRolesListView);
+    }
+
+    public void fillTable(List<AccessedRole> roles) {
+        ObservableList<AccessedRole> accessedRolesListView = FXCollections.observableArrayList();
+        accessedRolesListView.addAll(roles);
         accessedRoleTableView.setItems(accessedRolesListView);
     }
 }

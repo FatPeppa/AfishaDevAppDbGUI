@@ -66,9 +66,9 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
         Flk10000000Validator.validate(project);
         Flk10000007Validator.validate(project);
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.project_name = ?1, t.load_date = ?2, t.last_change_date = ?3, " +
-                        "t.structure = ?4, t.content = ?5, t.settings = ?6, t.version_number = ?7 " +
-                        "WHERE t.project_id = ?8"
+                "UPDATE " + super.getTableName() + " t SET t.project_name = ?, t.load_date = ?, t.last_change_date = ?, " +
+                        "t.structure = ?, t.content = ?, t.settings = ?, t.version_number = ? " +
+                        "WHERE t.project_id = ?"
         );
         ps.setString(1, project.getProjectName());
         ps.setObject(2, project.getLoadDate());
@@ -85,7 +85,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectNameById(@NonNull UUID projectId, @NonNull String projectName) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.project_name = ?1 WHERE t.project_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.project_name = ? WHERE t.project_id = ?"
         );
         ps.setString(1, projectName);
         ps.setObject(2, projectId);
@@ -96,7 +96,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectLastChangeDateById(@NonNull UUID projectId, @NonNull LocalDateTime lastChangeDate) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.last_change_date = ?1 WHERE t.project_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.last_change_date = ? WHERE t.project_id = ?"
         );
         ps.setObject(1, lastChangeDate);
         ps.setObject(2, projectId);
@@ -107,7 +107,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectStructureById(@NonNull UUID projectId, @NonNull JSONObject structure) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.structure = ?1 WHERE t.project_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.structure = ? WHERE t.project_id = ?"
         );
         ps.setString(1, structure.toString());
         ps.setObject(2, projectId);
@@ -118,7 +118,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectContentById(@NonNull UUID projectId, @NonNull JSONObject content) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.content = ?1 WHERE t.project_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.content = ? WHERE t.project_id = ?"
         );
         ps.setString(1, content.toString());
         ps.setObject(2, projectId);
@@ -129,7 +129,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectSettingsById(@NonNull UUID projectId, @NonNull JSONObject settings) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.settings = ?1 WHERE t.project_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.settings = ? WHERE t.project_id = ?"
         );
         ps.setString(1, settings.toString());
         ps.setObject(2, projectId);
@@ -140,7 +140,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectVersionNumberById(@NonNull UUID projectId, @NonNull String versionNumber) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.version_number = ?1 WHERE t.project_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.version_number = ? WHERE t.project_id = ?"
         );
         ps.setString(1, versionNumber);
         ps.setObject(2, projectId);
@@ -151,7 +151,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void deleteProjectById(@NonNull UUID projectId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.project_id = ?1"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.project_id = ?"
         );
         ps.setObject(1, projectId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -163,7 +163,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
         PreparedStatement ps = super.prepareStatement(
                 "SELECT t.project_id, t.project_name, t.load_date, t.last_change_date, t.structure, " +
                         "t.content, t.settings, t.version_number FROM " + super.getTableName() + " " +
-                        "t WHERE t.project_id = ?1"
+                        "t WHERE t.project_id = ?"
         );
         ps.setObject(1, projectId);
         return getSingleProject(ps);
@@ -174,7 +174,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
         PreparedStatement ps = super.prepareStatement(
                 "SELECT t.project_id, t.project_name, t.load_date, t.last_change_date, t.structure, " +
                         "t.content, t.settings, t.version_number FROM " + super.getTableName() + " " +
-                        "t WHERE t.project_name = ?1"
+                        "t WHERE t.project_name = ?"
         );
         ps.setString(1, projectName);
         return getSingleProject(ps);
@@ -209,7 +209,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
         PreparedStatement ps = super.prepareStatement(
                 "SELECT t.project_id, t.project_name, t.load_date, t.last_change_date, t.structure, " +
                         "t.content, t.settings, t.version_number FROM " + super.getTableName() + " " +
-                        "t WHERE t.load_date = ?1"
+                        "t WHERE t.load_date = ?"
         );
         ps.setObject(1, loadDate);
         return getProjects(ps);
@@ -230,7 +230,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
             ps = super.prepareStatement(
                     "SELECT t.project_id, t.project_name, t.load_date, t.last_change_date, t.structure, " +
                             "t.content, t.settings, t.version_number FROM " + super.getTableName() + " " +
-                            "t WHERE t.load_date <= ?1 AND t.load_date >= ?2"
+                            "t WHERE t.load_date <= ? AND t.load_date >= ?"
             );
             ps.setObject(1, loadDateDiapasonStart);
             ps.setObject(2, loadDateDiapasonEnd);
@@ -239,7 +239,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
             ps = super.prepareStatement(
                     "SELECT t.project_id, t.project_name, t.load_date, t.last_change_date, t.structure, " +
                             "t.content, t.settings, t.version_number FROM " + super.getTableName() + " " +
-                            "t WHERE t.load_date >= ?1"
+                            "t WHERE t.load_date >= ?"
             );
             ps.setObject(1, loadDateDiapasonStart);
         }
@@ -247,7 +247,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
             ps = super.prepareStatement(
                     "SELECT t.project_id, t.project_name, t.load_date, t.last_change_date, t.structure, " +
                             "t.content, t.settings, t.version_number FROM " + super.getTableName() + " " +
-                            "t WHERE t.load_date <= ?1"
+                            "t WHERE t.load_date <= ?"
             );
             ps.setObject(1, loadDateDiapasonEnd);
         }
@@ -274,7 +274,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
         PreparedStatement ps = super.prepareStatement(
                 "SELECT t.project_id, t.project_name, t.load_date, t.last_change_date, t.structure, " +
                         "t.content, t.settings, t.version_number FROM " + super.getTableName() + " " +
-                        "t WHERE t.last_change_date = ?1"
+                        "t WHERE t.last_change_date = ?"
         );
         ps.setObject(1, lastChangeDate);
         return getProjects(ps);
@@ -295,7 +295,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
             ps = super.prepareStatement(
                     "SELECT t.project_id, t.project_name, t.load_date, t.last_change_date, t.structure, " +
                             "t.content, t.settings, t.version_number FROM " + super.getTableName() + " " +
-                            "t WHERE t.last_change_date <= ?1 AND t.last_change_date >= ?2"
+                            "t WHERE t.last_change_date <= ? AND t.last_change_date >= ?"
             );
             ps.setObject(1, lastChangeDateDiapasonStart);
             ps.setObject(2, lastChangeDateDiapasonEnd);
@@ -304,7 +304,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
             ps = super.prepareStatement(
                     "SELECT t.project_id, t.project_name, t.load_date, t.last_change_date, t.structure, " +
                             "t.content, t.settings, t.version_number FROM " + super.getTableName() + " " +
-                            "t WHERE t.last_change_date >= ?1"
+                            "t WHERE t.last_change_date >= ?"
             );
             ps.setObject(1, lastChangeDateDiapasonStart);
         }
@@ -312,7 +312,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
             ps = super.prepareStatement(
                     "SELECT t.project_id, t.project_name, t.load_date, t.last_change_date, t.structure, " +
                             "t.content, t.settings, t.version_number FROM " + super.getTableName() + " " +
-                            "t WHERE t.last_change_date <= ?1"
+                            "t WHERE t.last_change_date <= ?"
             );
             ps.setObject(1, lastChangeDateDiapasonEnd);
         }
@@ -339,7 +339,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
         PreparedStatement ps = super.prepareStatement(
                 "SELECT t.project_id, t.project_name, t.load_date, t.last_change_date, t.structure, " +
                         "t.content, t.settings, t.version_number FROM " + super.getTableName() + " " +
-                        "t WHERE t.version_number = ?1"
+                        "t WHERE t.version_number = ?"
         );
         ps.setString(1, versionNumber);
         return getProjects(ps);

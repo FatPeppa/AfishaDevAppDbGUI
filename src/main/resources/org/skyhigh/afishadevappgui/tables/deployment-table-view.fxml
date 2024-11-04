@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="217.0" prefWidth="941.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.tables.DeploymentTableController">
+<AnchorPane prefHeight="236.0" prefWidth="942.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.tables.DeploymentTableController">
     <children>
         <TableView fx:id="deploymentTable" layoutY="1.0" prefHeight="214.0" prefWidth="941.0">
             <columns>
@@ -17,5 +17,10 @@
                 <TableColumn fx:id="projectIdDeploymentTableColumn" minWidth="9.20001220703125" prefWidth="125.79998779296875" text="Идентификатор проекта" />
             </columns>
         </TableView>
+      <HBox alignment="CENTER" layoutX="350.0" layoutY="215.0" prefHeight="24.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="deployChosenBuiltBt" mnemonicParsing="false" text="Развернуть выбранную сборку" />
+         </children>
+      </HBox>
     </children>
 </AnchorPane>

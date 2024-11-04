@@ -68,4 +68,10 @@ public class PasswordGenRuleTableController {
         passwordGenRulesListView.addAll(passwordGenRules);
         passwordGenRuleTable.setItems(passwordGenRulesListView);
     }
+
+    public void fillTable(List<PasswordGenRule> passwordGenRules) {
+        ObservableList<PasswordGenRule> passwordGenRuleObservableList = FXCollections.observableArrayList();
+        passwordGenRuleObservableList.addAll(passwordGenRules);
+        passwordGenRuleTable.setItems(passwordGenRuleObservableList);
+    }
 }

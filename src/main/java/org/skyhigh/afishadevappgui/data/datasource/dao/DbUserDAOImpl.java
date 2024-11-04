@@ -70,7 +70,7 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
     @Override
     public void updateDbUserPassById(int userId, @NonNull String pass) throws SQLException, CommonFlkException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.user_pass = ?1 WHERE t.user_id = ?2"
+                "UPDATE " + super.getTableName() + " t SET t.user_pass = ? WHERE t.user_id = ?"
         );
         ps.setString(1, pass);
         ps.setInt(2, userId);

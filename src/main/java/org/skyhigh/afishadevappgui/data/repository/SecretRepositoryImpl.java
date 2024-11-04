@@ -172,9 +172,9 @@ public class SecretRepositoryImpl implements SecretRepository {
     }
 
     @Override
-    public List<Secret> getAllAuthors(@NonNull SortDirection sortDirection, String sortBy) throws CommonFlkException {
+    public List<Secret> getAllSecret(@NonNull SortDirection sortDirection, String sortBy) throws CommonFlkException {
         try {
-            return secretDAO.getAllAuthors(sortDirection, sortBy);
+            return secretDAO.getAllSecret(sortDirection, sortBy);
         } catch (SQLException e) {
             throw new CommonSystemException(
                     "Произошла системная ошибка. Текст ошибки: '" + e.getMessage() + "'",

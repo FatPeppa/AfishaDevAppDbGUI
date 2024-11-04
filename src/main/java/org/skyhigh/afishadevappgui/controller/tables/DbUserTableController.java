@@ -52,4 +52,10 @@ public class DbUserTableController {
         usersListView.addAll(users);
         dbUserTable.setItems(usersListView);
     }
+
+    public void fillTable(List<DbUser> dbUsers) {
+        ObservableList<DbUser> dbUserObservableList = FXCollections.observableArrayList();
+        dbUserObservableList.addAll(dbUsers);
+        dbUserTable.setItems(dbUserObservableList);
+    }
 }

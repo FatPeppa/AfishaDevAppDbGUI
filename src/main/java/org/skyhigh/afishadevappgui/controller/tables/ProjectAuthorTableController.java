@@ -44,4 +44,10 @@ public class ProjectAuthorTableController {
         projectAuthorsListView.addAll(projectAuthors);
         projectAuthorTable.setItems(projectAuthorsListView);
     }
+
+    public void fillTable(List<ProjectAuthor> projectAuthors) {
+        ObservableList<ProjectAuthor> projectAuthorObservableList = FXCollections.observableArrayList();
+        projectAuthorObservableList.addAll(projectAuthors);
+        projectAuthorTable.setItems(projectAuthorObservableList);
+    }
 }

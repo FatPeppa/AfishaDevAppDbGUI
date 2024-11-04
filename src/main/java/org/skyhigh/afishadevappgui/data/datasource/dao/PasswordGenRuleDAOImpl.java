@@ -6,11 +6,13 @@ import org.skyhigh.afishadevappgui.common.db.BaseTable;
 import org.skyhigh.afishadevappgui.common.db.DbConnector;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
+import org.skyhigh.afishadevappgui.common.validation.CommonSystemException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.PasswordGenRule;
 import org.skyhigh.afishadevappgui.data.validation.args.Flk10010000Validator;
 import org.skyhigh.afishadevappgui.data.validation.entity.inserting.fields_not_null.Flk10000014Validator;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -73,9 +75,9 @@ public class PasswordGenRuleDAOImpl extends BaseTable implements PasswordGenRule
     @Override
     public void updatePasswordGenRule(@NonNull PasswordGenRule passwordGenRule) throws SQLException, CommonFlkException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.repeatable_characters_amount = ?1, t.capital_letters_amount = ?2, " +
-                        "t.spec_symbols_amount = ?3, t.begin_date = ?4, t.end_date = ?5, t.create_date = ?6, t.numeric_symbols_amount = ?7" +
-                        " WHERE t.rule_id = ?8"
+                "UPDATE " + super.getTableName() + " t SET t.repeatable_characters_amount = ?, t.capital_letters_amount = ?, " +
+                        "t.spec_symbols_amount = ?, t.begin_date = ?, t.end_date = ?, t.create_date = ?, t.numeric_symbols_amount = ?" +
+                        " WHERE t.rule_id = ?"
         );
         ps.setInt(1, passwordGenRule.getRepeatableCharactersAmount().intValue());
         ps.setInt(2, passwordGenRule.getCapitalLettersAmount().intValue());
@@ -96,9 +98,9 @@ public class PasswordGenRuleDAOImpl extends BaseTable implements PasswordGenRule
     }
 
     @Override
-    public void deletePasswordGenRuleById(@NonNull UUID ruleId) throws SQLException {
+    public void deletePasswordGenRuleById(@NonNull Integer ruleId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "DELETE FROM " + super.getTableName() + " t WHERE t.rule_id = ?1"
+                "DELETE FROM " + super.getTableName() + " t WHERE t.rule_id = ?"
         );
         ps.setObject(1, ruleId);
         int stRes = super.executeSqlStatementUpdate(ps);
@@ -106,16 +108,41 @@ public class PasswordGenRuleDAOImpl extends BaseTable implements PasswordGenRule
     }
 
     @Override
-    public PasswordGenRule getPasswordGenRuleById(@NonNull UUID ruleId) throws SQLException {
+    public PasswordGenRule getPasswordGenRuleById(@NonNull Integer ruleId) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
                 "SELECT t.rule_id, t.repeatable_characters_amount, t.capital_letters_amount, " +
                         "t.spec_symbols_amount, t.begin_date, t.end_date, t.create_date, t.numeric_symbols_amount" +
-                        " FROM " + super.getTableName() + " t WHERE t.rule_id=?1",
+                        " FROM " + super.getTableName() + " t WHERE t.rule_id=?",
                 SortDirection.NONE,
                 null
         );
         ps.setObject(1, ruleId);
         return getSinglePasswordGenRule(ps);
+    }
+
+    @Override
+    public PasswordGenRule getActualPasswordGenRuleByDate(LocalDateTime actualizationDate) throws SQLException, CommonFlkException {
+        PreparedStatement ps = super.prepareReadStatement(
+                "SELECT rule_id, repeatable_characters_amount, capital_letters_amount, " +
+                "spec_symbols_amount, begin_date, end_date, create_date, numeric_symbols_amount" +
+                        " FROM get_password_gen_rule_by_date(?)",
+                SortDirection.NONE,
+                null
+        );
+        if (actualizationDate == null)
+            ps.setNull(1, Types.TIMESTAMP);
+        else
+            ps.setObject(1, actualizationDate);
+        try {
+            return getSinglePasswordGenRule(ps);
+        } catch (SQLException e) {
+            throw new CommonSystemException(
+                    "Системная ошибка при получении актуального правила генерации паролей по дате актуальности: '" +
+                            actualizationDate + "'. Текст ошибки: '" + e.getMessage() + "'",
+                    e.getCause(),
+                    false
+            );
+        }
     }
 
     @Override
