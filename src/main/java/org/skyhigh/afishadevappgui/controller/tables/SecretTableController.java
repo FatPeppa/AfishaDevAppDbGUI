@@ -1,11 +1,13 @@
 package org.skyhigh.afishadevappgui.controller.tables;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lombok.Getter;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
@@ -37,6 +39,9 @@ public class SecretTableController {
 
     private final SecretRepository secretRepository = new SecretRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
+    @Getter
+    private Secret selectedSecret;
+
     public SecretTableController() throws CommonFlkException {}
 
     public void initialize() {
@@ -45,6 +50,7 @@ public class SecretTableController {
         addressSecretTableColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         loginSecretTableColumn.setCellValueFactory(new PropertyValueFactory<>("login"));
         passwordSecretTableColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+        setSecretTableSelectedItemPropertyListener();
     }
 
     public void fillTable() throws CommonFlkException {
@@ -61,5 +67,21 @@ public class SecretTableController {
         ObservableList<Secret> secretObservableList = FXCollections.observableArrayList();
         secretObservableList.addAll(secrets);
         secretTable.setItems(secretObservableList);
+    }
+
+    private void setSecretTableSelectedItemPropertyListener() {
+        secretTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null)
+                selectedSecret = newSelection;
+        });
+    }
+
+    public void clearSelection() {
+        secretTable.getSelectionModel().clearSelection();
+        selectedSecret = null;
+    }
+
+    public ObservableValue<Secret> getObservableSelectedSecret() {
+        return secretTable.getSelectionModel().selectedItemProperty();
     }
 }

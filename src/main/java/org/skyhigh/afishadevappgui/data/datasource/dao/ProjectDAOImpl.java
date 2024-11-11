@@ -47,14 +47,14 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     public UUID saveProject(@NonNull Project project) throws SQLException, CommonFlkException {
         Flk10000007Validator.validate(project);
         UUID projectId = UUID.randomUUID();
-        PreparedStatement ps = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement ps = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (?, ?, ?, ?, ?::jsonb, ?::jsonb, ?::jsonb, ?)");
         ps.setObject(1, projectId);
         ps.setString(2, project.getProjectName());
         ps.setObject(3, project.getLoadDate());
         ps.setObject(4, project.getLastChangeDate());
-        ps.setString(5, project.getStructure().toString());
-        ps.setString(6, project.getContent().toString());
-        ps.setString(7, project.getSettings().toString());
+        ps.setObject(5, project.getStructure().toString());
+        ps.setObject(6, project.getContent().toString());
+        ps.setObject(7, project.getSettings().toString());
         ps.setString(8, project.getVersionNumber());
         int stRes = super.executeSqlStatementUpdate(ps);
         log.log(Level.INFO, "database logging: " + stRes + " rows inserted into " + super.getTableName());
@@ -66,9 +66,9 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
         Flk10000000Validator.validate(project);
         Flk10000007Validator.validate(project);
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.project_name = ?, t.load_date = ?, t.last_change_date = ?, " +
-                        "t.structure = ?, t.content = ?, t.settings = ?, t.version_number = ? " +
-                        "WHERE t.project_id = ?"
+                "UPDATE " + super.getTableName() + " SET project_name = ?, load_date = ?, last_change_date = ?, " +
+                        "structure = ?::jsonb, content = ?::jsonb, settings = ?::jsonb, version_number = ? " +
+                        "WHERE project_id = ?"
         );
         ps.setString(1, project.getProjectName());
         ps.setObject(2, project.getLoadDate());
@@ -85,7 +85,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectNameById(@NonNull UUID projectId, @NonNull String projectName) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.project_name = ? WHERE t.project_id = ?"
+                "UPDATE " + super.getTableName() + " SET project_name = ? WHERE project_id = ?"
         );
         ps.setString(1, projectName);
         ps.setObject(2, projectId);
@@ -96,7 +96,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectLastChangeDateById(@NonNull UUID projectId, @NonNull LocalDateTime lastChangeDate) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.last_change_date = ? WHERE t.project_id = ?"
+                "UPDATE " + super.getTableName() + " SET last_change_date = ? WHERE project_id = ?"
         );
         ps.setObject(1, lastChangeDate);
         ps.setObject(2, projectId);
@@ -107,7 +107,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectStructureById(@NonNull UUID projectId, @NonNull JSONObject structure) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.structure = ? WHERE t.project_id = ?"
+                "UPDATE " + super.getTableName() + " t SET structure = ? WHERE project_id = ?"
         );
         ps.setString(1, structure.toString());
         ps.setObject(2, projectId);
@@ -118,7 +118,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectContentById(@NonNull UUID projectId, @NonNull JSONObject content) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.content = ? WHERE t.project_id = ?"
+                "UPDATE " + super.getTableName() + " SET content = ? WHERE project_id = ?"
         );
         ps.setString(1, content.toString());
         ps.setObject(2, projectId);
@@ -129,7 +129,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectSettingsById(@NonNull UUID projectId, @NonNull JSONObject settings) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.settings = ? WHERE t.project_id = ?"
+                "UPDATE " + super.getTableName() + " SET settings = ? WHERE project_id = ?"
         );
         ps.setString(1, settings.toString());
         ps.setObject(2, projectId);
@@ -140,7 +140,7 @@ public class ProjectDAOImpl extends BaseTable implements ProjectDAO {
     @Override
     public void updateProjectVersionNumberById(@NonNull UUID projectId, @NonNull String versionNumber) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.version_number = ? WHERE t.project_id = ?"
+                "UPDATE " + super.getTableName() + " SET version_number = ? WHERE project_id = ?"
         );
         ps.setString(1, versionNumber);
         ps.setObject(2, projectId);

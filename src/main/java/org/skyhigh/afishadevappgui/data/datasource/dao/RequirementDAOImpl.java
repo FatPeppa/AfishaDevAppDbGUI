@@ -46,7 +46,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
     public UUID saveRequirement(@NonNull Requirement requirement) throws SQLException, CommonFlkException {
         Flk10000009Validator.validate(requirement);
         UUID requirementId = UUID.randomUUID();
-        PreparedStatement ps = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (?, ?, ?, ?, ?)");
+        PreparedStatement ps = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (?, ?, ?, ?, ?::jsonb)");
         ps.setObject(1, requirementId);
         ps.setObject(2, requirement.getRequirementTypeId());
         ps.setObject(3, requirement.getLoadDate());
@@ -62,9 +62,9 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
         Flk10000001Validator.validate(requirement);
         Flk10000009Validator.validate(requirement);
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.requirement_type_id = ?, t.load_date = ?, t.last_change_date = ?, " +
-                        "t.content = ? " +
-                        "WHERE t.requirement_id = ?"
+                "UPDATE " + super.getTableName() + " SET requirement_type_id = ?, load_date = ?, last_change_date = ?, " +
+                        "content = ?::jsonb " +
+                        "WHERE requirement_id = ?"
         );
         ps.setObject(1, requirement.getRequirementTypeId());
         ps.setObject(2, requirement.getLoadDate());
@@ -78,7 +78,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
     @Override
     public void updateRequirementTypeIdById(@NonNull UUID requirementId, @NonNull UUID requirementTypeId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.requirement_type_id = ? WHERE t.requirement_id = ?"
+                "UPDATE " + super.getTableName() + " SET requirement_type_id = ? WHERE requirement_id = ?"
         );
         ps.setObject(1, requirementTypeId);
         ps.setObject(2, requirementId);
@@ -89,7 +89,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
     @Override
     public void updateLastChangeDateById(@NonNull UUID requirementId, @NonNull LocalDateTime lastChangeDate) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.last_change_date = ? WHERE t.requirement_id = ?"
+                "UPDATE " + super.getTableName() + " SET last_change_date = ? WHERE requirement_id = ?"
         );
         ps.setObject(1, lastChangeDate);
         ps.setObject(2, requirementId);
@@ -100,7 +100,7 @@ public class RequirementDAOImpl extends BaseTable implements RequirementDAO {
     @Override
     public void updateContentById(@NonNull UUID requirementId, @NonNull JSONObject content) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.content = ? WHERE t.requirement_id = ?"
+                "UPDATE " + super.getTableName() + " SET content = ? WHERE requirement_id = ?"
         );
         ps.setString(1, content.toString());
         ps.setObject(2, requirementId);

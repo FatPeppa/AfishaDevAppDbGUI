@@ -5,6 +5,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
+import org.skyhigh.afishadevappgui.common.validation.CommonUIFormatException;
 
 import java.time.LocalDateTime;
 
@@ -29,8 +31,12 @@ public class PasswordGenRuleFiltersController {
     }
 
     public Integer getPasswordGenRuleId() {
-        Integer parsedPasswordGenRuleId = ControllerUtils.getIntegerFromTextField(passwordGenRuleIdInputField, getFieldLocalNameFromItsLabel(ruleIdLabel));
-
+        Integer parsedPasswordGenRuleId;
+        try {
+            parsedPasswordGenRuleId = ControllerUtils.getIntegerFromTextField(passwordGenRuleIdInputField, getFieldLocalNameFromItsLabel(ruleIdLabel));
+        } catch (CommonFlkException e) {
+            return null;
+        }
         if (parsedPasswordGenRuleId != null && parsedPasswordGenRuleId < 0) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Ошибка");
@@ -45,7 +51,11 @@ public class PasswordGenRuleFiltersController {
     }
 
     public LocalDateTime getActualizationDate() {
-        return ControllerUtils.getLocalDateTimeFromTextField(actualizationDateInputField, getFieldLocalNameFromItsLabel(actualizationDateLabel));
+        try {
+            return ControllerUtils.getLocalDateTimeFromTextField(actualizationDateInputField, getFieldLocalNameFromItsLabel(actualizationDateLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     private void setPasswordGenRuleIdInputFieldChangeListener() {

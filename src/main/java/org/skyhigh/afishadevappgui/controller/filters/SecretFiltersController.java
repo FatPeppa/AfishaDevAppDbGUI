@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
+import org.skyhigh.afishadevappgui.common.validation.CommonUIFormatException;
 
 import java.util.UUID;
 
@@ -42,11 +43,19 @@ public class SecretFiltersController {
     }
 
     public UUID getSecretId() {
-        return ControllerUtils.getUUIDFromTextField(secretIdInputField, getFieldLocalNameFromItsLabel(secretIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(secretIdInputField, getFieldLocalNameFromItsLabel(secretIdLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     public UUID getDeploymentId() {
-        return ControllerUtils.getUUIDFromTextField(deploymentIdInputField, getFieldLocalNameFromItsLabel(deploymentIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(deploymentIdInputField, getFieldLocalNameFromItsLabel(deploymentIdLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     public String getAddress() {

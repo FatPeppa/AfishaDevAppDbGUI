@@ -8,7 +8,7 @@
         <TableView fx:id="requirementAuthorTable" layoutY="1.0" prefHeight="214.0" prefWidth="941.0">
             <columns>
                 <TableColumn fx:id="requirementIdRequirementTableColumn" prefWidth="136.00002133846283" text="Идентификатор проекта" />
-                <TableColumn fx:id="authorIdRequirementTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Наименование" />
+                <TableColumn fx:id="authorIdRequirementTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Идентификатор автора" />
             </columns>
         </TableView>
     </children>

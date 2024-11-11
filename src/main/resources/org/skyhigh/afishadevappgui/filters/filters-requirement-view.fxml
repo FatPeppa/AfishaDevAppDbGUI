@@ -8,10 +8,10 @@
     <children>
         <TextField fx:id="requirementIdInputField" layoutX="320.0" layoutY="14.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите идентификатор требования (UUID)" />
         <TextField fx:id="requirementTypeIdInputField" layoutX="320.0" layoutY="53.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите идентификатор типа требования (UUID)" />
-        <TextField fx:id="loadDateStartInputField" layoutX="320.0" layoutY="91.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату начала диапазона дат загрузки (ГГГГ-ММ-ДД ЧЧ:ММ:СС)" />
-        <TextField fx:id="loadDateEndInputField" layoutX="320.0" layoutY="130.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату окончания диапазона дат загрузки (ГГГГ-ММ-ДД ЧЧ:ММ:СС)" />
-        <TextField fx:id="lastChangeDateStartInputField" layoutX="320.0" layoutY="168.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату начала диапазона дат последнего внесения изменений (ГГГГ-ММ-ДД ЧЧ:ММ:СС)" />
-        <TextField fx:id="lastChangeDateEndInputField" layoutX="320.0" layoutY="207.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату окончания диапазона дат последнего внесения изменений (ГГГГ-ММ-ДД ЧЧ:ММ:СС)" />
+        <TextField fx:id="loadDateStartInputField" layoutX="320.0" layoutY="91.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату начала диапазона дат загрузки (ГГГГ-ММ-ДДTЧЧ:ММ:СС)" />
+        <TextField fx:id="loadDateEndInputField" layoutX="320.0" layoutY="130.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату окончания диапазона дат загрузки (ГГГГ-ММ-ДДTЧЧ:ММ:СС)" />
+        <TextField fx:id="lastChangeDateStartInputField" layoutX="320.0" layoutY="168.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату начала диапазона дат последнего внесения изменений (ГГГГ-ММ-ДДTЧЧ:ММ:СС)" />
+        <TextField fx:id="lastChangeDateEndInputField" layoutX="320.0" layoutY="207.0" prefHeight="27.0" prefWidth="560.0" promptText="Введите дату окончания диапазона дат последнего внесения изменений (ГГГГ-ММ-ДДTЧЧ:ММ:СС)" />
         <Label fx:id="requirementTypeIdLabel" layoutX="101.0" layoutY="58.0" text="ID типа требования:">
             <font>
                 <Font name="System Bold" size="12.0" />

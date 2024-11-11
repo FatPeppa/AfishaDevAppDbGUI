@@ -88,9 +88,10 @@
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin></BorderPane>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <BorderPane fx:id="rowInteractionPane" prefHeight="97.0" prefWidth="882.0" />
+                  <HBox alignment="CENTER" prefHeight="49.0" prefWidth="882.0">
                      <children>
-                        <Button fx:id="saveTableChangesBt" mnemonicParsing="false" text="Сохранить добавленные/измененные записи">
+                        <Button fx:id="saveRowChangesBt" mnemonicParsing="false" text="Сохранить изменения записи">
                            <HBox.margin>
                               <Insets left="15.0" right="15.0" />
                            </HBox.margin></Button>
@@ -100,9 +101,14 @@
                               <Insets left="15.0" right="15.0" />
                            </HBox.margin>
                         </Button>
+                        <Button fx:id="stopSelectingRowBt" mnemonicParsing="false" text="Снять выделение">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Button>
                      </children>
                      <VBox.margin>
-                        <Insets top="40.0" />
+                        <Insets top="5.0" />
                      </VBox.margin>
                   </HBox>
                </children></VBox>

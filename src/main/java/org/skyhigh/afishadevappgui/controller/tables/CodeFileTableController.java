@@ -1,11 +1,13 @@
 package org.skyhigh.afishadevappgui.controller.tables;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lombok.Getter;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
@@ -35,6 +37,9 @@ public class CodeFileTableController {
 
     private final CodeFileRepository codeFileRepository = new CodeFileRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
+    @Getter
+    private CodeFile selectedCodeFile;
+
     public CodeFileTableController() throws CommonFlkException {}
 
     public void initialize() {
@@ -42,6 +47,7 @@ public class CodeFileTableController {
         projectIdCodeFileTableColumn.setCellValueFactory(new PropertyValueFactory<>("projectId"));
         fileContentCodeFileTableColumn.setCellValueFactory(new PropertyValueFactory<>("fileContent"));
         loadDateCodeFileTableColumn.setCellValueFactory(new PropertyValueFactory<>("loadDate"));
+        setCodeFileTableSelectedItemPropertyListener();
     }
 
     public void fillTable() throws CommonFlkException {
@@ -58,5 +64,21 @@ public class CodeFileTableController {
         ObservableList<CodeFile> codeFileObservableList = FXCollections.observableArrayList();
         codeFileObservableList.addAll(codeFiles);
         codeFileTable.setItems(codeFileObservableList);
+    }
+
+    private void setCodeFileTableSelectedItemPropertyListener() {
+        codeFileTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null)
+                selectedCodeFile = newSelection;
+        });
+    }
+
+    public void clearSelection() {
+        codeFileTable.getSelectionModel().clearSelection();
+        selectedCodeFile = null;
+    }
+
+    public ObservableValue<CodeFile> getObservableSelectedCodeFile() {
+        return codeFileTable.getSelectionModel().selectedItemProperty();
     }
 }

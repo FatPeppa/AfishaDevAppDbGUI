@@ -90,7 +90,7 @@ public class RequirementTypeDAOImpl extends BaseTable implements RequirementType
     @Override
     public void updateRequirementTypeNameById(@NonNull UUID requirementTypeId, @NonNull String newRequirementTypeName) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.requirement_type_name = ? WHERE t.requirement_type_id = ?"
+                "UPDATE " + super.getTableName() + " SET requirement_type_name = ? WHERE requirement_type_id = ?"
         );
         ps.setString(1, newRequirementTypeName);
         ps.setObject(2, requirementTypeId);

@@ -2,12 +2,13 @@ package org.skyhigh.afishadevappgui.data.repository;
 
 import lombok.NonNull;
 import org.json.JSONObject;
-import org.skyhigh.afishadevappgui.common.validation.CommonSystemException;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationProperties;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
+import org.skyhigh.afishadevappgui.common.validation.CommonSystemException;
 import org.skyhigh.afishadevappgui.data.datasource.AfishaDevAppDb;
 import org.skyhigh.afishadevappgui.data.datasource.dao.DeploymentDAO;
+import org.skyhigh.afishadevappgui.data.datasource.dao.SecretDAO;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Deployment;
 
 import java.io.File;
@@ -17,10 +18,12 @@ import java.util.UUID;
 
 public class DeploymentRepositoryImpl implements DeploymentRepository {
     private final DeploymentDAO deploymentDAO;
+    private final SecretDAO secretDAO;
 
     public DeploymentRepositoryImpl(ApplicationProperties applicationProperties) throws CommonFlkException {
         try {
             deploymentDAO = (new AfishaDevAppDb(applicationProperties)).getDeploymentDAO();
+            secretDAO = (new AfishaDevAppDb(applicationProperties)).getSecretDAO();
         } catch (SQLException e) {
             throw new CommonSystemException(
                     "Произошла системная ошибка. Текст ошибки: '" + e.getMessage() + "'",

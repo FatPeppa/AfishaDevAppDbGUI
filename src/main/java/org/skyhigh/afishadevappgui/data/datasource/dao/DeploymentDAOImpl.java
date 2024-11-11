@@ -52,7 +52,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
         Flk10000005Validator.validate(deployment);
         Flk10020000Validator.validate(deployment);
         UUID deploymentId = UUID.randomUUID();
-        PreparedStatement ps = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+        PreparedStatement ps = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (?, ?, ?, ?::jsonb, ?, ?::jsonb, ?, ?);");
         ps.setObject(1, deploymentId);
         ps.setObject(2, deployment.getDeploymentStatusId());
         if (deployment.getDeploymentPath() == null)
@@ -217,11 +217,11 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
         Flk10020001Validator.validate(deploymentId, built);
         PreparedStatement ps = super.prepareStatement(
                 "UPDATE " + super.getTableName() + " " +
-                        "SET deployment_status_id = ?" +
+                        "SET deployment_status_id = ?, " +
                         "deployment_path = ?, " +
-                        "settings = ?, " +
+                        "settings = ?::jsonb, " +
                         "built_version = ?, " +
-                        "built_settings = ?, " +
+                        "built_settings = ?::jsonb, " +
                         "built = ?, " +
                         "project_id = ? " +
                         "WHERE deployment_id = ?"
@@ -482,7 +482,7 @@ public class DeploymentDAOImpl extends BaseTable implements DeploymentDAO {
                 InputStream iSBuilt = rs.getBinaryStream(7);
                 try {
                     String tempFileNamePrefix = "";
-                    while (tempFileNamePrefix.length() <= 3)
+                    while (tempFileNamePrefix.length() <= 2)
                         tempFileNamePrefix = "B" + (int) ((Math.random() * 98) + 1);
                     tempBuiltFile = File.createTempFile(tempFileNamePrefix, ".txt");
                     tempBuiltFile.deleteOnExit();

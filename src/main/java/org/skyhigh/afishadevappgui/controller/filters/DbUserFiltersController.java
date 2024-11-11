@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
+import org.skyhigh.afishadevappgui.common.validation.CommonUIFormatException;
 
 import java.util.UUID;
 
@@ -37,7 +38,12 @@ public class DbUserFiltersController {
     }
 
     public Integer getUserId() throws CommonFlkException {
-        Integer parsedUserId = ControllerUtils.getIntegerFromTextField(userIdInputField, getFieldLocalNameFromItsLabel(userIdLabel));
+        Integer parsedUserId = null;
+        try {
+            parsedUserId = ControllerUtils.getIntegerFromTextField(userIdInputField, getFieldLocalNameFromItsLabel(userIdLabel));
+        } catch (CommonFlkException e) {
+            return null;
+        }
         if (parsedUserId != null && parsedUserId < 0) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Ошибка");
@@ -52,7 +58,11 @@ public class DbUserFiltersController {
     }
 
     public UUID getAuthorId() {
-        return ControllerUtils.getUUIDFromTextField(authorIdInputField, getFieldLocalNameFromItsLabel(authorIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(authorIdInputField, getFieldLocalNameFromItsLabel(authorIdLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     public String getUserLogin() {

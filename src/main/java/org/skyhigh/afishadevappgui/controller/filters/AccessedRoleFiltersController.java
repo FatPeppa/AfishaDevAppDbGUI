@@ -28,6 +28,10 @@ public class AccessedRoleFiltersController {
     }
 
     public UUID getRequirementId() throws CommonFlkException {
-        return ControllerUtils.getUUIDFromTextField(requirementIdInputField, getFieldLocalNameFromItsLabel(requirementIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(requirementIdInputField, getFieldLocalNameFromItsLabel(requirementIdLabel));
+        } catch (CommonFlkException e) {
+            return null;
+        }
     }
 }

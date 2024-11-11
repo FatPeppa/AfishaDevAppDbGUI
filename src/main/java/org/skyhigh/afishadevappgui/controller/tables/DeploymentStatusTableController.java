@@ -1,11 +1,13 @@
 package org.skyhigh.afishadevappgui.controller.tables;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lombok.Getter;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
@@ -28,11 +30,15 @@ public class DeploymentStatusTableController {
 
     private final DeploymentStatusRepository deploymentStatusRepository = new DeploymentStatusRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
+    @Getter
+    private DeploymentStatus selectedDeploymentStatus;
+
     public DeploymentStatusTableController() throws CommonFlkException {}
 
     public void initialize() {
         deploymentStatusIdDSTableColumn.setCellValueFactory(new PropertyValueFactory<>("deploymentStatusId"));
         statusNameDSTableColumn.setCellValueFactory(new PropertyValueFactory<>("statusName"));
+        setDeploymentStatusTableSelectedItemPropertyListener();
     }
 
     public void fillTable() throws CommonFlkException {
@@ -49,5 +55,21 @@ public class DeploymentStatusTableController {
         ObservableList<DeploymentStatus> deploymentStatusObservableList = FXCollections.observableArrayList();
         deploymentStatusObservableList.addAll(deploymentStatuses);
         deploymentStatusTable.setItems(deploymentStatusObservableList);
+    }
+
+    private void setDeploymentStatusTableSelectedItemPropertyListener() {
+        deploymentStatusTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null)
+                selectedDeploymentStatus = newSelection;
+        });
+    }
+
+    public void clearSelection() {
+        deploymentStatusTable.getSelectionModel().clearSelection();
+        selectedDeploymentStatus = null;
+    }
+
+    public ObservableValue<DeploymentStatus> getObservableSelectedDeploymentStatus() {
+        return deploymentStatusTable.getSelectionModel().selectedItemProperty();
     }
 }

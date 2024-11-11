@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
+import org.skyhigh.afishadevappgui.common.validation.CommonUIFormatException;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -64,7 +65,11 @@ public class ProjectFiltersController {
     }
 
     public UUID getProjectId() {
-        return ControllerUtils.getUUIDFromTextField(projectIdInputField, getFieldLocalNameFromItsLabel(projectIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(projectIdInputField, getFieldLocalNameFromItsLabel(projectIdLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     public String getProjectName() {
@@ -76,19 +81,35 @@ public class ProjectFiltersController {
     }
 
     public LocalDateTime getLoadDateStart() {
-        return ControllerUtils.getLocalDateTimeFromTextField(loadDateStartInputField, getFieldLocalNameFromItsLabel(loadDateBeginLabel));
+        try {
+            return ControllerUtils.getLocalDateTimeFromTextField(loadDateStartInputField, getFieldLocalNameFromItsLabel(loadDateBeginLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     public LocalDateTime getLoadDateEnd() {
-        return ControllerUtils.getLocalDateTimeFromTextField(loadDateEndInputField, getFieldLocalNameFromItsLabel(loadDateEndLabel));
+        try {
+            return ControllerUtils.getLocalDateTimeFromTextField(loadDateEndInputField, getFieldLocalNameFromItsLabel(loadDateEndLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     public LocalDateTime getLastChangeDateStart() {
-        return ControllerUtils.getLocalDateTimeFromTextField(lastChangeDateStartInputField, getFieldLocalNameFromItsLabel(lastChangeDateBeginLabel));
+        try {
+            return ControllerUtils.getLocalDateTimeFromTextField(lastChangeDateStartInputField, getFieldLocalNameFromItsLabel(lastChangeDateBeginLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     public LocalDateTime getLastChangeDateEnd() {
-        return ControllerUtils.getLocalDateTimeFromTextField(lastChangeDateEndInputField, getFieldLocalNameFromItsLabel(lastChangeDateEndLabel));
+        try {
+            return ControllerUtils.getLocalDateTimeFromTextField(lastChangeDateEndInputField, getFieldLocalNameFromItsLabel(lastChangeDateEndLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     private void setProjectIdInputFieldChangeListener() {

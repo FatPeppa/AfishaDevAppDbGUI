@@ -84,7 +84,7 @@ public class ProjectAuthorDAOImpl extends BaseTable implements ProjectAuthorDAO 
     @Override
     public void updateProjectAuthorAuthorId(@NonNull UUID oldAuthorId, @NonNull UUID projectId, @NonNull UUID newAuthorId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.author_id = ? WHERE t.author_id = ? AND t.project_id = ?"
+                "UPDATE " + super.getTableName() + " SET author_id = ? WHERE author_id = ? AND project_id = ?"
         );
         ps.setObject(1, newAuthorId);
         ps.setObject(2, oldAuthorId);
@@ -96,7 +96,7 @@ public class ProjectAuthorDAOImpl extends BaseTable implements ProjectAuthorDAO 
     @Override
     public void updateProjectAuthorProjectId(@NonNull UUID authorId, @NonNull UUID oldProjectId, @NonNull UUID newProjectId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.project_id = ? WHERE t.author_id = ? AND t.project_id = ?"
+                "UPDATE " + super.getTableName() + " SET project_id = ? WHERE author_id = ? AND project_id = ?"
         );
         ps.setObject(1, newProjectId);
         ps.setObject(2, authorId);

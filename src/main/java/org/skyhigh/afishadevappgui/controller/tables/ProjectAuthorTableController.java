@@ -1,11 +1,13 @@
 package org.skyhigh.afishadevappgui.controller.tables;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lombok.Getter;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
@@ -28,11 +30,15 @@ public class ProjectAuthorTableController {
 
     private final ProjectAuthorRepository projectAuthorRepository = new ProjectAuthorRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
+    @Getter
+    private ProjectAuthor selectedProjectAuthor;
+
     public ProjectAuthorTableController() throws CommonFlkException {}
 
     public void initialize() {
         projectIdProjectAuthorTableColumn.setCellValueFactory(new PropertyValueFactory<>("projectId"));
         authorIdProjectAuthorTableColumn.setCellValueFactory(new PropertyValueFactory<>("authorId"));
+        setProjectAuthorTableSelectedItemPropertyListener();
     }
 
     public void fillTable() throws CommonFlkException {
@@ -49,5 +55,21 @@ public class ProjectAuthorTableController {
         ObservableList<ProjectAuthor> projectAuthorObservableList = FXCollections.observableArrayList();
         projectAuthorObservableList.addAll(projectAuthors);
         projectAuthorTable.setItems(projectAuthorObservableList);
+    }
+
+    private void setProjectAuthorTableSelectedItemPropertyListener() {
+        projectAuthorTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null)
+                selectedProjectAuthor = newSelection;
+        });
+    }
+
+    public void clearSelection() {
+        projectAuthorTable.getSelectionModel().clearSelection();
+        selectedProjectAuthor = null;
+    }
+
+    public ObservableValue<ProjectAuthor> getObservableSelectedProjectAuthor() {
+        return projectAuthorTable.getSelectionModel().selectedItemProperty();
     }
 }

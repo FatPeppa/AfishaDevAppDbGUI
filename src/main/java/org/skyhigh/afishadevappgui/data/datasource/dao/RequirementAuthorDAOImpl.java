@@ -84,7 +84,7 @@ public class RequirementAuthorDAOImpl extends BaseTable implements RequirementAu
     @Override
     public void updateRequirementAuthorAuthorId(@NonNull UUID oldAuthorId, @NonNull UUID requirementId, @NonNull UUID newAuthorId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.author_id = ? WHERE t.author_id = ? AND t.requirement_id = ?"
+                "UPDATE " + super.getTableName() + " SET author_id = ? WHERE author_id = ? AND requirement_id = ?"
         );
         ps.setObject(1, newAuthorId);
         ps.setObject(2, oldAuthorId);
@@ -96,7 +96,7 @@ public class RequirementAuthorDAOImpl extends BaseTable implements RequirementAu
     @Override
     public void updateRequirementAuthorRequirementId(@NonNull UUID authorId, @NonNull UUID oldRequirementId, @NonNull UUID newRequirementId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.requirement_id = ? WHERE t.requirement_id = ? AND t.author_id = ?"
+                "UPDATE " + super.getTableName() + " SET requirement_id = ? WHERE requirement_id = ? AND author_id = ?"
         );
         ps.setObject(1, newRequirementId);
         ps.setObject(2, oldRequirementId);

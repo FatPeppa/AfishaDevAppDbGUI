@@ -15,14 +15,18 @@ import org.skyhigh.afishadevappgui.AfishaDevGUIApplication;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
+import org.skyhigh.afishadevappgui.common.validation.CommonUIException;
 import org.skyhigh.afishadevappgui.controller.filters.*;
+import org.skyhigh.afishadevappgui.controller.rowinteraction.*;
 import org.skyhigh.afishadevappgui.controller.tables.*;
 import org.skyhigh.afishadevappgui.data.datasource.entity.*;
 import org.skyhigh.afishadevappgui.data.repository.*;
 import org.skyhigh.afishadevappgui.service.logic.search.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 public class MainController {
@@ -33,6 +37,7 @@ public class MainController {
     // Nested fxml panes
     @FXML private BorderPane filtersPane;
     @FXML private BorderPane tablePane;
+    @FXML private BorderPane rowInteractionPane;
 
     // Choosing table buttons
     @FXML private Button usersBt;
@@ -50,10 +55,11 @@ public class MainController {
     @FXML private Button passGenRuleBt;
 
     // Table interaction buttons
-    @FXML private Button saveTableChangesBt;
+    @FXML private Button saveRowChangesBt;
     @FXML private Button addNewRowToTableBt;
     @FXML private Button deleteChosenRowFromTableBt;
     @FXML private Button filterTableRowsBt;
+    @FXML private Button stopSelectingRowBt;
 
     // Other buttons
     @FXML private Button logOutBt;
@@ -137,6 +143,46 @@ public class MainController {
     @FXML
     SecretFiltersController secretFiltersController;
 
+    @FXML
+    RowAccessedRoleController rowAccessedRoleController;
+
+    @FXML
+    RowAuthorController rowAuthorController;
+
+    @FXML
+    RowCodeFileController rowCodeFileController;
+
+    @FXML
+    RowDbUserController rowDbUserController;
+
+    @FXML
+    RowDeploymentController rowDeploymentController;
+
+    @FXML
+    RowDeploymentStatusController rowDeploymentStatusController;
+
+    @FXML
+    RowPasswordGenRuleController rowPasswordGenRuleController;
+
+    @FXML
+    RowProjectAuthorController rowProjectAuthorController;
+
+    @FXML
+    RowProjectController rowProjectController;
+
+    @FXML
+    RowRequirementAuthorController rowRequirementAuthorController;
+
+    @FXML
+    RowRequirementController rowRequirementController;
+
+    @FXML
+    RowRequirementTypeController rowRequirementTypeController;
+
+    @FXML
+    RowSecretController rowSecretController;
+
+
     // Services
     private AccessedRoleSearchService accessedRoleSearchService;
 
@@ -164,9 +210,38 @@ public class MainController {
 
     private RequirementAuthorSearchService requirementAuthorSearchService;
 
+    // Repositories
+    private AccessedRoleRepository accessedRoleRepository;
+
+    private AuthorRepository authorRepository;
+
+    private CodeFileRepository codeFileRepository;
+
+    private DbUserRepository dbUserRepository;
+
+    private DeploymentRepository deploymentRepository;
+
+    private DeploymentStatusRepository deploymentStatusRepository;
+
+    private PasswordGenRuleRepository passwordGenRuleRepository;
+
+    private ProjectAuthorRepository projectAuthorRepository;
+
+    private ProjectRepository projectRepository;
+
+    private RequirementAuthorRepository requirementAuthorRepository;
+
+    private RequirementRepository requirementRepository;
+
+    private RequirementTypeRepository requirementTypeRepository;
+
+    private SecretRepository secretRepository;
+
     private final String chosenTableButtonStyle = "-fx-background-color: #000002; -fx-text-fill: white;";
 
     private DbUser currentDbUser;
+
+    private Object selectedRow;
 
     public void setCurrentDbUser(DbUser currentDbUser) {
         this.currentDbUser = currentDbUser;
@@ -189,43 +264,43 @@ public class MainController {
         setOnActionForPassGenRuleBt();
         setOnActionLogOutBt();
 
-        AccessedRoleRepository accessedRoleRepository = new AccessedRoleRepositoryImpl(
+        accessedRoleRepository = new AccessedRoleRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        AuthorRepository authorRepository = new AuthorRepositoryImpl(
+        authorRepository = new AuthorRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        CodeFileRepository codeFileRepository = new CodeFileRepositoryImpl(
+        codeFileRepository = new CodeFileRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        DbUserRepository dbUserRepository = new DbUserRepositoryImpl(
+        dbUserRepository = new DbUserRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        DeploymentRepository deploymentRepository = new DeploymentRepositoryImpl(
+        deploymentRepository = new DeploymentRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        DeploymentStatusRepository deploymentStatusRepository = new DeploymentStatusRepositoryImpl(
+        deploymentStatusRepository = new DeploymentStatusRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        PasswordGenRuleRepository passwordGenRuleRepository = new PasswordGenRuleRepositoryImpl(
+        passwordGenRuleRepository = new PasswordGenRuleRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        ProjectAuthorRepository projectAuthorRepository = new ProjectAuthorRepositoryImpl(
+        projectAuthorRepository = new ProjectAuthorRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        ProjectRepository projectRepository = new ProjectRepositoryImpl(
+        projectRepository = new ProjectRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        RequirementAuthorRepository requirementAuthorRepository = new RequirementAuthorRepositoryImpl(
+        requirementAuthorRepository = new RequirementAuthorRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        RequirementRepository requirementRepository = new RequirementRepositoryImpl(
+        requirementRepository = new RequirementRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        RequirementTypeRepository requirementTypeRepository = new RequirementTypeRepositoryImpl(
+        requirementTypeRepository = new RequirementTypeRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
-        SecretRepository secretRepository = new SecretRepositoryImpl(
+        secretRepository = new SecretRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
 
@@ -287,6 +362,17 @@ public class MainController {
         dbUserFiltersController = (DbUserFiltersController) filtersLoader.getController();
         filtersPane.setCenter(filterPane);
         setOnActionFilterTableRowsBtForDbUsers();
+        FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-db-user-view.fxml"));
+        AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+        rowDbUserController = (RowDbUserController) rowInteractionLoader.getController();
+        rowInteractionPane.setCenter(rowInteractionAnchorPane);
+        selectedRow = null;
+        setOnActionStopSelectingRowBtForDbUsers();
+        setOnActionAddNewRowToTableBtForDbUsers();
+        setOnChangedSelectedDbUser();
+        addNewRowToTableBt.setDisable(true);
+        saveRowChangesBt.setDisable(true);
+        deleteChosenRowFromTableBt.setDisable(true);
     }
 
     /**
@@ -363,6 +449,21 @@ public class MainController {
                 dbUserFiltersController = (DbUserFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForDbUsers();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-db-user-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowDbUserController = (RowDbUserController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                setOnActionStopSelectingRowBtForDbUsers();
+                setOnActionAddNewRowToTableBtForDbUsers();
+                setOnChangedSelectedDbUser();
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+
+                setOnActionSaveRowChangesBtForDbUsers();
+                setOnDeleteChosenRowFromTableBtForDbUsers();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -395,6 +496,21 @@ public class MainController {
                 authorFiltersController = (AuthorFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForAuthors();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-author-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowAuthorController = (RowAuthorController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                setOnActionStopSelectingRowBtForAuthors();
+                setOnActionAddNewRowToTableBtForAuthors();
+                setOnChangedSelectedAuthor();
+
+                setOnActionSaveRowChangesBtForAuthors();
+                setOnDeleteChosenRowFromTableBtForAuthors();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -427,6 +543,21 @@ public class MainController {
                 requirementFiltersController = (RequirementFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForRequirements();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-requirement-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowRequirementController = (RowRequirementController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                setOnActionStopSelectingRowBtForRequirements();
+                setOnActionAddNewRowToTableBtForRequirements();
+                setOnChangedSelectedRequirement();
+
+                setOnActionSaveRowChangesBtForRequirements();
+                setOnDeleteChosenRowFromTableBtForRequirements();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -459,6 +590,21 @@ public class MainController {
                 requirementTypeFiltersController = (RequirementTypeFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForRequirementTypes();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-requirement-type-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowRequirementTypeController = (RowRequirementTypeController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                setOnActionStopSelectingRowBtForRequirementTypes();
+                setOnActionAddNewRowToTableBtForRequirementTypes();
+                setOnChangedSelectedRequirementType();
+
+                setOnActionSaveRowChangesBtForRequirementTypes();
+                setOnDeleteChosenRowFromTableBtForRequirementTypes();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -491,6 +637,21 @@ public class MainController {
                 projectFiltersController = (ProjectFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForProjects();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-project-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowProjectController = (RowProjectController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                setOnActionStopSelectingRowBtForProjects();
+                setOnActionAddNewRowToTableBtForProjects();
+                setOnChangedSelectedProject();
+
+                setOnActionSaveRowChangesBtForProjects();
+                setOnDeleteChosenRowFromTableBtForProjects();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -523,6 +684,21 @@ public class MainController {
                 codeFileFiltersController = (CodeFileFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForCodeFiles();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-code-file-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowCodeFileController = (RowCodeFileController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(false);
+                setOnActionStopSelectingRowBtForCodeFiles();
+                setOnActionAddNewRowToTableBtForCodeFiles();
+                setOnChangedSelectedCodeFile();
+
+                setOnActionSaveRowChangesBtForCodeFiles();
+                setOnDeleteChosenRowFromTableBtForCodeFiles();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -555,6 +731,21 @@ public class MainController {
                 deploymentFiltersController = (DeploymentFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForDeployments();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-deployment-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowDeploymentController = (RowDeploymentController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                setOnActionStopSelectingRowBtForDeployments();
+                setOnActionAddNewRowToTableBtForDeployments();
+                setOnChangedSelectedDeployment();
+
+                setOnActionSaveRowChangesBtForDeployments();
+                setOnDeleteChosenRowFromTableBtForDeployments();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -587,6 +778,21 @@ public class MainController {
                 deploymentStatusFiltersController = (DeploymentStatusFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForDeploymentsStatuses();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-deployment-status-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowDeploymentStatusController = (RowDeploymentStatusController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                setOnActionStopSelectingRowBtForDeploymentStatuses();
+                setOnActionAddNewRowToTableBtForDeploymentStatuses();
+                setOnChangedSelectedDeploymentStatus();
+
+                setOnActionSaveRowChangesBtForDeploymentStatuses();
+                setOnDeleteChosenRowFromTableBtForDeploymentStatuses();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -619,6 +825,20 @@ public class MainController {
                 projectAuthorFiltersController = (ProjectAuthorFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForProjectAuthors();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-project-author-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowProjectAuthorController = (RowProjectAuthorController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(true);
+                setOnActionStopSelectingRowBtForProjectAuthors();
+                setOnActionAddNewRowToTableBtForProjectAuthors();
+                setOnChangedSelectedProjectAuthor();
+
+                setOnDeleteChosenRowFromTableBtForProjectAuthors();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -651,6 +871,20 @@ public class MainController {
                 requirementAuthorFiltersController = (RequirementAuthorFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForRequirementAuthors();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-requirement-author-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowRequirementAuthorController = (RowRequirementAuthorController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(true);
+                setOnActionStopSelectingRowBtForRequirementAuthors();;
+                setOnActionAddNewRowToTableBtForRequirementAuthors();
+                setOnChangedSelectedRequirementAuthor();
+
+                setOnDeleteChosenRowFromTableBtForRequirementAuthors();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -684,6 +918,21 @@ public class MainController {
                 filtersPane.setCenter(filterPane);
 
                 setOnActionFilterTableRowsBtForAccessedRoles();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-accessed-role-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowAccessedRoleController = (RowAccessedRoleController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                setOnActionStopSelectingRowBtForAccessedRoles();
+                setOnActionAddNewRowToTableBtForAccessedRoles();
+                setOnChangedSelectedAccessedRole();
+
+                setOnActionSaveRowChangesBtForAccessedRoles();
+                setOnDeleteChosenRowFromTableBtForAccessedRoles();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -716,6 +965,21 @@ public class MainController {
                 secretFiltersController = (SecretFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForSecrets();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-secret-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowSecretController = (RowSecretController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                setOnActionStopSelectingRowBtForSecrets();
+                setOnActionAddNewRowToTableBtForSecrets();
+                setOnChangedSelectedSecret();
+
+                setOnActionSaveRowChangesBtForSecrets();
+                setOnDeleteChosenRowFromTableBtForSecrets();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -748,6 +1012,21 @@ public class MainController {
                 passwordGenRuleFiltersController = (PasswordGenRuleFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
                 setOnActionFilterTableRowsBtForPasswordGenRules();
+
+                FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-password-gen-rule-view.fxml"));
+                AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
+                rowPasswordGenRuleController = (RowPasswordGenRuleController) rowInteractionLoader.getController();
+                rowInteractionPane.setCenter(rowInteractionAnchorPane);
+
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                setOnActionStopSelectingRowBtForPasswordGenRules();
+                setOnActionAddNewRowToTableBtForPasswordGenRules();
+                setOnChangedSelectedPasswordGenRule();
+
+                setOnActionSaveRowChangesBtForPasswordGenRules();
+                setOnDeleteChosenRowFromTableBtForPasswordGenRules();
             } catch (IOException | CommonFlkException e) {
                 Button currentChosenTableButton = getCurrentChosenTableButton();
                 currentChosenTableButton.setDisable(true);
@@ -978,6 +1257,1226 @@ public class MainController {
                 secretTableController.fillTable(foundSecrets);
             } catch (CommonFlkException e) {
                 log.debug("Failed to search secrets for filter table rows: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForAccessedRoles() {
+        stopSelectingRowBt.setOnAction(event -> {
+            accessedRoleTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForAuthors() {
+        stopSelectingRowBt.setOnAction(event -> {
+            authorTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForCodeFiles() {
+        stopSelectingRowBt.setOnAction(event -> {
+            codeFileTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForDbUsers() {
+        stopSelectingRowBt.setOnAction(event -> {
+            dbUserTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForDeploymentStatuses() {
+        stopSelectingRowBt.setOnAction(event -> {
+            deploymentStatusTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForDeployments() {
+        stopSelectingRowBt.setOnAction(event -> {
+            deploymentTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForPasswordGenRules() {
+        stopSelectingRowBt.setOnAction(event -> {
+            passwordGenRuleTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForProjectAuthors() {
+        stopSelectingRowBt.setOnAction(event -> {
+            projectAuthorTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForProjects() {
+        stopSelectingRowBt.setOnAction(event -> {
+            projectTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForRequirementAuthors() {
+        stopSelectingRowBt.setOnAction(event -> {
+            requirementAuthorTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForRequirements() {
+        stopSelectingRowBt.setOnAction(event -> {
+            requirementTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForRequirementTypes() {
+        stopSelectingRowBt.setOnAction(event -> {
+            requirementTypeTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionStopSelectingRowBtForSecrets() {
+        stopSelectingRowBt.setOnAction(event -> {
+            secretTableController.clearSelection();
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForAccessedRoles() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    AccessedRole accessedRole = rowAccessedRoleController.getRole();
+                    if (accessedRole == null) return;
+                    accessedRoleRepository.saveAccessedRole(accessedRole);
+                    accessedRoleTableController.fillTable();
+                    rowAccessedRoleController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Роль {%s, %s} успешно сохранена", accessedRole.getRequirementId(), accessedRole.getRoleName()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save accessed role: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForAuthors() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    Author author = rowAuthorController.getAuthor();
+                    if (author == null) return;
+                    UUID id = authorRepository.saveAuthor(author);
+                    authorTableController.fillTable();
+                    rowAuthorController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Автор успешно сохранен с id: %s", id));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save author: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForCodeFiles() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    CodeFile codeFile = rowCodeFileController.getCodeFile();
+                    if (codeFile == null) return;
+                    UUID id = codeFileRepository.saveCodeFile(codeFile);
+                    codeFileTableController.fillTable();
+                    rowCodeFileController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Файл с кодом успешно сохранен с id: %s", id));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save code file: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForDbUsers() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    DbUser dbUser = rowDbUserController.getDbUser();
+                    if (dbUser == null) return;
+                    Integer id = dbUserRepository.saveDbUser(dbUser);
+                    dbUserTableController.fillTable();
+                    rowDbUserController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Пользователь успешно сохранен с id: %s", id));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save db user: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForDeploymentStatuses() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    DeploymentStatus deploymentStatus = rowDeploymentStatusController.getDeploymentStatus();
+                    if (deploymentStatus == null) return;
+                    UUID id = deploymentStatusRepository.saveDeploymentStatus(deploymentStatus);
+                    deploymentStatusTableController.fillTable();
+                    rowDeploymentStatusController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Статус развертывания успешно сохранен с id: %s", id));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save deployment status: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForDeployments() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    Deployment deployment = rowDeploymentController.getDeployment();
+                    if (deployment == null) return;
+                    UUID id = deploymentRepository.saveDeployment(deployment);
+                    deploymentTableController.fillTable();
+                    rowDeploymentController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Развертывание успешно сохранено с id: %s", id));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save deployment: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForPasswordGenRules() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    PasswordGenRule passwordGenRule = rowPasswordGenRuleController.getPasswordGenRule();
+                    if (passwordGenRule == null) return;
+                    if (passwordGenRule.getCreateDate() == null) passwordGenRule.setCreateDate(LocalDateTime.now());
+                    Integer id = passwordGenRuleRepository.savePasswordGenRule(passwordGenRule);
+                    passwordGenRuleTableController.fillTable();
+                    rowPasswordGenRuleController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Правило генерации (заполнения) паролей успешно сохранено с id: %s", id));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save password generation rule: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForProjectAuthors() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    ProjectAuthor projectAuthor = rowProjectAuthorController.getProjectAuthor();
+                    if (projectAuthor == null) return;
+                    projectAuthorRepository.saveProjectAuthor(projectAuthor);
+                    projectAuthorTableController.fillTable();
+                    rowProjectAuthorController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog("Автор проекта успешно сохранен");
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save project author: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForProjects() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    Project project = rowProjectController.getProject();
+                    if (project == null) return;
+                    if (project.getLoadDate() == null) project.setLoadDate(LocalDateTime.now());
+                    if (project.getLastChangeDate() == null) project.setLastChangeDate(LocalDateTime.now());
+                    UUID id = projectRepository.saveProject(project);
+                    if (authorRepository.getAuthorById(currentDbUser.getAuthorId()) != null)
+                        projectAuthorRepository.saveProjectAuthor(new ProjectAuthor(
+                                id,
+                                currentDbUser.getAuthorId()
+                        ));
+                    projectTableController.fillTable();
+                    rowProjectController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Проект успешно сохранен с id: %s", id));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save project: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForRequirementAuthors() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    RequirementAuthor requirementAuthor = rowRequirementAuthorController.getRequirementAuthor();
+                    if (requirementAuthor == null) return;
+                    requirementAuthorRepository.saveRequirementAuthor(requirementAuthor);
+                    requirementAuthorTableController.fillTable();
+                    rowRequirementAuthorController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog("Автор требования успешно сохранен");
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save requirement author: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForRequirements() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    Requirement requirement = rowRequirementController.getRequirement();
+                    if (requirement == null) return;
+                    if (requirement.getLoadDate() == null) requirement.setLoadDate(LocalDateTime.now());
+                    if (requirement.getLastChangeDate() == null) requirement.setLastChangeDate(LocalDateTime.now());
+                    UUID id = requirementRepository.saveRequirement(requirement);
+                    if (authorRepository.getAuthorById(currentDbUser.getAuthorId()) != null)
+                        requirementAuthorRepository.saveRequirementAuthor(new RequirementAuthor(
+                                id,
+                                currentDbUser.getAuthorId()
+                        ));
+                    requirementTableController.fillTable();
+                    rowRequirementController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Требование успешно сохранено с id: %s", id));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save requirement: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForRequirementTypes() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    RequirementType requirementType = rowRequirementTypeController.getRequirementType();
+                    if (requirementType == null) return;
+                    UUID id = requirementTypeRepository.saveRequirementType(requirementType);
+                    requirementTypeTableController.fillTable();
+                    rowRequirementTypeController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Тип требований успешно сохранен с id: %s", id));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save requirement type: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionAddNewRowToTableBtForSecrets() {
+        addNewRowToTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow == null) {
+                    Secret secret = rowSecretController.getSecret();
+                    if (secret == null) return;
+                    secretRepository.saveSecret(secret);
+                    secretTableController.fillTable();
+                    rowSecretController.clearFields();
+                    ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Доступ к развертыванию успешно сохранен с id: %s", secret.getSecretId()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для добавления новой записи выйдите из режима редактирования существующей (снимите выделение)"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to save secret: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedAccessedRole() {
+        accessedRoleTableController.getObservableSelectedAccessedRole().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowAccessedRoleController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowAccessedRoleController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedAuthor() {
+        authorTableController.getObservableSelectedAuthor().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowAuthorController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowAuthorController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedCodeFile() {
+        codeFileTableController.getObservableSelectedCodeFile().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowCodeFileController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowCodeFileController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedDbUser() {
+        dbUserTableController.getObservableSelectedDbUser().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                rowDbUserController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                rowDbUserController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedDeploymentStatus() {
+        deploymentStatusTableController.getObservableSelectedDeploymentStatus().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowDeploymentStatusController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowDeploymentStatusController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedDeployment() {
+        deploymentTableController.getObservableSelectedDeployment().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowDeploymentController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowDeploymentController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedPasswordGenRule() {
+        passwordGenRuleTableController.getObservableSelectedPasswordGenRule().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowPasswordGenRuleController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowPasswordGenRuleController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedProjectAuthor() {
+        projectAuthorTableController.getObservableSelectedProjectAuthor().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowProjectAuthorController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowProjectAuthorController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedProject() {
+        projectTableController.getObservableSelectedProject().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowProjectController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowProjectController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedRequirementAuthor() {
+        requirementAuthorTableController.getObservableSelectedRequirementAuthor().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowRequirementAuthorController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowRequirementAuthorController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedRequirement() {
+        requirementTableController.getObservableSelectedRequirement().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowRequirementController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowRequirementController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedRequirementType() {
+        requirementTypeTableController.getObservableSelectedRequirementType().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowRequirementTypeController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowRequirementTypeController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnChangedSelectedSecret() {
+        secretTableController.getObservableSelectedSecret().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) {
+                selectedRow = null;
+                addNewRowToTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
+                rowSecretController.clearFields();
+            } else {
+                selectedRow = newSelection;
+                addNewRowToTableBt.setDisable(true);
+                saveRowChangesBt.setDisable(false);
+                deleteChosenRowFromTableBt.setDisable(false);
+                rowSecretController.autoFillFields(newSelection);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForAccessedRoles() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    AccessedRole accessedRole = rowAccessedRoleController.getRole();
+                    if (accessedRole == null) return;
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить роль {%s}?", accessedRole.toString())
+                    );
+                    if (isDeletionAssigned) {
+                        accessedRoleRepository.deleteAccessedRoleByRequirementIdAndName(
+                                accessedRole.getRequirementId(),
+                                accessedRole.getRoleName()
+                        );
+                        accessedRoleTableController.fillTable();
+                        rowAccessedRoleController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Роль {%s, %s} удалена успешно", accessedRole.getRequirementId(), accessedRole.getRoleName()));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete accessed role: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForAuthors() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    UUID authorId = rowAuthorController.getAuthorId();
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить автора с id '%s'?", authorId.toString())
+                    );
+                    if (isDeletionAssigned) {
+                        authorRepository.deleteAuthorById(
+                                authorId
+                        );
+                        authorTableController.fillTable();
+                        rowAuthorController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Автор с id '%s' удален успешно", authorId));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete author: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForCodeFiles() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    UUID codeFileId = rowCodeFileController.getCodeFileId();
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить файл с кодом с id '%s'?", codeFileId.toString())
+                    );
+                    if (isDeletionAssigned) {
+                        codeFileRepository.deleteCodeFileById(
+                                codeFileId
+                        );
+                        codeFileTableController.fillTable();
+                        rowCodeFileController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Файл с кодом с id '%s' удален успешно", codeFileId));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete code file: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForDbUsers() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    Integer dbUserId = rowDbUserController.getUserId();
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить пользователя с id '%s'?", dbUserId.toString())
+                    );
+                    if (isDeletionAssigned) {
+                        dbUserRepository.deleteDbUserById(
+                                dbUserId
+                        );
+                        dbUserTableController.fillTable();
+                        rowDbUserController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Пользователь с id '%s' удален успешно", dbUserId));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete db user: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForDeployments() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    UUID deploymentId = rowDeploymentController.getDeploymentId();
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить развертывание с id '%s'?", deploymentId)
+                    );
+                    if (isDeletionAssigned) {
+                        deploymentRepository.deleteDeploymentById(
+                                deploymentId
+                        );
+                        deploymentTableController.fillTable();
+                        rowDeploymentController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Развертывание с id '%s' удалено успешно", deploymentId));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete deployment: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForDeploymentStatuses() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    UUID deploymentStatusId = rowDeploymentStatusController.getDeploymentStatusId();
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить статус развертываний с id '%s'?", deploymentStatusId)
+                    );
+                    if (isDeletionAssigned) {
+                        deploymentStatusRepository.deleteDeploymentStatusById(
+                                deploymentStatusId
+                        );
+                        deploymentStatusTableController.fillTable();
+                        rowDeploymentStatusController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Статус развертываний с id '%s' удален успешно", deploymentStatusId));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete deployment status: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForPasswordGenRules() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    Integer passwordGenRuleId = rowPasswordGenRuleController.getPasswordGenRuleId();
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить правило генерации (заполнения) паролей с id '%s'?", passwordGenRuleId)
+                    );
+                    if (isDeletionAssigned) {
+                        passwordGenRuleRepository.deletePasswordGenRuleById(
+                                passwordGenRuleId
+                        );
+                        passwordGenRuleTableController.fillTable();
+                        rowPasswordGenRuleController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Правило генерации (заполнения) паролей с id '%s' удалено успешно", passwordGenRuleId));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete password generation rule: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForProjectAuthors() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    ProjectAuthor projectAuthor = rowProjectAuthorController.getProjectAuthor();
+                    if (projectAuthor == null) return;
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить связь автора с проектом {%s}?", projectAuthor.toString())
+                    );
+                    if (isDeletionAssigned) {
+                        projectAuthorRepository.deleteProjectAuthorByIds(
+                                projectAuthor.getProjectId(),
+                                projectAuthor.getAuthorId()
+                        );
+                        projectAuthorTableController.fillTable();
+                        rowProjectAuthorController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Связь автора (id '%s') с проектом (id '%s') удалена успешно", projectAuthor.getAuthorId(), projectAuthor.getProjectId()));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete project author: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForProjects() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    UUID projectId = rowProjectController.getProjectId();
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить проект с id '%s'?", projectId)
+                    );
+                    if (isDeletionAssigned) {
+                        projectRepository.deleteProjectById(
+                                projectId
+                        );
+                        projectTableController.fillTable();
+                        rowProjectController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Проект с id '%s' удален успешно", projectId));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete project: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForRequirementAuthors() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    RequirementAuthor requirementAuthor = rowRequirementAuthorController.getRequirementAuthor();
+                    if (requirementAuthor == null) return;
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить связь автора с требованием {%s}?", requirementAuthor.toString())
+                    );
+                    if (isDeletionAssigned) {
+                        requirementAuthorRepository.deleteRequirementAuthorByIds(
+                                requirementAuthor.getRequirementId(),
+                                requirementAuthor.getAuthorId()
+                        );
+                        projectAuthorTableController.fillTable();
+                        rowRequirementAuthorController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Связь автора (id '%s') с требованием (id '%s') удалена успешно", requirementAuthor.getAuthorId(), requirementAuthor.getRequirementId()));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete requirement author: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForRequirements() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    UUID requirementId = rowRequirementController.getRequirementId();
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить требование с id '%s'?", requirementId)
+                    );
+                    if (isDeletionAssigned) {
+                        requirementRepository.deleteRequirementById(
+                                requirementId
+                        );
+                        requirementTableController.fillTable();
+                        rowRequirementController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Требование с id '%s' удалено успешно", requirementId));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete requirement: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForRequirementTypes() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    UUID requirementTypeId = rowRequirementTypeController.getRequirementTypeId();
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить тип требований с id '%s'?", requirementTypeId)
+                    );
+                    if (isDeletionAssigned) {
+                        requirementTypeRepository.deleteRequirementTypeById(
+                                requirementTypeId
+                        );
+                        requirementTypeTableController.fillTable();
+                        rowRequirementTypeController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Тип требований с id '%s' удален успешно", requirementTypeId));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete requirement type: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnDeleteChosenRowFromTableBtForSecrets() {
+        deleteChosenRowFromTableBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    UUID secretId = rowSecretController.getSecretId();
+                    Boolean isDeletionAssigned = ControllerUtils.showModalForAssigningOperation(
+                            String.format("Вы точно хотите удалить доступ к развертыванию с id '%s'?", secretId)
+                    );
+                    if (isDeletionAssigned) {
+                        secretRepository.deleteSecretById(
+                                secretId
+                        );
+                        secretTableController.fillTable();
+                        rowSecretController.clearFields();
+                        ControllerUtils.showSuccessfulEntityDeletionDialog(String.format("Доступ к развертыванию с id '%s' удален успешно", secretId));
+                    }
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для удаления записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to delete secret: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionSaveRowChangesBtForAccessedRoles() {
+        saveRowChangesBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    AccessedRole accessedRole = rowAccessedRoleController.getRole();
+                    if (accessedRole == null) return;
+                    accessedRoleRepository.updateAccessedRoleNameByIdAndName(
+                            accessedRole.getRequirementId(),
+                            ((AccessedRole) selectedRow).getRoleName(),
+                            accessedRole.getRoleName()
+                    );
+                    accessedRoleTableController.fillTable();
+                    rowAccessedRoleController.clearFields();
+                    ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Роль {%s, %s} изменена успешно", ((AccessedRole) selectedRow).getRequirementId(), ((AccessedRole) selectedRow).getRoleName()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для изменения записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to update accessed role: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionSaveRowChangesBtForAuthors() {
+        saveRowChangesBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    Author author = rowAuthorController.getAuthor();
+                    if (author == null) return;
+                    authorRepository.updateAuthorLoginById(
+                            author.getAuthorId(),
+                            author.getLogin()
+                    );
+                    authorTableController.fillTable();
+                    rowAuthorController.clearFields();
+                    ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Автор с id '%s' изменен успешно", author.getAuthorId()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для изменения записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to update author: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionSaveRowChangesBtForCodeFiles() {
+        saveRowChangesBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    CodeFile codeFile = rowCodeFileController.getCodeFile();
+                    if (codeFile == null) return;
+                    codeFileRepository.updateCodeFileContentById(
+                            codeFile.getCodeFileId(),
+                            codeFile.getFileContent()
+                    );
+                    codeFileTableController.fillTable();
+                    rowCodeFileController.clearFields();
+                    ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Файл с кодом с id '%s' изменен успешно", codeFile.getCodeFileId()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для изменения записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to update code file: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionSaveRowChangesBtForDbUsers() {
+        saveRowChangesBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    DbUser dbUser = rowDbUserController.getDbUser();
+                    if (dbUser == null) return;
+                    dbUserRepository.updateDbUserPassById(
+                            dbUser.getUserId(),
+                            dbUser.getUserPass()
+                    );
+                    dbUserTableController.fillTable();
+                    rowDbUserController.clearFields();
+                    ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Пользователь с id '%s' изменен успешно", dbUser.getUserId()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для изменения записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to update db user: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionSaveRowChangesBtForDeployments() {
+        saveRowChangesBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    Deployment deployment = rowDeploymentController.getDeployment();
+                    if (deployment == null) return;
+                    deploymentRepository.updateDeploymentParamsById(
+                            deployment.getDeploymentId(),
+                            deployment.getDeploymentStatusId(),
+                            deployment.getDeploymentPath(),
+                            deployment.getSettings(),
+                            deployment.getBuiltVersion(),
+                            deployment.getBuiltSettings(),
+                            deployment.getBuilt(),
+                            deployment.getProjectId()
+                    );
+                    deploymentTableController.fillTable();
+                    rowDeploymentController.clearFields();
+                    ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Развертывание с id '%s' изменено успешно", deployment.getDeploymentId()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для изменения записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to update deployment: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionSaveRowChangesBtForDeploymentStatuses() {
+        saveRowChangesBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    DeploymentStatus deploymentStatus = rowDeploymentStatusController.getDeploymentStatus();
+                    if (deploymentStatus == null) return;
+                    deploymentStatusRepository.updateDeploymentStatusNameById(
+                            deploymentStatus.getDeploymentStatusId(),
+                            deploymentStatus.getStatusName()
+                    );
+                    deploymentStatusTableController.fillTable();
+                    rowDeploymentStatusController.clearFields();
+                    ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Статус развертываний с id '%s' изменен успешно", deploymentStatus.getDeploymentStatusId()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для изменения записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to update deployment status: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionSaveRowChangesBtForPasswordGenRules() {
+        saveRowChangesBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    PasswordGenRule passwordGenRule = rowPasswordGenRuleController.getPasswordGenRule();
+                    if (passwordGenRule == null) return;
+                    passwordGenRuleRepository.updatePasswordGenRule(
+                            passwordGenRule
+                    );
+                    passwordGenRuleTableController.fillTable();
+                    rowPasswordGenRuleController.clearFields();
+                    ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Правило генерации (заполнения) паролей с id '%s' изменено успешно", passwordGenRule.getRuleId()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для изменения записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to update password generation rule: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionSaveRowChangesBtForProjects() {
+        saveRowChangesBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    Project project = rowProjectController.getProject();
+                    if (project == null) return;
+                    if (project.getLastChangeDate() == null) project.setLastChangeDate(LocalDateTime.now());
+                    projectRepository.updateProject(
+                            project
+                    );
+                    projectTableController.fillTable();
+                    rowProjectController.clearFields();
+                    ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Проект с id '%s' изменен успешно", project.getProjectId()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для изменения записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to update project: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionSaveRowChangesBtForRequirements() {
+        saveRowChangesBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    Requirement requirement = rowRequirementController.getRequirement();
+                    if (requirement == null) return;
+                    if (requirement.getLastChangeDate() == null) requirement.setLastChangeDate(LocalDateTime.now());
+                    requirementRepository.updateRequirement(
+                            requirement
+                    );
+                    requirementTableController.fillTable();
+                    rowRequirementController.clearFields();
+                    ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Требование с id '%s' изменен успешно", requirement.getRequirementId()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для изменения записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to update requirement: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionSaveRowChangesBtForRequirementTypes() {
+        saveRowChangesBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    RequirementType requirementType = rowRequirementTypeController.getRequirementType();
+                    if (requirementType == null) return;
+                    requirementTypeRepository.updateRequirementTypeNameById(
+                            requirementType.getRequirementTypeId(),
+                            requirementType.getRequirementTypeName()
+                    );
+                    requirementTypeTableController.fillTable();
+                    rowRequirementTypeController.clearFields();
+                    ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Тип требований с id '%s' изменен успешно", requirementType.getRequirementTypeId()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для изменения записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to update requirement type: {}", e.getMessage());
+                ControllerUtils.showCommonFlkExceptionAlert(e);
+            }
+        });
+    }
+
+    private void setOnActionSaveRowChangesBtForSecrets() {
+        saveRowChangesBt.setOnAction(event -> {
+            try {
+                if (selectedRow != null) {
+                    Secret secret = rowSecretController.getSecret();
+                    if (secret == null) return;
+                    secretRepository.updateSecret(
+                            secret
+                    );
+                    secretTableController.fillTable();
+                    rowSecretController.clearFields();
+                    ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Доступ (id '%s') к развертыванию изменен успешно", secret.getSecretId()));
+                } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
+                        "1004001",
+                        "Для изменения записи выберите соответствующую строку таблицы"
+                ));
+            } catch (CommonFlkException e) {
+                log.debug("Failed to update secret: {}", e.getMessage());
                 ControllerUtils.showCommonFlkExceptionAlert(e);
             }
         });

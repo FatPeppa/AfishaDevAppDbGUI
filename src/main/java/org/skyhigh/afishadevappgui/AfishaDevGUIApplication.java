@@ -8,8 +8,10 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.common.controller.FlkExceptionMessageController;
+import org.skyhigh.afishadevappgui.common.validation.CommonUIException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -71,6 +73,10 @@ public class AfishaDevGUIApplication extends Application {
     private static void showErrorDialog(Throwable e) {
         StringWriter errorMsg = new StringWriter();
         if (e.getCause() != null && e.getCause().getCause() != null && e.getCause().getCause() instanceof CommonFlkException) {
+            if (e.getCause().getCause() instanceof CommonUIException) {
+                ControllerUtils.showCommonFlkExceptionAlert((CommonFlkException) e.getCause().getCause());
+                return;
+            }
             errorMsg.write(e.getCause().getCause().getMessage());
         } else {
             e.printStackTrace(new PrintWriter(errorMsg));

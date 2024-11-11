@@ -24,10 +24,18 @@ public class RequirementAuthorFiltersController {
     Label requirementIdLabel;
 
     public UUID getRequirementId() throws CommonFlkException {
-        return ControllerUtils.getUUIDFromTextField(requirementIdInputField, getFieldLocalNameFromItsLabel(requirementIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(requirementIdInputField, getFieldLocalNameFromItsLabel(requirementIdLabel));
+        } catch (CommonFlkException e) {
+            return null;
+        }
     }
 
     public UUID getAuthorId() throws CommonFlkException {
-        return ControllerUtils.getUUIDFromTextField(authorIdInputField, getFieldLocalNameFromItsLabel(requirementIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(authorIdInputField, getFieldLocalNameFromItsLabel(requirementIdLabel));
+        } catch (CommonFlkException e) {
+            return null;
+        }
     }
 }

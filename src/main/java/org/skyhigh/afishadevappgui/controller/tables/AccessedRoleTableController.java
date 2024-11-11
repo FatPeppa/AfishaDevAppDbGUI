@@ -1,5 +1,6 @@
 package org.skyhigh.afishadevappgui.controller.tables;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -28,11 +29,14 @@ public class AccessedRoleTableController {
 
     private final AccessedRoleRepository accessedRoleRepository = new AccessedRoleRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
+    private AccessedRole selectedAccessedRole;
+
     public AccessedRoleTableController() throws CommonFlkException {}
 
     public void initialize() {
         requirementIdAccessedRoleColumn.setCellValueFactory(new PropertyValueFactory<>("requirementId"));
         roleNameAccessedRoleColumn.setCellValueFactory(new PropertyValueFactory<>("roleName"));
+        setAccessedRoleTableSelectedItemPropertyListener();
     }
 
     public void fillTable() throws CommonFlkException {
@@ -49,5 +53,21 @@ public class AccessedRoleTableController {
         ObservableList<AccessedRole> accessedRolesListView = FXCollections.observableArrayList();
         accessedRolesListView.addAll(roles);
         accessedRoleTableView.setItems(accessedRolesListView);
+    }
+
+    private void setAccessedRoleTableSelectedItemPropertyListener() {
+        accessedRoleTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null)
+                selectedAccessedRole = newSelection;
+        });
+    }
+
+    public void clearSelection() {
+        accessedRoleTableView.getSelectionModel().clearSelection();
+        selectedAccessedRole = null;
+    }
+
+    public ObservableValue<AccessedRole> getObservableSelectedAccessedRole() {
+        return accessedRoleTableView.getSelectionModel().selectedItemProperty();
     }
 }

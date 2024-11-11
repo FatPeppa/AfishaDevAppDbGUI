@@ -1,11 +1,13 @@
 package org.skyhigh.afishadevappgui.controller.tables;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lombok.Getter;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
@@ -28,11 +30,15 @@ public class RequirementTypeTableController {
 
     private final RequirementTypeRepository requirementTypeRepository = new RequirementTypeRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
+    @Getter
+    private RequirementType selectedRequirementType;
+
     public RequirementTypeTableController() throws CommonFlkException {}
 
     public void initialize() {
         requirementTypeIdRequirementTypeTableColumn.setCellValueFactory(new PropertyValueFactory<>("requirementTypeId"));
         requirementTypeNameRequirementTypeTableColumn.setCellValueFactory(new PropertyValueFactory<>("requirementTypeName"));
+        setRequirementTypeTableSelectedItemPropertyListener();
     }
 
     public void fillTable() throws CommonFlkException {
@@ -49,5 +55,21 @@ public class RequirementTypeTableController {
         ObservableList<RequirementType> requirementTypeObservableList = FXCollections.observableArrayList();
         requirementTypeObservableList.addAll(requirementTypes);
         requirementTypeTable.setItems(requirementTypeObservableList);
+    }
+
+    private void setRequirementTypeTableSelectedItemPropertyListener() {
+        requirementTypeTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null)
+                selectedRequirementType = newSelection;
+        });
+    }
+
+    public void clearSelection() {
+        requirementTypeTable.getSelectionModel().clearSelection();
+        selectedRequirementType = null;
+    }
+
+    public ObservableValue<RequirementType> getObservableSelectedRequirementType() {
+        return requirementTypeTable.getSelectionModel().selectedItemProperty();
     }
 }

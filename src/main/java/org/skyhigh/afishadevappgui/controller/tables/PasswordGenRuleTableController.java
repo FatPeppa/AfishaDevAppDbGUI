@@ -1,11 +1,13 @@
 package org.skyhigh.afishadevappgui.controller.tables;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lombok.Getter;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
@@ -46,6 +48,9 @@ public class PasswordGenRuleTableController {
 
     private final PasswordGenRuleRepository passwordGenRuleRepository = new PasswordGenRuleRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
+    @Getter
+    private PasswordGenRule selectedPasswordGenRule;
+
     public PasswordGenRuleTableController() throws CommonFlkException {}
 
     public void initialize() {
@@ -57,6 +62,7 @@ public class PasswordGenRuleTableController {
         endDatePasswordGenRuleTableColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         createDatePasswordGenRuleTableColumn.setCellValueFactory(new PropertyValueFactory<>("createDate"));
         numSymAmPasswordGenRuleTableColumn.setCellValueFactory(new PropertyValueFactory<>("numericSymbolsAmount"));
+        setPasswordGenRuleTableSelectedItemPropertyListener();
     }
 
     public void fillTable() throws CommonFlkException {
@@ -73,5 +79,21 @@ public class PasswordGenRuleTableController {
         ObservableList<PasswordGenRule> passwordGenRuleObservableList = FXCollections.observableArrayList();
         passwordGenRuleObservableList.addAll(passwordGenRules);
         passwordGenRuleTable.setItems(passwordGenRuleObservableList);
+    }
+
+    private void setPasswordGenRuleTableSelectedItemPropertyListener() {
+        passwordGenRuleTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null)
+                selectedPasswordGenRule = newSelection;
+        });
+    }
+
+    public void clearSelection() {
+        passwordGenRuleTable.getSelectionModel().clearSelection();
+        selectedPasswordGenRule = null;
+    }
+
+    public ObservableValue<PasswordGenRule> getObservableSelectedPasswordGenRule() {
+        return passwordGenRuleTable.getSelectionModel().selectedItemProperty();
     }
 }

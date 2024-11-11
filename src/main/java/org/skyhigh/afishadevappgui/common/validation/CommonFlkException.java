@@ -35,4 +35,27 @@ public class CommonFlkException extends Throwable {
                 cause
         );
     }
+
+    public CommonFlkException(String code, String message, boolean isCritical) {
+        super(
+                String.format(
+                        "Flk %s exception occurred: %s; criticality: %b",
+                        code,
+                        message,
+                        isCritical
+                )
+        );
+    }
+
+    public CommonFlkException(String code, String message, boolean isCritical, Throwable cause) {
+        super(
+                String.format(
+                        "Flk %s exception occurred: %s; criticality: %b",
+                        code,
+                        message,
+                        isCritical
+                ),
+                cause
+        );
+    }
 }

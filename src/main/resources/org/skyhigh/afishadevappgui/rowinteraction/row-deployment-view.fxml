@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="169.0" prefWidth="1014.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.rowinteraction.RowDeploymentController">
+    <children>
+        <TextField fx:id="deploymentIdField" editable="false" layoutX="195.0" layoutY="14.0" prefHeight="27.0" prefWidth="260.0" promptText="Заполняется автоматически" style="-fx-background-color: #e6e6e6; -fx-border-color: black;" />
+        <TextField fx:id="addressField" layoutX="195.0" layoutY="54.0" prefHeight="27.0" prefWidth="260.0" promptText="Введите путь развертывания (Строка)" />
+        <Label fx:id="deploymentIdLabel" layoutX="36.0" layoutY="19.0" text="ID развертывания:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="statusIdLabel" layoutX="465.0" layoutY="19.0" text="Идентификатор статуса развертывания:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+      <TextField fx:id="statusIdField" layoutX="710.0" layoutY="14.0" prefHeight="27.0" prefWidth="260.0" promptText="Введите идентификатор статуса (UUID)" />
+      <TextField fx:id="settingsField" layoutX="710.0" layoutY="54.0" prefHeight="27.0" prefWidth="260.0" promptText="Введите настройки развертывания (JSON)" />
+      <Label fx:id="addressLabel" layoutX="29.0" layoutY="59.0" text="Путь развертывания:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="settingsLabel" layoutX="502.0" layoutY="59.0" text="Настройки развертывания:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="builtSettingsLabel" layoutX="527.0" layoutY="96.0" text="Настройки сборки:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="builtVersionLabel" layoutX="47.0" layoutY="96.0" text="Версия сборки:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField fx:id="builtVersionField" layoutX="195.0" layoutY="91.0" prefHeight="27.0" prefWidth="260.0" promptText="Введите номер версии сборки (Строка)" />
+      <TextField fx:id="builtSettingsField" layoutX="710.0" layoutY="91.0" prefHeight="27.0" prefWidth="260.0" promptText="Введите настройки развертывания (JSON)" />
+      <Label fx:id="builtLabel" layoutX="68.0" layoutY="137.0" text="Сборка:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField fx:id="builtField" layoutX="195.0" layoutY="132.0" prefHeight="27.0" prefWidth="260.0" promptText="Укажите путь к файлу сборки (Строка)" />
+      <Label fx:id="projectIdLabel" layoutX="509.0" layoutY="137.0" text="Идентификатор проекта:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField fx:id="projectIdField" layoutX="710.0" layoutY="132.0" prefHeight="27.0" prefWidth="260.0" promptText="Введите идентификатор проекта (UUID)" />
+    </children>
+</AnchorPane>

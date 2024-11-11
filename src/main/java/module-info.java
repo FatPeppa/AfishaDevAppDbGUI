@@ -14,6 +14,7 @@ module org.skyhigh.afishadevappgui {
     exports org.skyhigh.afishadevappgui.controller;
     exports org.skyhigh.afishadevappgui.controller.tables;
     exports org.skyhigh.afishadevappgui.controller.filters;
+    exports org.skyhigh.afishadevappgui.controller.rowinteraction;
     exports org.skyhigh.afishadevappgui.common.validation;
     exports org.skyhigh.afishadevappgui.common.service;
     exports org.skyhigh.afishadevappgui.common.controller;
@@ -23,6 +24,7 @@ module org.skyhigh.afishadevappgui {
     opens org.skyhigh.afishadevappgui.controller to javafx.fxml;
     opens org.skyhigh.afishadevappgui.common.service to javafx.fxml;
     opens org.skyhigh.afishadevappgui.common.validation to javafx.fxml;
+    opens org.skyhigh.afishadevappgui.controller.rowinteraction to javafx.fxml;
     opens org.skyhigh.afishadevappgui.controller.tables to javafx.fxml;
     opens org.skyhigh.afishadevappgui.controller.filters to javafx.fxml;
     opens org.skyhigh.afishadevappgui.common.controller to javafx.fxml;

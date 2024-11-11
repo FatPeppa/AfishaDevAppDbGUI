@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="167.0" prefWidth="1157.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.rowinteraction.RowProjectController">
+    <children>
+        <TextField fx:id="projectIdField" layoutX="194.0" layoutY="14.0" prefHeight="27.0" prefWidth="220.0" promptText="Заполняется автоматически" style="-fx-background-color: #e6e6e6; -fx-border-color: black;" />
+        <TextField fx:id="structureField" layoutX="194.0" layoutY="91.0" prefHeight="27.0" prefWidth="220.0" promptText="Заполните структуру проекта (JSON)" />
+        <Label fx:id="projectIdLabel" layoutX="25.0" layoutY="19.0" text="Идентификатор проекта:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="nameLabel" layoutX="498.0" layoutY="19.0" text="Наименование:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <TextField fx:id="nameField" layoutX="685.0" layoutY="14.0" prefHeight="27.0" prefWidth="463.0" promptText="Введите наименование проекта (Строка)" />
+        <TextField fx:id="lastChangeDateField" editable="false" layoutX="685.0" layoutY="54.0" prefHeight="27.0" prefWidth="463.0" promptText="Заполняется автоматически" style="-fx-background-color: #e6e6e6; -fx-border-color: black;"/>
+        <Label fx:id="uploadDateLabel" layoutX="54.0" layoutY="59.0" text="Дата загрузки:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="lastChangeDateLabel" layoutX="430.0" layoutY="59.0" text="Дата последнего внесения изменений:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="contentLabel" layoutX="504.0" layoutY="96.0" text="Содержимое:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label fx:id="structureLabel" layoutX="65.0" layoutY="96.0" text="Структура:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <TextField fx:id="uploadDateField" editable="false" layoutX="194.0" layoutY="54.0" prefHeight="27.0" prefWidth="220.0" promptText="Заполняется автоматически" style="-fx-background-color: #e6e6e6; -fx-border-color: black;" />
+        <TextField fx:id="contentField" layoutX="685.0" layoutY="91.0" prefHeight="27.0" prefWidth="463.0" promptText="Заполните содержимое проекта (JSON)" />
+        <Label fx:id="settingsLabel" layoutX="65.0" layoutY="137.0" text="Настройки:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <TextField fx:id="settingsField" layoutX="194.0" layoutY="132.0" prefHeight="27.0" prefWidth="220.0" promptText="Заполните настройки проекта (JSON)" />
+        <Label fx:id="versionNumberLabel" layoutX="500.0" layoutY="137.0" text="Номер версии:">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <TextField fx:id="versionNumberField" layoutX="685.0" layoutY="132.0" prefHeight="27.0" prefWidth="463.0" promptText="Укажите номер версии проекта (Строка)" />
+    </children>
+</AnchorPane>

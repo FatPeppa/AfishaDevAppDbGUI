@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
+import org.skyhigh.afishadevappgui.common.validation.CommonUIFormatException;
 
 import java.util.UUID;
 
@@ -29,11 +30,19 @@ public class CodeFileFiltersController {
     }
 
     public UUID getCodeFileId() {
-        return ControllerUtils.getUUIDFromTextField(codeFileIdInputField, getFieldLocalNameFromItsLabel(codeFileIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(codeFileIdInputField, getFieldLocalNameFromItsLabel(codeFileIdLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     public UUID getProjectId() {
-        return ControllerUtils.getUUIDFromTextField(projectIdInputField, getFieldLocalNameFromItsLabel(projectIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(projectIdInputField, getFieldLocalNameFromItsLabel(projectIdLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     private void setAuthorIdInputFieldChangeListener() {

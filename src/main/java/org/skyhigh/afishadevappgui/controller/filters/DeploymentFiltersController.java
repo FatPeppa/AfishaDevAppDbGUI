@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
+import org.skyhigh.afishadevappgui.common.validation.CommonUIFormatException;
 
 import java.util.UUID;
 
@@ -49,15 +50,27 @@ public class DeploymentFiltersController {
     }
 
     public UUID getDeploymentId() {
-        return ControllerUtils.getUUIDFromTextField(deploymentIdInputField, getFieldLocalNameFromItsLabel(deploymentIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(deploymentIdInputField, getFieldLocalNameFromItsLabel(deploymentIdLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     public UUID getDeploymentStatusId() {
-        return ControllerUtils.getUUIDFromTextField(deploymentStatusIdInputField, getFieldLocalNameFromItsLabel(deploymentStatusIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(deploymentStatusIdInputField, getFieldLocalNameFromItsLabel(deploymentStatusIdLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     public UUID getProjectId() {
-        return ControllerUtils.getUUIDFromTextField(projectIdInputField, getFieldLocalNameFromItsLabel(projectIdLabel));
+        try {
+            return ControllerUtils.getUUIDFromTextField(projectIdInputField, getFieldLocalNameFromItsLabel(projectIdLabel));
+        } catch (CommonUIFormatException e) {
+            return null;
+        }
     }
 
     public String getBuiltVersion() {

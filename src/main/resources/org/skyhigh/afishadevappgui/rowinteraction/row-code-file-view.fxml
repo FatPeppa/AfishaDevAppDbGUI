@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="113.0" prefWidth="848.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.skyhigh.afishadevappgui.controller.rowinteraction.RowCodeFileController">
+    <TextField fx:id="codeFileIdField" editable="false" layoutX="146.0" layoutY="14.0" prefHeight="27.0" prefWidth="260.0" promptText="Заполняется автоматически" style="-fx-background-color: #e6e6e6; -fx-border-color: black;" />
+    <TextField fx:id="projectIdField" layoutX="575.0" layoutY="14.0" prefHeight="27.0" prefWidth="260.0" promptText="Введите идентификатор проекта (UUID)" />
+    <Label fx:id="codeFileIdLabel" layoutX="5.0" layoutY="19.0" text="Идентификатор файла:">
+        <font>
+            <Font name="System Bold" size="12.0" />
+        </font>
+    </Label>
+    <Label fx:id="projectIdLabel" layoutX="416.0" layoutY="19.0" text="Идентификатор проекта:">
+        <font>
+            <Font name="System Bold" size="12.0" />
+        </font>
+    </Label>
+   <Label fx:id="contentLabel" layoutX="14.0" layoutY="67.0" text="Содержимое файла:">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font>
+   </Label>
+   <Label fx:id="uploadDateLabel" layoutX="447.0" layoutY="67.0" text="Дата загрузки:">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font>
+   </Label>
+   <TextField fx:id="contentField" layoutX="146.0" layoutY="62.0" prefHeight="27.0" prefWidth="260.0" promptText="Заполните содержимое файла (Строка)" />
+   <TextField fx:id="codeFileUploadDateField" editable="false" layoutX="575.0" layoutY="62.0" prefHeight="27.0" prefWidth="260.0" promptText="Заполняется автоматически" style="-fx-background-color: #e6e6e6; -fx-border-color: black;"/>
+</AnchorPane>

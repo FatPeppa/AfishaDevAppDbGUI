@@ -78,9 +78,9 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
         Flk10000015Validator.validate(secret);
         Flk10000012Validator.validate(secret);
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.deployment_id = ?, t.address = ?" +
-                        " t.login = ?, t.password = ? " +
-                        "WHERE t.secret_id = ?"
+                "UPDATE " + super.getTableName() + " SET deployment_id = ?, address = ?" +
+                        " login = ?, password = ? " +
+                        "WHERE secret_id = ?"
         );
         ps.setObject(5, secret.getSecretId());
         ps.setObject(1, secret.getDeploymentId());
@@ -111,7 +111,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
     @Override
     public void updateSecretDeploymentIdById(@NonNull UUID secretId, @NonNull UUID deploymentId) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.deployment_id = ? WHERE t.secret_id = ?"
+                "UPDATE " + super.getTableName() + " SET deployment_id = ? WHERE secret_id = ?"
         );
         ps.setObject(1, deploymentId);
         ps.setObject(2, secretId);
@@ -122,7 +122,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
     @Override
     public void updateSecretAddressById(@NonNull UUID secretId, @NonNull String address) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.address = ? WHERE t.secret_id = ?"
+                "UPDATE " + super.getTableName() + " SET address = ? WHERE secret_id = ?"
         );
         ps.setString(1, address);
         ps.setObject(2, secretId);
@@ -133,7 +133,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
     @Override
     public void updateSecretLogin(@NonNull UUID secretId, @NonNull String login) throws SQLException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.login = ? WHERE t.secret_id = ?"
+                "UPDATE " + super.getTableName() + " SET login = ? WHERE secret_id = ?"
         );
         ps.setString(1, login);
         ps.setObject(2, secretId);
@@ -144,7 +144,7 @@ public class SecretDAOImpl extends BaseTable implements SecretDAO {
     @Override
     public void updateSecretPassword(@NonNull UUID secretId, String password) throws SQLException, CommonFlkException {
         PreparedStatement ps = super.prepareStatement(
-                "UPDATE " + super.getTableName() + " t SET t.password = ? WHERE t.secret_id = ?"
+                "UPDATE " + super.getTableName() + " SET password = ? WHERE secret_id = ?"
         );
         if (password != null)
             ps.setString(1, password);
