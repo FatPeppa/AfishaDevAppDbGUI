@@ -39,6 +39,7 @@ public class ControllerUtils {
             alert.setTitle("Ошибка");
             alert.setHeaderText(String.format("Недопустимый формат поля '%s'", textFieldLogicName));
             alert.setContentText("Тип поля должен быть UUID");
+            alert.setResizable(true);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
 
@@ -61,6 +62,7 @@ public class ControllerUtils {
             alert.setTitle("Ошибка");
             alert.setHeaderText("Недопустимый формат поля");
             alert.setContentText(String.format("Тип поля '%s' должен быть Integer", textFieldLogicName));
+            alert.setResizable(true);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
 
@@ -83,6 +85,7 @@ public class ControllerUtils {
             alert.setTitle("Ошибка");
             alert.setHeaderText("Недопустимый формат поля");
             alert.setContentText(String.format("Тип поля '%s' должен быть JSON", textFieldLogicName));
+            alert.setResizable(true);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
 
@@ -107,6 +110,7 @@ public class ControllerUtils {
             alert.setTitle("Ошибка");
             alert.setHeaderText("Некорректно заполненный путь к файлу");
             alert.setContentText(String.format("Значение '%s' должно содержать корректно заполненный путь к файлу", textFieldLogicName));
+            alert.setResizable(true);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
 
@@ -140,6 +144,7 @@ public class ControllerUtils {
             alert.setHeaderText("Недопустимый формат поля");
             alert.setContentText(String.format("Значение поля '%s' должно соответствовать маске 'ГГГГ-ММ-ДДTЧЧ-МИ-СС.МС', " +
                     "где ГГГГ - год, ММ - месяц, ДД - день, ЧЧ - час, МИ - минута и СС - секунда, МС - миллисекунды, а латинская T - разделитель", textFieldLogicName));
+            alert.setResizable(true);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
 
@@ -174,6 +179,7 @@ public class ControllerUtils {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Непредвиденная ошибка");
         alert.setHeaderText(String.format("Произошла непредвиденная ошибка: %s", description));
+        alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
 
@@ -184,6 +190,7 @@ public class ControllerUtils {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Предупреждение");
         alert.setHeaderText(String.format("%s", description));
+        alert.setResizable(true);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
 
@@ -195,6 +202,10 @@ public class ControllerUtils {
         alert.setTitle("Сообщение");
         alert.setHeaderText(header);
         alert.setContentText(content);
+
+        alert.setResizable(true);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.getDialogPane().setMinWidth(Region.USE_PREF_SIZE);
 
         alert.showAndWait();
     }

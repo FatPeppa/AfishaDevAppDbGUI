@@ -1263,15 +1263,11 @@ public class MainController {
     }
 
     private void setOnActionStopSelectingRowBtForAccessedRoles() {
-        stopSelectingRowBt.setOnAction(event -> {
-            accessedRoleTableController.clearSelection();
-        });
+        stopSelectingRowBt.setOnAction(event -> accessedRoleTableController.clearSelection());
     }
 
     private void setOnActionStopSelectingRowBtForAuthors() {
-        stopSelectingRowBt.setOnAction(event -> {
-            authorTableController.clearSelection();
-        });
+        stopSelectingRowBt.setOnAction(event -> authorTableController.clearSelection());
     }
 
     private void setOnActionStopSelectingRowBtForCodeFiles() {
@@ -1388,6 +1384,7 @@ public class MainController {
                 if (selectedRow == null) {
                     CodeFile codeFile = rowCodeFileController.getCodeFile();
                     if (codeFile == null) return;
+                    if (codeFile.getLoadDate() == null) codeFile.setLoadDate(LocalDateTime.now());
                     UUID id = codeFileRepository.saveCodeFile(codeFile);
                     codeFileTableController.fillTable();
                     rowCodeFileController.clearFields();
