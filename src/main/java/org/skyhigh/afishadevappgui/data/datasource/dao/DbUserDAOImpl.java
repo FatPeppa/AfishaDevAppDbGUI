@@ -54,10 +54,11 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
         );
         dbUser.setAuthorId(savedAuthorId);
         Flk10000015Validator.validate(dbUser);
-        PreparedStatement psForUserSave = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (nextval('db_user_id'), ?, ?, ?)");
+        PreparedStatement psForUserSave = super.prepareStatement("INSERT INTO " + super.getTableName() + " VALUES (nextval('db_user_id'), ?, ?, ?, ?)");
         psForUserSave.setObject(1, savedAuthorId);
         psForUserSave.setString(2, dbUser.getUserLogin());
         psForUserSave.setString(3, dbUser.getUserPass());
+        psForUserSave.setObject(4, dbUser.getSystemRoleId());
         int stRes = super.executeSqlStatementUpdate(psForUserSave);
         log.log(Level.INFO, "database logging: " + stRes + " rows inserted into " + super.getTableName());
         List<DbUser> dbUsers = getAllDbUsers(SortDirection.NONE, null);
@@ -91,7 +92,7 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
     @Override
     public DbUser getDbUserById(int userId) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
-                "SELECT t.user_id, t.author_id, t.user_login, t.user_pass" +
+                "SELECT t.user_id, t.author_id, t.user_login, t.user_pass, t.system_role_id" +
                         " FROM " + super.getTableName() + " t WHERE t.user_id=?",
                 SortDirection.NONE,
                 null
@@ -103,7 +104,7 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
     @Override
     public DbUser getDbUserByLogin(@NonNull String login) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
-                "SELECT t.user_id, t.author_id, t.user_login, t.user_pass" +
+                "SELECT t.user_id, t.author_id, t.user_login, t.user_pass, t.system_role_id" +
                         " FROM " + super.getTableName() + " t WHERE t.user_login=?",
                 SortDirection.NONE,
                 null
@@ -115,7 +116,7 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
     @Override
     public DbUser getDbUserByAuthorId(UUID authorId) throws SQLException {
         PreparedStatement ps = super.prepareReadStatement(
-                "SELECT t.user_id, t.author_id, t.user_login, t.user_pass" +
+                "SELECT t.user_id, t.author_id, t.user_login, t.user_pass, t.system_role_id" +
                         " FROM " + super.getTableName() + " t WHERE t.author_id=?",
                 SortDirection.NONE,
                 null
@@ -134,7 +135,7 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
                 sortBy
         );
         PreparedStatement ps = super.prepareReadStatement(
-                "SELECT t.user_id, t.author_id, t.user_login, t.user_pass" +
+                "SELECT t.user_id, t.author_id, t.user_login, t.user_pass, t.system_role_id" +
                         " FROM " + super.getTableName() + " t",
                 SortDirection.NONE,
                 null
@@ -156,7 +157,8 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
                     rs.getInt(1),
                     rs.getObject(2, UUID.class),
                     rs.getString(3),
-                    rs.getString(4)
+                    rs.getString(4),
+                    Integer.valueOf(rs.getInt(5))
             );
         }
 
@@ -180,7 +182,8 @@ public class DbUserDAOImpl extends BaseTable implements DbUserDAO {
                     rs.getInt(1),
                     rs.getObject(2, UUID.class),
                     rs.getString(3),
-                    rs.getString(4)
+                    rs.getString(4),
+                    Integer.valueOf(rs.getInt(5))
             ));
         }
 

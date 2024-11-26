@@ -6,34 +6,33 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlk;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
+import org.skyhigh.afishadevappgui.data.datasource.entity.SystemRole;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// Проверка заполнения логина и пароля при регистрации и/или аутентификации пользователя
+//Проверка, что роль пользователя при регистрации заполнена
 @Slf4j
 @Setter
 @Getter
 @AllArgsConstructor
-public class Flk10030000 implements CommonFlk {
-    private final String code = "10030000";
-    private final String message = "При регистрации и/или аутентификации пользователя должны быть заполнены обязательные поля";
-    private final List<String> attributesNames = List.of("login", "password");
+public class Flk10030009 implements CommonFlk {
+    private final String code = "10030009";
+    private final String message = "При регистрации пользователя должна быть заполнена его роль";
+    private final List<String> attributesNames = List.of("systemRole");
     private final boolean isCritical = true;
 
     private String login;
     private String password;
+    private SystemRole systemRole;
 
     @Override
     public void validate() throws CommonFlkException {
         log.debug("Flk " + code + " started for login: {} and password: {}", login, password);
 
         List<String> tempAttributesNames = new ArrayList<>();
-        if (login == null || login.isEmpty()) {
+        if (systemRole == null) {
             tempAttributesNames.addAll(attributesNames.stream().filter(x -> !x.equals("login")).toList());
-        }
-        if (password == null|| password.isEmpty()) {
-            tempAttributesNames.addAll(attributesNames.stream().filter(x -> !x.equals("password")).toList());
         }
         if (!tempAttributesNames.isEmpty()) {
             log.debug("Flk " + code + " for login: {} and password: {} finished with error", login, password);

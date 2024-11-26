@@ -7,6 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.skyhigh.afishadevappgui.AfishaDevGUIApplication;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
+import org.skyhigh.afishadevappgui.service.logic.role.BasicRoleInitializationService;
+import org.skyhigh.afishadevappgui.service.logic.role.BasicRoleInitializationServiceImpl;
 
 import java.io.IOException;
 
@@ -18,7 +21,10 @@ public class HelloController {
     private Button authenticateChooseBt;
 
     @FXML
-    protected void onRegisterChooseBtClicked() throws IOException {
+    protected void onRegisterChooseBtClicked() throws IOException, CommonFlkException {
+        BasicRoleInitializationService basicRoleInitializationService = new BasicRoleInitializationServiceImpl();
+        basicRoleInitializationService.initialize();
+
         FXMLLoader loader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("register-view.fxml"));
         Parent root = loader.load();
         //RegisterController controller = loader.getController();
@@ -30,7 +36,10 @@ public class HelloController {
     }
 
     @FXML
-    protected void onAuthenticateChooseBt() throws IOException {
+    protected void onAuthenticateChooseBt() throws IOException, CommonFlkException {
+        BasicRoleInitializationService basicRoleInitializationService = new BasicRoleInitializationServiceImpl();
+        basicRoleInitializationService.initialize();
+
         FXMLLoader loader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("authenticate-view.fxml"));
         Parent root = loader.load();
 

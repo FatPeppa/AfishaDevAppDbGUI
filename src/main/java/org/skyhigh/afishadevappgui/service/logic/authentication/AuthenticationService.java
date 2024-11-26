@@ -2,6 +2,7 @@ package org.skyhigh.afishadevappgui.service.logic.authentication;
 
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.DbUser;
+import org.skyhigh.afishadevappgui.data.datasource.entity.SystemRole;
 
 public interface AuthenticationService {
 
@@ -25,8 +26,9 @@ public interface AuthenticationService {
      *      При этом, введенный пользователем пароль хэшируется посредством алгоритма BCrypt
      * @param login Целевой логин пользователя (длина: от 8 до 20 символов; не должен начинаться с цифры; должен содержать как буквы, так и цифры; не может быть null)
      * @param password Пароль пользователя (длина: от 8 до 20 символов; не должен начинаться с цифры; должен содержать как буквы, так и цифры; не может быть null)
+     * @param systemRole Роль пользователя (не может быть null)
      * @return Созданная запись пользователя (объект DbUser) или null
      * @throws CommonFlkException Ошибки при проверках ФЛК
      */
-    DbUser register(String login, String password) throws CommonFlkException;
+    DbUser register(String login, String password, SystemRole systemRole) throws CommonFlkException;
 }

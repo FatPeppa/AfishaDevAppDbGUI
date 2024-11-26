@@ -21,6 +21,8 @@ import org.skyhigh.afishadevappgui.controller.rowinteraction.*;
 import org.skyhigh.afishadevappgui.controller.tables.*;
 import org.skyhigh.afishadevappgui.data.datasource.entity.*;
 import org.skyhigh.afishadevappgui.data.repository.*;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerServiceImpl;
 import org.skyhigh.afishadevappgui.service.logic.search.*;
 
 import java.io.IOException;
@@ -210,6 +212,8 @@ public class MainController {
 
     private RequirementAuthorSearchService requirementAuthorSearchService;
 
+    private RoleManagerService roleManagerService;
+
     // Repositories
     private AccessedRoleRepository accessedRoleRepository;
 
@@ -343,36 +347,45 @@ public class MainController {
         secretSearchService = new SecretSearchServiceImpl(
                 secretRepository
         );
+        roleManagerService = new RoleManagerServiceImpl();
     }
 
     public void setDefaultTableViewAndFilters() throws IOException, CommonFlkException {
         makeAllTableChoosingButtonsAbleToBeClicked();
         clearAllButtonsStyles();
-        FXMLLoader centerTableLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("tables/db-user-table-view.fxml"));
-        AnchorPane centerTablePane = (AnchorPane) centerTableLoader.load();
-        dbUserTableController = (DbUserTableController) centerTableLoader.getController();
-        dbUserTableController.initialize();
-        dbUserTableController.fillTable();
-        openedTableName.setText(usersBt.getText());
+        FXMLLoader centerTableLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("tables/author-table-view.fxml"));
+        AnchorPane centerTablePane = null;
+        centerTablePane = (AnchorPane) centerTableLoader.load();
+
+        authorTableController = (AuthorTableController) centerTableLoader.getController();
+        authorTableController.initialize();
+        authorTableController.fillTable();
+
+        openedTableName.setText(authorsBt.getText());
         tablePane.setCenter(centerTablePane);
-        usersBt.setDisable(true);
-        usersBt.setStyle(chosenTableButtonStyle);
-        FXMLLoader filtersLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("filters/filters-db-user-view.fxml"));
+        authorsBt.setDisable(true);
+        authorsBt.setStyle(chosenTableButtonStyle);
+
+        FXMLLoader filtersLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("filters/filters-author-view.fxml"));
         AnchorPane filterPane = (AnchorPane) filtersLoader.load();
-        dbUserFiltersController = (DbUserFiltersController) filtersLoader.getController();
+        authorFiltersController = (AuthorFiltersController) filtersLoader.getController();
         filtersPane.setCenter(filterPane);
-        setOnActionFilterTableRowsBtForDbUsers();
-        FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-db-user-view.fxml"));
+        setOnActionFilterTableRowsBtForAuthors();
+
+        FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-author-view.fxml"));
         AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
-        rowDbUserController = (RowDbUserController) rowInteractionLoader.getController();
+        rowAuthorController = (RowAuthorController) rowInteractionLoader.getController();
         rowInteractionPane.setCenter(rowInteractionAnchorPane);
-        selectedRow = null;
-        setOnActionStopSelectingRowBtForDbUsers();
-        setOnActionAddNewRowToTableBtForDbUsers();
-        setOnChangedSelectedDbUser();
-        addNewRowToTableBt.setDisable(true);
+
+        addNewRowToTableBt.setDisable(false);
         saveRowChangesBt.setDisable(true);
         deleteChosenRowFromTableBt.setDisable(true);
+        setOnActionStopSelectingRowBtForAuthors();
+        setOnActionAddNewRowToTableBtForAuthors();
+        setOnChangedSelectedAuthor();
+
+        setOnActionSaveRowChangesBtForAuthors();
+        setOnDeleteChosenRowFromTableBtForAuthors();
     }
 
     /**
@@ -399,20 +412,20 @@ public class MainController {
      * Внутренний метод контроллера главного окна, предназначенный для включения всех кнопок выбора просматриваемой таблички.
      * Должен вызываться перед установкой цвета для новой выбранной пользователем кнопки выбора просматриваемой таблички
      */
-    private void makeAllTableChoosingButtonsAbleToBeClicked() {
-        usersBt.setDisable(false);
-        authorsBt.setDisable(false);
-        requirementsBt.setDisable(false);
-        requirementTypesBt.setDisable(false);
-        projectsBt.setDisable(false);
-        codeFilesBt.setDisable(false);
-        deploymentsBt.setDisable(false);
-        deploymentStatusesBt.setDisable(false);
-        projectAuthorsBt.setDisable(false);
-        requirementAuthorsBt.setDisable(false);
-        accessibleRolesBt.setDisable(false);
-        secretsBt.setDisable(false);
-        passGenRuleBt.setDisable(false);
+    private void makeAllTableChoosingButtonsAbleToBeClicked() throws CommonFlkException {
+        usersBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(DbUser.class, currentDbUser));
+        authorsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(Author.class, currentDbUser));
+        requirementsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(Requirement.class, currentDbUser));
+        requirementTypesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(RequirementType.class, currentDbUser));
+        projectsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(Project.class, currentDbUser));
+        codeFilesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(CodeFile.class, currentDbUser));
+        deploymentsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(Deployment.class, currentDbUser));
+        deploymentStatusesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(DeploymentStatus.class, currentDbUser));
+        projectAuthorsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(ProjectAuthor.class, currentDbUser));
+        requirementAuthorsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(RequirementAuthor.class, currentDbUser));
+        accessibleRolesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(AccessedRole.class, currentDbUser));
+        secretsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(Secret.class, currentDbUser));
+        passGenRuleBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(PasswordGenRule.class, currentDbUser));
     }
 
     private Button getCurrentChosenTableButton() {
@@ -1686,7 +1699,11 @@ public class MainController {
                 rowDbUserController.clearFields();
             } else {
                 selectedRow = newSelection;
-                rowDbUserController.autoFillFields(newSelection);
+                try {
+                    rowDbUserController.autoFillFields(newSelection);
+                } catch (CommonFlkException e) {
+                    ControllerUtils.showCommonFlkExceptionAlert(e);
+                }
             }
         });
     }

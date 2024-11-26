@@ -1,5 +1,6 @@
 package org.skyhigh.afishadevappgui.common.db;
 
+import lombok.Getter;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 
 import java.sql.Connection;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
  * Класс базовой таблицы, использующийся в качестве родителя при реализации DataSource-классов
  */
 public class BaseTable implements AutoCloseable {
+    @Getter
     Connection connection;
     String tableName;
     protected DbConnector dbConnector;

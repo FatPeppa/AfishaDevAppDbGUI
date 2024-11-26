@@ -4,10 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
+import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.common.validation.CommonUIException;
 import org.skyhigh.afishadevappgui.common.validation.CommonUIFormatException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.DbUser;
+import org.skyhigh.afishadevappgui.data.repository.SystemRoleRepository;
+import org.skyhigh.afishadevappgui.data.repository.SystemRoleRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,9 @@ public class RowDbUserController {
     TextField passwordField;
 
     @FXML
+    TextField roleField;
+
+    @FXML
     Label userIdLabel;
 
     @FXML
@@ -37,13 +43,23 @@ public class RowDbUserController {
     @FXML
     Label passwordLabel;
 
-    public void initialize() throws CommonFlkException {}
+    @FXML
+    Label roleLabel;
 
-    public void autoFillFields(DbUser dbUser) {
+    private SystemRoleRepository systemRoleRepository;
+
+    public void initialize() throws CommonFlkException {
+        systemRoleRepository = new SystemRoleRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
+    }
+
+    public void autoFillFields(DbUser dbUser) throws CommonFlkException {
         userIdField.setText(String.valueOf(dbUser.getUserId()));
         authorIdField.setText(dbUser.getAuthorId().toString());
         loginField.setText(dbUser.getUserLogin());
         passwordField.setText(dbUser.getUserPass());
+        roleField.setText(systemRoleRepository.getSystemRoleById(dbUser.getSystemRoleId()).getRoleName());
     }
 
     public void clearFields() {
@@ -67,7 +83,11 @@ public class RowDbUserController {
                                 ControllerUtils.getFieldLocalNameFromItsLabel(authorIdLabel)
                         ),
                         loginField.getText(),
-                        passwordField.getText()
+                        passwordField.getText(),
+                        ControllerUtils.getIntegerFromTextField(
+                                roleField,
+                                ControllerUtils.getFieldLocalNameFromItsLabel(roleLabel)
+                        )
                 );
             } catch (CommonUIFormatException e) {
                 return null;

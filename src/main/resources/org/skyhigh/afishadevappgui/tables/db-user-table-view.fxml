@@ -11,6 +11,7 @@
                 <TableColumn fx:id="authorIdDbUserTableColumn" minWidth="9.20001220703125" prefWidth="112.79998779296875" text="Идентификатор автора" />
                 <TableColumn fx:id="userLoginDbUserTableColumn" prefWidth="184.99998474121094" text="Логин" />
                 <TableColumn fx:id="userPassDbUserTableColumn" prefWidth="126.0" text="Пароль" />
+            <TableColumn fx:id="roleIdTableColumn" prefWidth="126.0" text="ID роли" />
             </columns>
         </TableView>
     </children>

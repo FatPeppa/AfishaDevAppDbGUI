@@ -34,6 +34,9 @@ public class DbUserTableController {
     @FXML
     private TableColumn<DbUser, String> userPassDbUserTableColumn;
 
+    @FXML
+    private TableColumn<DbUser, Integer> roleIdTableColumn;
+
     private final DbUserRepository dbUserRepository = new DbUserRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
     @Getter
@@ -46,6 +49,7 @@ public class DbUserTableController {
         authorIdDbUserTableColumn.setCellValueFactory(new PropertyValueFactory<>("authorId"));
         userLoginDbUserTableColumn.setCellValueFactory(new PropertyValueFactory<>("userLogin"));
         userPassDbUserTableColumn.setCellValueFactory(new PropertyValueFactory<>("userPass"));
+        roleIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("systemRoleId"));
         setDbUserTableSelectedItemPropertyListener();
     }
 

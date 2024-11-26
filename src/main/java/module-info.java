@@ -21,6 +21,7 @@ module org.skyhigh.afishadevappgui {
     exports org.skyhigh.afishadevappgui.data.datasource.entity;
     exports org.skyhigh.afishadevappgui.service.logic.authentication;
     exports org.skyhigh.afishadevappgui.service.logic.search;
+    exports org.skyhigh.afishadevappgui.service.logic.role;
     opens org.skyhigh.afishadevappgui.controller to javafx.fxml;
     opens org.skyhigh.afishadevappgui.common.service to javafx.fxml;
     opens org.skyhigh.afishadevappgui.common.validation to javafx.fxml;
@@ -31,4 +32,6 @@ module org.skyhigh.afishadevappgui {
     opens org.skyhigh.afishadevappgui.data.datasource.entity to javafx.base;
     opens org.skyhigh.afishadevappgui.service.logic.authentication to javafx.base;
     opens org.skyhigh.afishadevappgui.service.logic.search to javafx.base;
+    opens org.skyhigh.afishadevappgui.service.logic.role to javafx.base;
+
 }

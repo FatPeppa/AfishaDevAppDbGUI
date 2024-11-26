@@ -88,4 +88,10 @@ public class AfishaDevAppDb {
                 new DbConnector(properties)
         );
     }
+
+    public SystemRoleDAO getSystemRoleDAO() throws SQLException {
+        return new SystemRoleDAOImpl(
+                new DbConnector(properties)
+        );
+    }
 }

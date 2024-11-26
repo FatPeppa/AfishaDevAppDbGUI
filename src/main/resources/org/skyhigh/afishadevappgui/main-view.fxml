@@ -19,7 +19,6 @@
                         <Font name="Calibri Bold" size="12.0" />
                      </font>
                   </Label>
-                      <Button fx:id="usersBt" mnemonicParsing="false" prefHeight="24.0" prefWidth="316.0" text="Пользователи" />
                   <Button fx:id="authorsBt" mnemonicParsing="false" prefHeight="20.0" prefWidth="256.0" text="Авторы" />
                   <Button fx:id="requirementsBt" mnemonicParsing="false" prefHeight="27.0" prefWidth="301.0" text="Требования" />
                   <Button fx:id="requirementTypesBt" mnemonicParsing="false" prefHeight="26.0" prefWidth="280.0" text="Типы требований" />
@@ -32,6 +31,7 @@
                   <Button fx:id="accessibleRolesBt" mnemonicParsing="false" prefHeight="26.0" prefWidth="268.0" text="Роли, имеющие доступ к требованиям" />
                   <Button fx:id="secretsBt" mnemonicParsing="false" prefHeight="24.0" prefWidth="290.0" text="Доступы к развертываниям" />
                   <Button fx:id="passGenRuleBt" mnemonicParsing="false" prefHeight="21.0" prefWidth="275.0" text="Правила генерации (заполнения) паролей" />
+                      <Button fx:id="usersBt" mnemonicParsing="false" prefHeight="24.0" prefWidth="316.0" text="Пользователи" />
                   </children>
               </VBox>
             <VBox prefHeight="551.0" prefWidth="887.0">

@@ -4,6 +4,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import lombok.AllArgsConstructor;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.DbUser;
+import org.skyhigh.afishadevappgui.data.datasource.entity.SystemRole;
 import org.skyhigh.afishadevappgui.data.repository.DbUserRepository;
 import org.skyhigh.afishadevappgui.service.validation.authentication.*;
 
@@ -32,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public DbUser register(String login, String password) throws CommonFlkException {
+    public DbUser register(String login, String password, SystemRole systemRole) throws CommonFlkException {
         Flk10030000Validator.validate(login, password);
         Flk10030001Validator.validate(login);
         Flk10030002Validator.validate(login);
@@ -41,13 +42,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Flk10030005Validator.validate(password);
         Flk10030006Validator.validate(password);
         Flk10030007Validator.validate(login, dbUserRepository);
+        Flk10030009Validator.validate(login, password, systemRole);
         String hashedPassword = BCrypt.withDefaults().hashToString(6, password.toCharArray());
         int userId = dbUserRepository.saveDbUser(
                 new DbUser(
                         0,
                         null,
                         login,
-                        hashedPassword
+                        hashedPassword,
+                        systemRole.getSystemRoleId()
                 )
         );
         return dbUserRepository.getDbUserById(userId);
