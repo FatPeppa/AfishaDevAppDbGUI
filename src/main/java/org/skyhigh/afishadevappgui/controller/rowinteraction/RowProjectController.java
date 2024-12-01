@@ -62,7 +62,43 @@ public class RowProjectController {
     @FXML
     Label versionNumberLabel;
 
-    public void initialize() throws CommonFlkException {}
+    private String projectIdFieldPrompt;
+    private String structureFieldPrompt;
+    private String nameFieldPrompt;
+    private String contentFieldPrompt;
+    private String settingsFieldPrompt;
+    private String lastChangeDateFieldPrompt;
+    private String uploadDateFieldPrompt;
+    private String versionNumberFieldPrompt;
+
+    private String projectIdFieldBasicStyle;
+    private String structureFieldBasicStyle;
+    private String nameFieldBasicStyle;
+    private String contentFieldBasicStyle;
+    private String settingsFieldBasicStyle;
+    private String lastChangeDateFieldBasicStyle;
+    private String uploadDateFieldBasicStyle;
+    private String versionNumberFieldBasicStyle;
+
+    public void initialize() throws CommonFlkException {
+        projectIdFieldPrompt = projectIdField.getPromptText();
+        structureFieldPrompt = structureField.getPromptText();
+        nameFieldPrompt = nameField.getPromptText();
+        contentFieldPrompt = contentField.getPromptText();
+        settingsFieldPrompt = settingsField.getPromptText();
+        lastChangeDateFieldPrompt = lastChangeDateField.getPromptText();
+        uploadDateFieldPrompt = uploadDateField.getPromptText();
+        versionNumberFieldPrompt = versionNumberField.getPromptText();
+
+        projectIdFieldBasicStyle = projectIdField.getStyle();
+        structureFieldBasicStyle = structureField.getStyle();
+        nameFieldBasicStyle = nameField.getStyle();
+        contentFieldBasicStyle = contentField.getStyle();
+        settingsFieldBasicStyle = settingsField.getStyle();
+        lastChangeDateFieldBasicStyle = lastChangeDateField.getStyle();
+        uploadDateFieldBasicStyle = uploadDateField.getStyle();
+        versionNumberFieldBasicStyle = versionNumberField.getStyle();
+    }
 
     public void autoFillFields(Project project) {
         projectIdField.setText(project.getProjectId().toString());
@@ -156,5 +192,73 @@ public class RowProjectController {
         if (versionNumberField.getText() == null || versionNumberField.getText().isEmpty())
             emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(versionNumberLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        if (editable) {
+            projectIdField.setPromptText(projectIdFieldPrompt);
+            projectIdField.setEditable(false);
+            projectIdField.setStyle(projectIdFieldBasicStyle);
+
+            structureField.setPromptText(structureFieldPrompt);
+            structureField.setEditable(true);
+            structureField.setStyle(structureFieldBasicStyle);
+
+            nameField.setPromptText(nameFieldPrompt);
+            nameField.setEditable(true);
+            nameField.setStyle(nameFieldBasicStyle);
+
+            contentField.setPromptText(contentFieldPrompt);
+            contentField.setEditable(true);
+            contentField.setStyle(contentFieldBasicStyle);
+
+            settingsField.setPromptText(settingsFieldPrompt);
+            settingsField.setEditable(true);
+            settingsField.setStyle(settingsFieldBasicStyle);
+
+            lastChangeDateField.setPromptText(lastChangeDateFieldPrompt);
+            lastChangeDateField.setEditable(true);
+            lastChangeDateField.setStyle(lastChangeDateFieldBasicStyle);
+
+            uploadDateField.setPromptText(uploadDateFieldPrompt);
+            uploadDateField.setEditable(true);
+            uploadDateField.setStyle(uploadDateFieldBasicStyle);
+
+            versionNumberField.setPromptText(versionNumberFieldPrompt);
+            versionNumberField.setEditable(true);
+            versionNumberField.setStyle(versionNumberFieldBasicStyle);
+        } else {
+            projectIdField.setPromptText("Заполняется автоматически");
+            projectIdField.setEditable(false);
+            projectIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            structureField.setPromptText("Заполняется автоматически");
+            structureField.setEditable(false);
+            structureField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            nameField.setPromptText("Заполняется автоматически");
+            nameField.setEditable(false);
+            nameField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            contentField.setPromptText("Заполняется автоматически");
+            contentField.setEditable(false);
+            contentField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            settingsField.setPromptText("Заполняется автоматически");
+            settingsField.setEditable(false);
+            settingsField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            lastChangeDateField.setPromptText("Заполняется автоматически");
+            lastChangeDateField.setEditable(false);
+            lastChangeDateField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            uploadDateField.setPromptText("Заполняется автоматически");
+            uploadDateField.setEditable(false);
+            uploadDateField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            versionNumberField.setPromptText("Заполняется автоматически");
+            versionNumberField.setEditable(false);
+            versionNumberField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }

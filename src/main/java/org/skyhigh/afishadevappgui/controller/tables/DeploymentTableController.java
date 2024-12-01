@@ -18,6 +18,7 @@ import lombok.Data;
 import lombok.Getter;
 import org.json.JSONObject;
 import org.skyhigh.afishadevappgui.AfishaDevGUIApplication;
+import org.skyhigh.afishadevappgui.common.controller.RoleManagedTableController;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
@@ -35,7 +36,16 @@ import java.util.UUID;
 
 import static org.skyhigh.afishadevappgui.common.controller.ControllerUtils.*;
 
-public class DeploymentTableController {
+public class DeploymentTableController implements RoleManagedTableController {
+    private static final boolean isViewableForAnalyst = false;
+    private static final boolean isViewableForDeveloper = true;
+    private static final boolean isViewableForQA= true;
+    private static final boolean isViewableForDevOps = true;
+    private static final boolean isEditableForAnalyst = false;
+    private static final boolean isEditableForDeveloper = false;
+    private static final boolean isEditableForQA= true;
+    private static final boolean isEditableForDevOps = true;
+
     @FXML
     Button deployChosenBuiltBt;
 
@@ -260,5 +270,45 @@ public class DeploymentTableController {
 
     public ObservableValue<Deployment> getObservableSelectedDeployment() {
         return deploymentTable.getSelectionModel().selectedItemProperty();
+    }
+
+    @Override
+    public boolean getAccessibilityForViewingByAnalyst() {
+        return isViewableForAnalyst;
+    }
+
+    @Override
+    public boolean getAccessibilityForViewingByDeveloper() {
+        return isViewableForDeveloper;
+    }
+
+    @Override
+    public boolean getAccessibilityForViewingByQA() {
+        return isViewableForQA;
+    }
+
+    @Override
+    public boolean getAccessibilityForViewingByDevOps() {
+        return isViewableForDevOps;
+    }
+
+    @Override
+    public boolean getAccessibilityForEditingByAnalyst() {
+        return isEditableForAnalyst;
+    }
+
+    @Override
+    public boolean getAccessibilityForEditingByDeveloper() {
+        return isEditableForDeveloper;
+    }
+
+    @Override
+    public boolean getAccessibilityForEditingByQA() {
+        return isEditableForQA;
+    }
+
+    @Override
+    public boolean getAccessibilityForEditingByDevOps() {
+        return isEditableForDevOps;
     }
 }

@@ -9,6 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Getter;
 import org.json.JSONObject;
+import org.skyhigh.afishadevappgui.common.controller.RoleManagedTableController;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
@@ -20,7 +21,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public class ProjectTableController {
+public class ProjectTableController implements RoleManagedTableController {
+    private static final boolean isViewableForAnalyst = false;
+    private static final boolean isViewableForDeveloper = true;
+    private static final boolean isViewableForQA= true;
+    private static final boolean isViewableForDevOps = true;
+    private static final boolean isEditableForAnalyst = false;
+    private static final boolean isEditableForDeveloper = true;
+    private static final boolean isEditableForQA= false;
+    private static final boolean isEditableForDevOps = true;
+
+
     @FXML
     private TableView<Project> projectTable;
 
@@ -97,5 +108,45 @@ public class ProjectTableController {
 
     public ObservableValue<Project> getObservableSelectedProject() {
         return projectTable.getSelectionModel().selectedItemProperty();
+    }
+
+    @Override
+    public boolean getAccessibilityForViewingByAnalyst() {
+        return isViewableForAnalyst;
+    }
+
+    @Override
+    public boolean getAccessibilityForViewingByDeveloper() {
+        return isViewableForDeveloper;
+    }
+
+    @Override
+    public boolean getAccessibilityForViewingByQA() {
+        return isViewableForQA;
+    }
+
+    @Override
+    public boolean getAccessibilityForViewingByDevOps() {
+        return isViewableForDevOps;
+    }
+
+    @Override
+    public boolean getAccessibilityForEditingByAnalyst() {
+        return isEditableForAnalyst;
+    }
+
+    @Override
+    public boolean getAccessibilityForEditingByDeveloper() {
+        return isEditableForDeveloper;
+    }
+
+    @Override
+    public boolean getAccessibilityForEditingByQA() {
+        return isEditableForQA;
+    }
+
+    @Override
+    public boolean getAccessibilityForEditingByDevOps() {
+        return isEditableForDevOps;
     }
 }

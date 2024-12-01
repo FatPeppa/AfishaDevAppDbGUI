@@ -62,7 +62,43 @@ public class RowPasswordGenRuleController {
     @FXML
     Label minNumLabel;
 
-    public void initialize() throws CommonFlkException {}
+    private String ruleIdFieldPrompt;
+    private String minCapLetFieldPrompt;
+    private String maxRepSymFieldPrompt;
+    private String minSpecSymFieldPrompt;
+    private String beginDateFieldPrompt;
+    private String endDateFieldPrompt;
+    private String uploadDateFieldPrompt;
+    private String minNumFieldPrompt;
+
+    private String ruleIdFieldBasicStyle;
+    private String minCapLetFieldBasicStyle;
+    private String maxRepSymFieldBasicStyle;
+    private String minSpecSymFieldBasicStyle;
+    private String beginDateFieldBasicStyle;
+    private String endDateFieldBasicStyle;
+    private String uploadDateFieldBasicStyle;
+    private String minNumFieldBasicStyle;
+
+    public void initialize() throws CommonFlkException {
+        ruleIdFieldPrompt = ruleIdField.getPromptText();
+        minCapLetFieldPrompt = minCapLetField.getPromptText();
+        maxRepSymFieldPrompt = maxRepSymField.getPromptText();
+        minSpecSymFieldPrompt = minSpecSymField.getPromptText();
+        beginDateFieldPrompt = beginDateField.getPromptText();
+        endDateFieldPrompt = endDateField.getPromptText();
+        uploadDateFieldPrompt = uploadDateField.getPromptText();
+        minNumFieldPrompt = minNumField.getPromptText();
+
+        ruleIdFieldBasicStyle = ruleIdField.getStyle();
+        minCapLetFieldBasicStyle = minCapLetField.getStyle();
+        maxRepSymFieldBasicStyle = maxRepSymField.getStyle();
+        minSpecSymFieldBasicStyle = minSpecSymField.getStyle();
+        beginDateFieldBasicStyle = beginDateField.getStyle();
+        endDateFieldBasicStyle = endDateField.getStyle();
+        uploadDateFieldBasicStyle = uploadDateField.getStyle();
+        minNumFieldBasicStyle = minNumField.getStyle();
+    }
 
     //2023-01-01T22:22:22
     //2023-01-01T22:22:23
@@ -176,5 +212,73 @@ public class RowPasswordGenRuleController {
         if (minNumField.getText() == null || minNumField.getText().isEmpty())
             emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(minNumLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        if (editable) {
+            ruleIdField.setPromptText(ruleIdFieldPrompt);
+            ruleIdField.setEditable(false);
+            ruleIdField.setStyle(ruleIdFieldBasicStyle);
+
+            minCapLetField.setPromptText(minCapLetFieldPrompt);
+            minCapLetField.setEditable(true);
+            minCapLetField.setStyle(minCapLetFieldBasicStyle);
+
+            maxRepSymField.setPromptText(maxRepSymFieldPrompt);
+            maxRepSymField.setEditable(true);
+            maxRepSymField.setStyle(maxRepSymFieldBasicStyle);
+
+            minSpecSymField.setPromptText(minSpecSymFieldPrompt);
+            minSpecSymField.setEditable(true);
+            minSpecSymField.setStyle(minSpecSymFieldBasicStyle);
+
+            beginDateField.setPromptText(beginDateFieldPrompt);
+            beginDateField.setEditable(true);
+            beginDateField.setStyle(beginDateFieldBasicStyle);
+
+            endDateField.setPromptText(endDateFieldPrompt);
+            endDateField.setEditable(true);
+            endDateField.setStyle(endDateFieldBasicStyle);
+
+            uploadDateField.setPromptText(uploadDateFieldPrompt);
+            uploadDateField.setEditable(true);
+            uploadDateField.setStyle(uploadDateFieldBasicStyle);
+
+            minNumField.setPromptText(minNumFieldPrompt);
+            minNumField.setEditable(true);
+            minNumField.setStyle(minNumFieldBasicStyle);
+        } else {
+            ruleIdField.setPromptText("Заполняется автоматически");
+            ruleIdField.setEditable(false);
+            ruleIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            minCapLetField.setPromptText("Заполняется автоматически");
+            minCapLetField.setEditable(false);
+            minCapLetField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            maxRepSymField.setPromptText("Заполняется автоматически");
+            maxRepSymField.setEditable(false);
+            maxRepSymField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            minSpecSymField.setPromptText("Заполняется автоматически");
+            minSpecSymField.setEditable(false);
+            minSpecSymField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            beginDateField.setPromptText("Заполняется автоматически");
+            beginDateField.setEditable(false);
+            beginDateField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            endDateField.setPromptText("Заполняется автоматически");
+            endDateField.setEditable(false);
+            endDateField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            uploadDateField.setPromptText("Заполняется автоматически");
+            uploadDateField.setEditable(false);
+            uploadDateField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            minNumField.setPromptText("Заполняется автоматически");
+            minNumField.setEditable(false);
+            minNumField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }

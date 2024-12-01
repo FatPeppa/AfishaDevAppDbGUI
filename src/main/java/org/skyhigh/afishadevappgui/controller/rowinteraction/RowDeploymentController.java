@@ -62,7 +62,43 @@ public class RowDeploymentController {
     @FXML
     Label projectIdLabel;
 
-    public void initialize() throws CommonFlkException {}
+    private String deploymentIdFieldPrompt;
+    private String addressFieldPrompt;
+    private String statusIdFieldPrompt;
+    private String settingsFieldPrompt;
+    private String builtVersionFieldPrompt;
+    private String builtSettingsFieldPrompt;
+    private String builtFieldPrompt;
+    private String projectIdFieldPrompt;
+
+    private String deploymentIdFieldBasicStyle;
+    private String addressFieldBasicStyle;
+    private String statusIdFieldBasicStyle;
+    private String settingsFieldBasicStyle;
+    private String builtVersionFieldBasicStyle;
+    private String builtSettingsFieldBasicStyle;
+    private String builtFieldBasicStyle;
+    private String projectIdFieldBasicStyle;
+
+    public void initialize() throws CommonFlkException {
+        deploymentIdFieldPrompt = deploymentIdField.getPromptText();
+        addressFieldPrompt = addressField.getPromptText();
+        statusIdFieldPrompt = statusIdField.getPromptText();
+        settingsFieldPrompt = settingsField.getPromptText();
+        builtVersionFieldPrompt = builtVersionField.getPromptText();
+        builtSettingsFieldPrompt = builtSettingsField.getPromptText();
+        builtFieldPrompt = builtField.getPromptText();
+        projectIdFieldPrompt = projectIdField.getPromptText();
+
+        deploymentIdFieldBasicStyle = deploymentIdField.getStyle();
+        addressFieldBasicStyle = addressField.getStyle();
+        statusIdFieldBasicStyle = statusIdField.getStyle();
+        settingsFieldBasicStyle = settingsField.getStyle();
+        builtVersionFieldBasicStyle = builtVersionField.getStyle();
+        builtSettingsFieldBasicStyle = builtSettingsField.getStyle();
+        builtFieldBasicStyle = builtField.getStyle();
+        projectIdFieldBasicStyle = projectIdField.getStyle();
+    }
 
     public void autoFillFields(Deployment deployment) {
         deploymentIdField.setText(deployment.getDeploymentId().toString());
@@ -146,5 +182,73 @@ public class RowDeploymentController {
         if (projectIdField.getText() == null || projectIdField.getText().isEmpty())
             emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(projectIdLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        if (editable) {
+            deploymentIdField.setPromptText(deploymentIdFieldPrompt);
+            deploymentIdField.setEditable(false);
+            deploymentIdField.setStyle(deploymentIdFieldBasicStyle);
+
+            addressField.setPromptText(addressFieldPrompt);
+            addressField.setEditable(true);
+            addressField.setStyle(addressFieldBasicStyle);
+
+            statusIdField.setPromptText(statusIdFieldPrompt);
+            statusIdField.setEditable(true);
+            statusIdField.setStyle(statusIdFieldBasicStyle);
+
+            settingsField.setPromptText(settingsFieldPrompt);
+            settingsField.setEditable(true);
+            settingsField.setStyle(settingsFieldBasicStyle);
+
+            builtVersionField.setPromptText(builtVersionFieldPrompt);
+            builtVersionField.setEditable(true);
+            builtVersionField.setStyle(builtVersionFieldBasicStyle);
+
+            builtSettingsField.setPromptText(builtSettingsFieldPrompt);
+            builtSettingsField.setEditable(true);
+            builtSettingsField.setStyle(builtSettingsFieldBasicStyle);
+
+            builtField.setPromptText(builtFieldPrompt);
+            builtField.setEditable(true);
+            builtField.setStyle(builtFieldBasicStyle);
+
+            projectIdField.setPromptText(projectIdFieldPrompt);
+            projectIdField.setEditable(true);
+            projectIdField.setStyle(projectIdFieldBasicStyle);
+        } else {
+            deploymentIdField.setPromptText("Заполняется автоматически");
+            deploymentIdField.setEditable(false);
+            deploymentIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            addressField.setPromptText("Заполняется автоматически");
+            addressField.setEditable(false);
+            addressField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            statusIdField.setPromptText("Заполняется автоматически");
+            statusIdField.setEditable(false);
+            statusIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            settingsField.setPromptText("Заполняется автоматически");
+            settingsField.setEditable(false);
+            settingsField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            builtVersionField.setPromptText("Заполняется автоматически");
+            builtVersionField.setEditable(false);
+            builtVersionField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            builtSettingsField.setPromptText("Заполняется автоматически");
+            builtSettingsField.setEditable(false);
+            builtSettingsField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            builtField.setPromptText("Заполняется автоматически");
+            builtField.setEditable(false);
+            builtField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            projectIdField.setPromptText("Заполняется автоматически");
+            projectIdField.setEditable(false);
+            projectIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }

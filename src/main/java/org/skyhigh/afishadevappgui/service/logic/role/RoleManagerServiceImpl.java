@@ -1,5 +1,6 @@
 package org.skyhigh.afishadevappgui.service.logic.role;
 
+import org.skyhigh.afishadevappgui.common.controller.RoleManagedTableController;
 import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.DbUser;
@@ -7,6 +8,8 @@ import org.skyhigh.afishadevappgui.data.repository.SystemRoleRepository;
 import org.skyhigh.afishadevappgui.data.repository.SystemRoleRepositoryImpl;
 
 public class RoleManagerServiceImpl implements RoleManagerService {
+    private SystemRoles currentUsersSystemRole = null;
+
     private enum SystemRoles {
         ADMIN,
         ANALYST,
@@ -24,16 +27,44 @@ public class RoleManagerServiceImpl implements RoleManagerService {
     }
 
     @Override
-    public boolean checkIfUserCanViewTableByItsEntityClass(Class<?> entityClass, DbUser dbUser) throws CommonFlkException {
-        if (SystemRoles.valueOf(systemRoleRepository.getSystemRoleById(dbUser.getSystemRoleId()).getRoleName()).equals(SystemRoles.ADMIN))
+    public boolean checkIfUserCanViewTableByItsEntityClass(RoleManagedTableController roleManagedTableController, DbUser dbUser) throws CommonFlkException {
+        if (currentUsersSystemRole == null)
+            currentUsersSystemRole = SystemRoles.valueOf(systemRoleRepository.getSystemRoleById(dbUser.getSystemRoleId()).getRoleName());
+        if (currentUsersSystemRole.equals(SystemRoles.ADMIN))
             return true;
-
-
-        return true;
+        if (currentUsersSystemRole.equals(SystemRoles.ANALYST)) {
+            return roleManagedTableController.getAccessibilityForViewingByAnalyst();
+        }
+        if (currentUsersSystemRole.equals(SystemRoles.DEVELOPER)) {
+            return roleManagedTableController.getAccessibilityForViewingByDeveloper();
+        }
+        if (currentUsersSystemRole.equals(SystemRoles.QA)) {
+            return roleManagedTableController.getAccessibilityForViewingByQA();
+        }
+        if (currentUsersSystemRole.equals(SystemRoles.DEVOPS)) {
+            return roleManagedTableController.getAccessibilityForViewingByDevOps();
+        }
+        return false;
     }
 
     @Override
-    public boolean checkIfUserCanEditTableDataByItsEntityClass(Class<?> entityClass, DbUser dbUser) throws CommonFlkException {
-        return true;
+    public boolean checkIfUserCanEditTableDataByItsEntityClass(RoleManagedTableController roleManagedTableController, DbUser dbUser) throws CommonFlkException {
+        if (currentUsersSystemRole == null)
+            currentUsersSystemRole = SystemRoles.valueOf(systemRoleRepository.getSystemRoleById(dbUser.getSystemRoleId()).getRoleName());
+        if (currentUsersSystemRole.equals(SystemRoles.ADMIN))
+            return true;
+        if (currentUsersSystemRole.equals(SystemRoles.ANALYST)) {
+            return roleManagedTableController.getAccessibilityForEditingByAnalyst();
+        }
+        if (currentUsersSystemRole.equals(SystemRoles.DEVELOPER)) {
+            return roleManagedTableController.getAccessibilityForEditingByDeveloper();
+        }
+        if (currentUsersSystemRole.equals(SystemRoles.QA)) {
+            return roleManagedTableController.getAccessibilityForEditingByQA();
+        }
+        if (currentUsersSystemRole.equals(SystemRoles.DEVOPS)) {
+            return roleManagedTableController.getAccessibilityForEditingByDevOps();
+        }
+        return false;
     }
 }

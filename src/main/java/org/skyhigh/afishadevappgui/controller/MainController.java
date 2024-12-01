@@ -377,9 +377,10 @@ public class MainController {
         rowAuthorController = (RowAuthorController) rowInteractionLoader.getController();
         rowInteractionPane.setCenter(rowInteractionAnchorPane);
 
-        addNewRowToTableBt.setDisable(false);
+        addNewRowToTableBt.setDisable(true);
         saveRowChangesBt.setDisable(true);
         deleteChosenRowFromTableBt.setDisable(true);
+        rowAuthorController.setFieldsEditable(false);
         setOnActionStopSelectingRowBtForAuthors();
         setOnActionAddNewRowToTableBtForAuthors();
         setOnChangedSelectedAuthor();
@@ -413,19 +414,19 @@ public class MainController {
      * Должен вызываться перед установкой цвета для новой выбранной пользователем кнопки выбора просматриваемой таблички
      */
     private void makeAllTableChoosingButtonsAbleToBeClicked() throws CommonFlkException {
-        usersBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(DbUser.class, currentDbUser));
-        authorsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(Author.class, currentDbUser));
-        requirementsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(Requirement.class, currentDbUser));
-        requirementTypesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(RequirementType.class, currentDbUser));
-        projectsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(Project.class, currentDbUser));
-        codeFilesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(CodeFile.class, currentDbUser));
-        deploymentsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(Deployment.class, currentDbUser));
-        deploymentStatusesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(DeploymentStatus.class, currentDbUser));
-        projectAuthorsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(ProjectAuthor.class, currentDbUser));
-        requirementAuthorsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(RequirementAuthor.class, currentDbUser));
-        accessibleRolesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(AccessedRole.class, currentDbUser));
-        secretsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(Secret.class, currentDbUser));
-        passGenRuleBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(PasswordGenRule.class, currentDbUser));
+        usersBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new DbUserTableController(), currentDbUser));
+        authorsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new AuthorTableController(), currentDbUser));
+        requirementsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new RequirementTableController(), currentDbUser));
+        requirementTypesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new RequirementTypeTableController(), currentDbUser));
+        projectsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new ProjectTableController(), currentDbUser));
+        codeFilesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new CodeFileTableController(), currentDbUser));
+        deploymentsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new DeploymentTableController(), currentDbUser));
+        deploymentStatusesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new DeploymentStatusTableController(), currentDbUser));
+        projectAuthorsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new ProjectAuthorTableController(), currentDbUser));
+        requirementAuthorsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new RequirementAuthorTableController(), currentDbUser));
+        accessibleRolesBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new AccessedRoleTableController(), currentDbUser));
+        secretsBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new SecretTableController(), currentDbUser));
+        passGenRuleBt.setDisable(!roleManagerService.checkIfUserCanViewTableByItsEntityClass(new PasswordGenRuleTableController(), currentDbUser));
     }
 
     private Button getCurrentChosenTableButton() {
@@ -467,12 +468,13 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowDbUserController = (RowDbUserController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                rowDbUserController.setFieldsEditable(false);
 
                 setOnActionStopSelectingRowBtForDbUsers();
                 setOnActionAddNewRowToTableBtForDbUsers();
                 setOnChangedSelectedDbUser();
-                addNewRowToTableBt.setDisable(true);
                 saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(true);
                 deleteChosenRowFromTableBt.setDisable(true);
 
                 setOnActionSaveRowChangesBtForDbUsers();
@@ -514,9 +516,10 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowAuthorController = (RowAuthorController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                rowAuthorController.setFieldsEditable(false);
 
-                addNewRowToTableBt.setDisable(false);
                 saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(true);
                 deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForAuthors();
                 setOnActionAddNewRowToTableBtForAuthors();
@@ -561,9 +564,10 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowRequirementController = (RowRequirementController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementTableController, currentDbUser)) rowRequirementController.setFieldsEditable(false);
 
-                addNewRowToTableBt.setDisable(false);
                 saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementTableController, currentDbUser));
                 deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForRequirements();
                 setOnActionAddNewRowToTableBtForRequirements();
@@ -608,9 +612,10 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowRequirementTypeController = (RowRequirementTypeController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementTypeTableController, currentDbUser)) rowRequirementTypeController.setFieldsEditable(false);
 
-                addNewRowToTableBt.setDisable(false);
                 saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementTypeTableController, currentDbUser));
                 deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForRequirementTypes();
                 setOnActionAddNewRowToTableBtForRequirementTypes();
@@ -655,9 +660,10 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowProjectController = (RowProjectController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(projectTableController, currentDbUser)) rowProjectController.setFieldsEditable(false);
 
-                addNewRowToTableBt.setDisable(false);
                 saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(projectTableController, currentDbUser));
                 deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForProjects();
                 setOnActionAddNewRowToTableBtForProjects();
@@ -702,10 +708,11 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowCodeFileController = (RowCodeFileController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(codeFileTableController, currentDbUser)) rowCodeFileController.setFieldsEditable(false);
 
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(false);
-                deleteChosenRowFromTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(codeFileTableController, currentDbUser));
+                deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForCodeFiles();
                 setOnActionAddNewRowToTableBtForCodeFiles();
                 setOnChangedSelectedCodeFile();
@@ -749,9 +756,10 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowDeploymentController = (RowDeploymentController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(deploymentTableController, currentDbUser)) rowDeploymentController.setFieldsEditable(false);
 
-                addNewRowToTableBt.setDisable(false);
                 saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(deploymentTableController, currentDbUser));
                 deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForDeployments();
                 setOnActionAddNewRowToTableBtForDeployments();
@@ -796,9 +804,10 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowDeploymentStatusController = (RowDeploymentStatusController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(deploymentStatusTableController, currentDbUser)) rowDeploymentStatusController.setFieldsEditable(false);
 
-                addNewRowToTableBt.setDisable(false);
                 saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(deploymentStatusTableController, currentDbUser));
                 deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForDeploymentStatuses();
                 setOnActionAddNewRowToTableBtForDeploymentStatuses();
@@ -843,9 +852,10 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowProjectAuthorController = (RowProjectAuthorController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(projectAuthorTableController, currentDbUser)) rowProjectAuthorController.setFieldsEditableWithStyleAndPrompt(false);
 
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(projectAuthorTableController, currentDbUser));
                 deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForProjectAuthors();
                 setOnActionAddNewRowToTableBtForProjectAuthors();
@@ -889,9 +899,10 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowRequirementAuthorController = (RowRequirementAuthorController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementAuthorTableController, currentDbUser)) rowRequirementAuthorController.setFieldsEditableWithStyleAndPrompt(false);
 
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementAuthorTableController, currentDbUser));
                 deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForRequirementAuthors();;
                 setOnActionAddNewRowToTableBtForRequirementAuthors();
@@ -936,9 +947,10 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowAccessedRoleController = (RowAccessedRoleController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(accessedRoleTableController, currentDbUser)) rowAccessedRoleController.setFieldsEditable(false);
 
-                addNewRowToTableBt.setDisable(false);
                 saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(accessedRoleTableController, currentDbUser));
                 deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForAccessedRoles();
                 setOnActionAddNewRowToTableBtForAccessedRoles();
@@ -983,9 +995,10 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowSecretController = (RowSecretController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(secretTableController, currentDbUser)) rowSecretController.setFieldsEditable(false);
 
-                addNewRowToTableBt.setDisable(false);
                 saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(secretTableController, currentDbUser));
                 deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForSecrets();
                 setOnActionAddNewRowToTableBtForSecrets();
@@ -1030,9 +1043,10 @@ public class MainController {
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowPasswordGenRuleController = (RowPasswordGenRuleController) rowInteractionLoader.getController();
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
+                if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(passwordGenRuleTableController, currentDbUser)) rowPasswordGenRuleController.setFieldsEditable(false);
 
-                addNewRowToTableBt.setDisable(false);
                 saveRowChangesBt.setDisable(true);
+                addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(passwordGenRuleTableController, currentDbUser));
                 deleteChosenRowFromTableBt.setDisable(true);
                 setOnActionStopSelectingRowBtForPasswordGenRules();
                 setOnActionAddNewRowToTableBtForPasswordGenRules();
@@ -1645,12 +1659,23 @@ public class MainController {
                 addNewRowToTableBt.setDisable(false);
                 saveRowChangesBt.setDisable(true);
                 deleteChosenRowFromTableBt.setDisable(true);
+                try {
+                    addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(accessedRoleTableController, currentDbUser));
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(true);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowAccessedRoleController.clearFields();
             } else {
                 selectedRow = newSelection;
-                addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(false);
-                deleteChosenRowFromTableBt.setDisable(false);
+                try {
+                    addNewRowToTableBt.setDisable(true);
+                    saveRowChangesBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(accessedRoleTableController, currentDbUser));
+                    deleteChosenRowFromTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(accessedRoleTableController, currentDbUser));
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowAccessedRoleController.autoFillFields(newSelection);
             }
         });
@@ -1660,15 +1685,15 @@ public class MainController {
         authorTableController.getObservableSelectedAuthor().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRow = null;
-                addNewRowToTableBt.setDisable(false);
+                addNewRowToTableBt.setDisable(true);
                 saveRowChangesBt.setDisable(true);
                 deleteChosenRowFromTableBt.setDisable(true);
                 rowAuthorController.clearFields();
             } else {
                 selectedRow = newSelection;
                 addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(false);
-                deleteChosenRowFromTableBt.setDisable(false);
+                saveRowChangesBt.setDisable(true);
+                deleteChosenRowFromTableBt.setDisable(true);
                 rowAuthorController.autoFillFields(newSelection);
             }
         });
@@ -1678,15 +1703,23 @@ public class MainController {
         codeFileTableController.getObservableSelectedCodeFile().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRow = null;
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(true);
+                try {
+                    addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(codeFileTableController, currentDbUser));
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(true);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowCodeFileController.clearFields();
             } else {
                 selectedRow = newSelection;
-                addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(false);
-                deleteChosenRowFromTableBt.setDisable(false);
+                try {
+                    addNewRowToTableBt.setDisable(true);
+                    saveRowChangesBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(codeFileTableController, currentDbUser));
+                    deleteChosenRowFromTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(codeFileTableController, currentDbUser));
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowCodeFileController.autoFillFields(newSelection);
             }
         });
@@ -1712,15 +1745,23 @@ public class MainController {
         deploymentStatusTableController.getObservableSelectedDeploymentStatus().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRow = null;
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(true);
+                try {
+                    addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(deploymentStatusTableController, currentDbUser));
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(true);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowDeploymentStatusController.clearFields();
             } else {
                 selectedRow = newSelection;
-                addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(false);
-                deleteChosenRowFromTableBt.setDisable(false);
+                try {
+                    addNewRowToTableBt.setDisable(true);
+                    saveRowChangesBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(deploymentStatusTableController, currentDbUser));
+                    deleteChosenRowFromTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(deploymentStatusTableController, currentDbUser));
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowDeploymentStatusController.autoFillFields(newSelection);
             }
         });
@@ -1730,15 +1771,23 @@ public class MainController {
         deploymentTableController.getObservableSelectedDeployment().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRow = null;
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(true);
+                try {
+                    addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(deploymentTableController, currentDbUser));
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(true);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowDeploymentController.clearFields();
             } else {
                 selectedRow = newSelection;
-                addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(false);
-                deleteChosenRowFromTableBt.setDisable(false);
+                try {
+                    addNewRowToTableBt.setDisable(true);
+                    saveRowChangesBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(deploymentTableController, currentDbUser));
+                    deleteChosenRowFromTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(deploymentTableController, currentDbUser));
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowDeploymentController.autoFillFields(newSelection);
             }
         });
@@ -1748,15 +1797,23 @@ public class MainController {
         passwordGenRuleTableController.getObservableSelectedPasswordGenRule().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRow = null;
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(true);
+                try {
+                    addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(passwordGenRuleTableController, currentDbUser));
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(true);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowPasswordGenRuleController.clearFields();
             } else {
                 selectedRow = newSelection;
-                addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(false);
-                deleteChosenRowFromTableBt.setDisable(false);
+                try {
+                    addNewRowToTableBt.setDisable(true);
+                    saveRowChangesBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(passwordGenRuleTableController, currentDbUser));
+                    deleteChosenRowFromTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(passwordGenRuleTableController, currentDbUser));
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowPasswordGenRuleController.autoFillFields(newSelection);
             }
         });
@@ -1766,16 +1823,26 @@ public class MainController {
         projectAuthorTableController.getObservableSelectedProjectAuthor().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRow = null;
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(true);
+                try {
+                    addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(projectAuthorTableController, currentDbUser));
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(true);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowProjectAuthorController.clearFields();
+                rowProjectAuthorController.setFieldsEditable(true);
             } else {
                 selectedRow = newSelection;
-                addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(false);
+                try {
+                    addNewRowToTableBt.setDisable(true);
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(projectAuthorTableController, currentDbUser));
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowProjectAuthorController.autoFillFields(newSelection);
+                rowProjectAuthorController.setFieldsEditable(false);
             }
         });
     }
@@ -1784,15 +1851,23 @@ public class MainController {
         projectTableController.getObservableSelectedProject().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRow = null;
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(true);
+                try {
+                    addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(projectTableController, currentDbUser));
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(true);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowProjectController.clearFields();
             } else {
                 selectedRow = newSelection;
-                addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(false);
-                deleteChosenRowFromTableBt.setDisable(false);
+                try {
+                    addNewRowToTableBt.setDisable(true);
+                    saveRowChangesBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(projectTableController, currentDbUser));
+                    deleteChosenRowFromTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(projectTableController, currentDbUser));
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowProjectController.autoFillFields(newSelection);
             }
         });
@@ -1802,16 +1877,26 @@ public class MainController {
         requirementAuthorTableController.getObservableSelectedRequirementAuthor().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRow = null;
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(true);
+                try {
+                    addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementAuthorTableController, currentDbUser));
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(true);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowRequirementAuthorController.clearFields();
+                rowRequirementAuthorController.setFieldsEditable(true);
             } else {
                 selectedRow = newSelection;
-                addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(false);
+                try {
+                    addNewRowToTableBt.setDisable(true);
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementAuthorTableController, currentDbUser));
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowRequirementAuthorController.autoFillFields(newSelection);
+                rowRequirementAuthorController.setFieldsEditable(false);
             }
         });
     }
@@ -1820,15 +1905,23 @@ public class MainController {
         requirementTableController.getObservableSelectedRequirement().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRow = null;
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(true);
+                try {
+                    addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementTableController, currentDbUser));
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(true);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowRequirementController.clearFields();
             } else {
                 selectedRow = newSelection;
-                addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(false);
-                deleteChosenRowFromTableBt.setDisable(false);
+                try {
+                    addNewRowToTableBt.setDisable(true);
+                    saveRowChangesBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementTableController, currentDbUser));
+                    deleteChosenRowFromTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementTableController, currentDbUser));
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowRequirementController.autoFillFields(newSelection);
             }
         });
@@ -1838,15 +1931,23 @@ public class MainController {
         requirementTypeTableController.getObservableSelectedRequirementType().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRow = null;
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(true);
+                try {
+                    addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementTypeTableController, currentDbUser));
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(true);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowRequirementTypeController.clearFields();
             } else {
                 selectedRow = newSelection;
-                addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(false);
-                deleteChosenRowFromTableBt.setDisable(false);
+                try {
+                    addNewRowToTableBt.setDisable(true);
+                    saveRowChangesBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementTypeTableController, currentDbUser));
+                    deleteChosenRowFromTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementTypeTableController, currentDbUser));
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowRequirementTypeController.autoFillFields(newSelection);
             }
         });
@@ -1856,15 +1957,23 @@ public class MainController {
         secretTableController.getObservableSelectedSecret().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) {
                 selectedRow = null;
-                addNewRowToTableBt.setDisable(false);
-                saveRowChangesBt.setDisable(true);
-                deleteChosenRowFromTableBt.setDisable(true);
+                try {
+                    addNewRowToTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(secretTableController, currentDbUser));
+                    saveRowChangesBt.setDisable(true);
+                    deleteChosenRowFromTableBt.setDisable(true);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowSecretController.clearFields();
             } else {
                 selectedRow = newSelection;
-                addNewRowToTableBt.setDisable(true);
-                saveRowChangesBt.setDisable(false);
-                deleteChosenRowFromTableBt.setDisable(false);
+                try {
+                    addNewRowToTableBt.setDisable(true);
+                    saveRowChangesBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(secretTableController, currentDbUser));
+                    deleteChosenRowFromTableBt.setDisable(!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(secretTableController, currentDbUser));
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
                 rowSecretController.autoFillFields(newSelection);
             }
         });

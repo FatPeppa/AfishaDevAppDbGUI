@@ -48,10 +48,33 @@ public class RowDbUserController {
 
     private SystemRoleRepository systemRoleRepository;
 
+    private String userIdFieldPrompt;
+    private String loginFieldPrompt;
+    private String authorIdFieldPrompt;
+    private String passwordFieldPrompt;
+    private String roleFieldPrompt;
+
+    private String userIdFieldBasicStyle;
+    private String loginFieldBasicStyle;
+    private String authorIdFieldBasicStyle;
+    private String passwordFieldBasicStyle;
+    private String roleFieldBasicStyle;
+
     public void initialize() throws CommonFlkException {
         systemRoleRepository = new SystemRoleRepositoryImpl(
                 ApplicationPropertiesReader.getApplicationProperties()
         );
+        userIdFieldPrompt = userIdField.getPromptText();
+        loginFieldPrompt = loginField.getPromptText();
+        authorIdFieldPrompt = authorIdField.getPromptText();
+        passwordFieldPrompt = passwordField.getPromptText();
+        roleFieldPrompt = roleField.getPromptText();
+
+        userIdFieldBasicStyle = userIdField.getStyle();
+        loginFieldBasicStyle = loginField.getStyle();
+        authorIdFieldBasicStyle = authorIdField.getStyle();
+        passwordFieldBasicStyle = passwordField.getStyle();
+        roleFieldBasicStyle = roleField.getStyle();
     }
 
     public void autoFillFields(DbUser dbUser) throws CommonFlkException {
@@ -119,5 +142,49 @@ public class RowDbUserController {
         if (passwordField.getText() == null || passwordField.getText().isEmpty())
             emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(passwordLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        if (editable) {
+            userIdField.setPromptText(userIdFieldPrompt);
+            userIdField.setEditable(false);
+            userIdField.setStyle(userIdFieldBasicStyle);
+
+            loginField.setPromptText(loginFieldPrompt);
+            loginField.setEditable(true);
+            loginField.setStyle(loginFieldBasicStyle);
+
+            authorIdField.setPromptText(authorIdFieldPrompt);
+            authorIdField.setEditable(true);
+            authorIdField.setStyle(authorIdFieldBasicStyle);
+
+            passwordField.setPromptText(passwordFieldPrompt);
+            passwordField.setEditable(true);
+            passwordField.setStyle(passwordFieldBasicStyle);
+
+            roleField.setPromptText(roleFieldPrompt);
+            roleField.setEditable(true);
+            roleField.setStyle(roleFieldBasicStyle);
+        } else {
+            userIdField.setPromptText("Заполняется автоматически");
+            userIdField.setEditable(false);
+            userIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            loginField.setPromptText("Заполняется автоматически");
+            loginField.setEditable(false);
+            loginField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            authorIdField.setPromptText("Заполняется автоматически");
+            authorIdField.setEditable(false);
+            authorIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            passwordField.setPromptText("Заполняется автоматически");
+            passwordField.setEditable(false);
+            passwordField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            roleField.setPromptText("Заполняется автоматически");
+            roleField.setEditable(false);
+            roleField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }

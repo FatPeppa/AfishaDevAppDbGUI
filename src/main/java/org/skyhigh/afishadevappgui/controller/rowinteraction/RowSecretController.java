@@ -44,7 +44,31 @@ public class RowSecretController {
     @FXML
     Label passwordLabel;
 
-    public void initialize() throws CommonFlkException {}
+    private String secretIdFieldPrompt;
+    private String deploymentIdFieldPrompt;
+    private String loginFieldPrompt;
+    private String addressFieldPrompt;
+    private String passwordFieldPrompt;
+
+    private String secretIdFieldBasicStyle;
+    private String deploymentIdFieldBasicStyle;
+    private String loginFieldBasicStyle;
+    private String addressFieldBasicStyle;
+    private String passwordFieldBasicStyle;
+
+    public void initialize() throws CommonFlkException {
+        secretIdFieldPrompt = secretIdField.getPromptText();
+        deploymentIdFieldPrompt = deploymentIdField.getPromptText();
+        loginFieldPrompt = loginField.getPromptText();
+        addressFieldPrompt = addressField.getPromptText();
+        passwordFieldPrompt = passwordField.getPromptText();
+
+        secretIdFieldBasicStyle = secretIdField.getStyle();
+        deploymentIdFieldBasicStyle = deploymentIdField.getStyle();
+        loginFieldBasicStyle = loginField.getStyle();
+        addressFieldBasicStyle = addressField.getStyle();
+        passwordFieldBasicStyle = passwordField.getStyle();
+    }
 
     public void autoFillFields(Secret secret) {
         secretIdField.setText(secret.getSecretId().toString());
@@ -111,5 +135,49 @@ public class RowSecretController {
         //if (passwordField.getText() == null || passwordField.getText().isEmpty())
         //    emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(passwordLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        if (editable) {
+            secretIdField.setPromptText(secretIdFieldPrompt);
+            secretIdField.setEditable(false);
+            secretIdField.setStyle(secretIdFieldBasicStyle);
+
+            deploymentIdField.setPromptText(deploymentIdFieldPrompt);
+            deploymentIdField.setEditable(true);
+            deploymentIdField.setStyle(deploymentIdFieldBasicStyle);
+
+            addressField.setPromptText(addressFieldPrompt);
+            addressField.setEditable(true);
+            addressField.setStyle(addressFieldBasicStyle);
+
+            loginField.setPromptText(loginFieldPrompt);
+            loginField.setEditable(true);
+            loginField.setStyle(loginFieldBasicStyle);
+
+            passwordField.setPromptText(passwordFieldPrompt);
+            passwordField.setEditable(true);
+            passwordField.setStyle(passwordFieldBasicStyle);
+        } else {
+            secretIdField.setPromptText("Заполняется автоматически");
+            secretIdField.setEditable(false);
+            secretIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            deploymentIdField.setPromptText("Заполняется автоматически");
+            deploymentIdField.setEditable(false);
+            deploymentIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            addressField.setPromptText("Заполняется автоматически");
+            addressField.setEditable(false);
+            addressField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            loginField.setPromptText("Заполняется автоматически");
+            loginField.setEditable(false);
+            loginField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            passwordField.setPromptText("Заполняется автоматически");
+            passwordField.setEditable(false);
+            passwordField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }

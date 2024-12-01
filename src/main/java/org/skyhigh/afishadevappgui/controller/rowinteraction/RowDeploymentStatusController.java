@@ -26,7 +26,19 @@ public class RowDeploymentStatusController {
     @FXML
     Label statusNameLabel;
 
-    public void initialize() throws CommonFlkException {}
+    private String deploymentStatusIdFieldPrompt;
+    private String nameFieldPrompt;
+
+    private String deploymentStatusIdFieldBasicStyle;
+    private String nameFieldBasicStyle;
+
+    public void initialize() throws CommonFlkException {
+        deploymentStatusIdFieldPrompt = deploymentStatusIdField.getPromptText();
+        nameFieldPrompt = nameField.getPromptText();
+
+        deploymentStatusIdFieldBasicStyle = deploymentStatusIdField.getStyle();
+        nameFieldBasicStyle = nameField.getStyle();
+    }
 
     public void autoFillFields(DeploymentStatus deploymentStatus) {
         deploymentStatusIdField.setText(deploymentStatus.getDeploymentStatusId().toString());
@@ -75,5 +87,25 @@ public class RowDeploymentStatusController {
         if (nameField.getText() == null || nameField.getText().isEmpty())
             emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(statusNameLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        if (editable) {
+            deploymentStatusIdField.setPromptText(deploymentStatusIdFieldPrompt);
+            deploymentStatusIdField.setEditable(false);
+            deploymentStatusIdField.setStyle(deploymentStatusIdFieldBasicStyle);
+
+            nameField.setPromptText(nameFieldPrompt);
+            nameField.setEditable(true);
+            nameField.setStyle(nameFieldBasicStyle);
+        } else {
+            deploymentStatusIdField.setPromptText("Заполняется автоматически");
+            deploymentStatusIdField.setEditable(false);
+            deploymentStatusIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            nameField.setPromptText("Заполняется автоматически");
+            nameField.setEditable(false);
+            nameField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }

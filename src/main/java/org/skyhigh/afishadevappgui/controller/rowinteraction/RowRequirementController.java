@@ -23,7 +23,6 @@ public class RowRequirementController {
     @FXML
     TextField contentField;
 
-
     @FXML
     TextField uploadDateField;
 
@@ -45,7 +44,31 @@ public class RowRequirementController {
     @FXML
     Label uploadDateLabel;
 
-    public void initialize() throws CommonFlkException {}
+    private String requirementIdFieldPrompt;
+    private String requirementTypeIdFieldPrompt;
+    private String contentFieldPrompt;
+    private String uploadDateFieldPrompt;
+    private String lastChangeDateFieldPrompt;
+
+    private String requirementIdFieldBasicStyle;
+    private String requirementTypeIdFieldBasicStyle;
+    private String contentFieldBasicStyle;
+    private String uploadDateFieldBasicStyle;
+    private String lastChangeDateFieldBasicStyle;
+
+    public void initialize() throws CommonFlkException {
+        requirementIdFieldPrompt = requirementIdField.getPromptText();
+        requirementTypeIdFieldPrompt = requirementTypeIdField.getPromptText();
+        contentFieldPrompt = contentField.getPromptText();
+        uploadDateFieldPrompt = uploadDateField.getPromptText();
+        lastChangeDateFieldPrompt = lastChangeDateField.getPromptText();
+
+        requirementIdFieldBasicStyle = requirementIdField.getStyle();
+        requirementTypeIdFieldBasicStyle = requirementTypeIdField.getStyle();
+        contentFieldBasicStyle = contentField.getStyle();
+        uploadDateFieldBasicStyle = uploadDateField.getStyle();
+        lastChangeDateFieldBasicStyle = lastChangeDateField.getStyle();
+    }
 
     public void autoFillFields(Requirement requirement) {
         requirementIdField.setText(requirement.getRequirementId().toString());
@@ -121,5 +144,49 @@ public class RowRequirementController {
         if (contentField.getText() == null || contentField.getText().isEmpty())
             emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(contentLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        if (editable) {
+            requirementIdField.setPromptText(requirementIdFieldPrompt);
+            requirementIdField.setEditable(false);
+            requirementIdField.setStyle(requirementIdFieldBasicStyle);
+
+            requirementTypeIdField.setPromptText(requirementTypeIdFieldPrompt);
+            requirementTypeIdField.setEditable(true);
+            requirementTypeIdField.setStyle(requirementTypeIdFieldBasicStyle);
+
+            lastChangeDateField.setPromptText(lastChangeDateFieldPrompt);
+            lastChangeDateField.setEditable(true);
+            lastChangeDateField.setStyle(lastChangeDateFieldBasicStyle);
+
+            uploadDateField.setPromptText(uploadDateFieldPrompt);
+            uploadDateField.setEditable(true);
+            uploadDateField.setStyle(uploadDateFieldBasicStyle);
+
+            contentField.setPromptText(contentFieldPrompt);
+            contentField.setEditable(true);
+            contentField.setStyle(contentFieldBasicStyle);
+        } else {
+            requirementIdField.setPromptText("Заполняется автоматически");
+            requirementIdField.setEditable(false);
+            requirementIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            requirementTypeIdField.setPromptText("Заполняется автоматически");
+            requirementTypeIdField.setEditable(false);
+            requirementTypeIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            lastChangeDateField.setPromptText("Заполняется автоматически");
+            lastChangeDateField.setEditable(false);
+            lastChangeDateField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            uploadDateField.setPromptText("Заполняется автоматически");
+            uploadDateField.setEditable(false);
+            uploadDateField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            contentField.setPromptText("Заполняется автоматически");
+            contentField.setEditable(false);
+            contentField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }

@@ -26,7 +26,19 @@ public class RowRequirementTypeController {
     @FXML
     Label nameLabel;
 
-    public void initialize() throws CommonFlkException {}
+    private String requirementTypeIdFieldPrompt;
+    private String nameFieldPrompt;
+
+    private String requirementTypeIdFieldBasicStyle;
+    private String nameFieldBasicStyle;
+
+    public void initialize() throws CommonFlkException {
+        requirementTypeIdFieldPrompt = requirementTypeIdField.getPromptText();
+        nameFieldPrompt = nameField.getPromptText();
+
+        requirementTypeIdFieldBasicStyle = requirementTypeIdField.getStyle();
+        nameFieldBasicStyle = nameField.getStyle();
+    }
 
     public void autoFillFields(RequirementType requirementType) {
         requirementTypeIdField.setText(requirementType.getRequirementTypeId().toString());
@@ -75,5 +87,25 @@ public class RowRequirementTypeController {
         if (nameField.getText() == null || nameField.getText().isEmpty())
             emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(nameLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        if (editable) {
+            requirementTypeIdField.setPromptText(requirementTypeIdFieldPrompt);
+            requirementTypeIdField.setEditable(false);
+            requirementTypeIdField.setStyle(requirementTypeIdFieldBasicStyle);
+
+            nameField.setPromptText(nameFieldPrompt);
+            nameField.setEditable(true);
+            nameField.setStyle(nameFieldBasicStyle);
+        } else {
+            requirementTypeIdField.setPromptText("Заполняется автоматически");
+            requirementTypeIdField.setEditable(false);
+            requirementTypeIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            nameField.setPromptText("Заполняется автоматически");
+            nameField.setEditable(false);
+            nameField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }

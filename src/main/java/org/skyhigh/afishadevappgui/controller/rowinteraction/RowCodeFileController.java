@@ -38,7 +38,27 @@ public class RowCodeFileController {
     @FXML
     Label uploadDateLabel;
 
-    public void initialize() throws CommonFlkException {}
+    private String codeFileIdFieldPrompt;
+    private String projectIdFieldPrompt;
+    private String contentFieldPrompt;
+    private String codeFileUploadDateFieldPrompt;
+
+    private String codeFileIdFieldBasicStyle;
+    private String projectIdFieldBasicStyle;
+    private String contentFieldBasicStyle;
+    private String codeFileUploadDateFieldBasicStyle;
+
+    public void initialize() throws CommonFlkException {
+        codeFileIdFieldPrompt = codeFileIdField.getPromptText();
+        projectIdFieldPrompt = projectIdField.getPromptText();
+        projectIdFieldPrompt = projectIdField.getPromptText();
+        codeFileUploadDateFieldPrompt = codeFileUploadDateField.getPromptText();
+
+        codeFileIdFieldBasicStyle = codeFileIdField.getStyle();
+        projectIdFieldBasicStyle = projectIdField.getStyle();
+        contentFieldBasicStyle = projectIdField.getStyle();
+        codeFileUploadDateFieldBasicStyle = codeFileUploadDateField.getStyle();
+    }
 
     public void autoFillFields(CodeFile codeFile) {
         codeFileIdField.setText(codeFile.getCodeFileId().toString());
@@ -105,5 +125,41 @@ public class RowCodeFileController {
         if (contentField.getText() == null || contentField.getText().isEmpty())
             emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(contentLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        if (editable) {
+            codeFileIdField.setPromptText(codeFileIdFieldPrompt);
+            codeFileIdField.setEditable(false);
+            codeFileIdField.setStyle(codeFileIdFieldBasicStyle);
+
+            projectIdField.setPromptText(projectIdFieldPrompt);
+            projectIdField.setEditable(true);
+            projectIdField.setStyle(projectIdFieldBasicStyle);
+
+            contentField.setPromptText(contentFieldPrompt);
+            contentField.setEditable(true);
+            contentField.setStyle(contentFieldBasicStyle);
+
+            codeFileUploadDateField.setPromptText(codeFileUploadDateFieldPrompt);
+            codeFileUploadDateField.setEditable(true);
+            codeFileUploadDateField.setStyle(codeFileUploadDateFieldBasicStyle);
+        } else {
+            codeFileIdField.setPromptText("Заполняется автоматически");
+            codeFileIdField.setEditable(false);
+            codeFileIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            projectIdField.setPromptText("Заполняется автоматически");
+            projectIdField.setEditable(false);
+            projectIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            contentField.setPromptText("Заполняется автоматически");
+            contentField.setEditable(false);
+            contentField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            codeFileUploadDateField.setPromptText("Заполняется автоматически");
+            codeFileUploadDateField.setEditable(false);
+            codeFileUploadDateField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }

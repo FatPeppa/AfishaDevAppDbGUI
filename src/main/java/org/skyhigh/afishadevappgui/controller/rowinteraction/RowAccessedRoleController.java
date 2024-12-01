@@ -25,7 +25,18 @@ public class RowAccessedRoleController {
     @FXML
     Label roleNameLabel;
 
-    public void initialize() throws CommonFlkException {}
+    private String requirementIdPrompt;
+    private String roleNamePrompt;
+
+    private String requirementIdBasicStyle;
+    private String roleNameBasicStyle;
+
+    public void initialize() throws CommonFlkException {
+        requirementIdPrompt = requirementIdField.getPromptText();
+        roleNamePrompt = roleNameInputField.getPromptText();
+        requirementIdBasicStyle = requirementIdField.getStyle();
+        roleNameBasicStyle = roleNameInputField.getStyle();
+    }
 
     public void autoFillFields(AccessedRole accessedRole) {
         requirementIdField.setText(accessedRole.getRequirementId().toString());
@@ -71,5 +82,25 @@ public class RowAccessedRoleController {
         if (roleNameInputField.getText() == null || roleNameInputField.getText().isEmpty())
             emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(roleNameLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        if (editable) {
+            requirementIdField.setPromptText(requirementIdPrompt);
+            requirementIdField.setEditable(false);
+            requirementIdField.setStyle(requirementIdBasicStyle);
+
+            roleNameInputField.setPromptText(roleNamePrompt);
+            roleNameInputField.setEditable(true);
+            roleNameInputField.setStyle(roleNameBasicStyle);
+        } else {
+            requirementIdField.setPromptText("Заполняется автоматически");
+            requirementIdField.setEditable(false);
+            requirementIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            roleNameInputField.setPromptText("Заполняется автоматически");
+            roleNameInputField.setEditable(false);
+            roleNameInputField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }

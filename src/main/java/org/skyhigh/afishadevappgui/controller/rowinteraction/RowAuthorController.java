@@ -26,7 +26,18 @@ public class RowAuthorController {
     @FXML
     Label loginLabel;
 
-    public void initialize() throws CommonFlkException {}
+    private String authorIdFieldPrompt;
+    private String authorLoginFieldPrompt;
+
+    private String authorIdFieldBasicStyle;
+    private String authorLoginFieldBasicStyle;
+
+    public void initialize() throws CommonFlkException {
+        authorIdFieldPrompt = authorIdField.getPromptText();
+        authorLoginFieldPrompt = authorLoginField.getPromptText();
+        authorIdFieldBasicStyle = authorIdField.getStyle();
+        authorLoginFieldBasicStyle = authorLoginField.getStyle();
+    }
 
     public void autoFillFields(Author author) {
         authorIdField.setText(author.getAuthorId().toString());
@@ -75,5 +86,25 @@ public class RowAuthorController {
         if (authorLoginField.getText() == null || authorLoginField.getText().isEmpty())
             emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(loginLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        if (editable) {
+            authorIdField.setPromptText(authorIdFieldPrompt);
+            authorIdField.setEditable(false);
+            authorIdField.setStyle(authorIdFieldBasicStyle);
+
+            authorLoginField.setPromptText(authorLoginFieldPrompt);
+            authorLoginField.setEditable(true);
+            authorLoginField.setStyle(authorLoginFieldBasicStyle);
+        } else {
+            authorIdField.setPromptText("Заполняется автоматически");
+            authorIdField.setEditable(false);
+            authorIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            authorLoginField.setPromptText("Заполняется автоматически");
+            authorLoginField.setEditable(false);
+            authorLoginField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }

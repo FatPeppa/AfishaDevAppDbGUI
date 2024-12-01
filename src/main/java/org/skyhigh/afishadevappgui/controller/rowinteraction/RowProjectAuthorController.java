@@ -25,7 +25,19 @@ public class RowProjectAuthorController {
     @FXML
     Label authorIdLabel;
 
-    public void initialize() throws CommonFlkException {}
+    private String projectIdFieldPrompt;
+    private String authorIdFieldPrompt;
+
+    private String projectIdFieldBasicStyle;
+    private String authorIdFieldBasicStyle;
+
+    public void initialize() throws CommonFlkException {
+        projectIdFieldPrompt = projectIdField.getPromptText();
+        authorIdFieldPrompt = authorIdField.getPromptText();
+
+        projectIdFieldBasicStyle = projectIdField.getStyle();
+        authorIdFieldBasicStyle = authorIdField.getStyle();
+    }
 
     public void autoFillFields(ProjectAuthor projectAuthor) {
         projectIdField.setText(projectAuthor.getProjectId().toString());
@@ -70,5 +82,30 @@ public class RowProjectAuthorController {
         if (authorIdField.getText() == null || authorIdField.getText().isEmpty())
             emptyFields.add(ControllerUtils.getFieldLocalNameFromItsLabel(authorIdLabel));
         return emptyFields;
+    }
+
+    public void setFieldsEditable(boolean editable) {
+        projectIdField.setEditable(editable);
+        authorIdField.setEditable(editable);
+    }
+
+    public void setFieldsEditableWithStyleAndPrompt(boolean editable) {
+        if (editable) {
+            projectIdField.setPromptText(projectIdFieldPrompt);
+            projectIdField.setEditable(true);
+            projectIdField.setStyle(projectIdFieldBasicStyle);
+
+            authorIdField.setPromptText(authorIdFieldPrompt);
+            authorIdField.setEditable(true);
+            authorIdField.setStyle(authorIdFieldBasicStyle);
+        } else {
+            projectIdField.setPromptText("Заполняется автоматически");
+            projectIdField.setEditable(false);
+            projectIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+
+            authorIdField.setPromptText("Заполняется автоматически");
+            authorIdField.setEditable(false);
+            authorIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
     }
 }
