@@ -15,6 +15,7 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.AccessedRole;
 import org.skyhigh.afishadevappgui.data.repository.AccessedRoleRepository;
 import org.skyhigh.afishadevappgui.data.repository.AccessedRoleRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.util.List;
 import java.util.UUID;
@@ -41,6 +42,8 @@ public class AccessedRoleTableController implements RoleManagedTableController {
     private final AccessedRoleRepository accessedRoleRepository = new AccessedRoleRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
     private AccessedRole selectedAccessedRole;
+
+    private RoleManagerService roleManagerService;
 
     public AccessedRoleTableController() throws CommonFlkException {}
 
@@ -121,5 +124,10 @@ public class AccessedRoleTableController implements RoleManagedTableController {
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) {
+        this.roleManagerService = roleManagerService;
     }
 }

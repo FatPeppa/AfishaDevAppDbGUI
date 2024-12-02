@@ -15,4 +15,13 @@ public class CodeFile {
     private UUID projectId;
     private String fileContent;
     private LocalDateTime loadDate;
+
+    private String projectName;
+
+    public CodeFile(UUID codeFileId, UUID projectId, String fileContent, LocalDateTime loadDate) {
+        this.codeFileId = codeFileId;
+        this.projectId = projectId;
+        this.fileContent = fileContent;
+        this.loadDate = loadDate;
+    }
 }

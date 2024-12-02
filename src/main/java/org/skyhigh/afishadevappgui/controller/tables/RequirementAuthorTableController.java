@@ -15,18 +15,19 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.RequirementAuthor;
 import org.skyhigh.afishadevappgui.data.repository.RequirementAuthorRepository;
 import org.skyhigh.afishadevappgui.data.repository.RequirementAuthorRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.util.List;
 import java.util.UUID;
 
 public class RequirementAuthorTableController implements RoleManagedTableController {
-    private static final boolean isViewableForAnalyst = true;
-    private static final boolean isViewableForDeveloper = true;
-    private static final boolean isViewableForQA= true;
-    private static final boolean isViewableForDevOps = true;
-    private static final boolean isEditableForAnalyst = true;
+    private static final boolean isViewableForAnalyst = false;
+    private static final boolean isViewableForDeveloper = false;
+    private static final boolean isViewableForQA= false;
+    private static final boolean isViewableForDevOps = false;
+    private static final boolean isEditableForAnalyst = false;
     private static final boolean isEditableForDeveloper = false;
-    private static final boolean isEditableForQA= true;
+    private static final boolean isEditableForQA= false;
     private static final boolean isEditableForDevOps = false;
 
     @FXML
@@ -42,6 +43,8 @@ public class RequirementAuthorTableController implements RoleManagedTableControl
     private RequirementAuthor selectedRequirementAuthor;
 
     private final RequirementAuthorRepository requirementAuthorRepository = new RequirementAuthorRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
+
+    private RoleManagerService roleManagerService;
 
     public RequirementAuthorTableController() throws CommonFlkException {}
 
@@ -121,5 +124,10 @@ public class RequirementAuthorTableController implements RoleManagedTableControl
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) {
+        this.roleManagerService = roleManagerService;
     }
 }

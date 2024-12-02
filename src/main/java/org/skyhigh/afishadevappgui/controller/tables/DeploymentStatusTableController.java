@@ -15,6 +15,7 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.DeploymentStatus;
 import org.skyhigh.afishadevappgui.data.repository.DeploymentStatusRepository;
 import org.skyhigh.afishadevappgui.data.repository.DeploymentStatusRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.util.List;
 import java.util.UUID;
@@ -42,6 +43,8 @@ public class DeploymentStatusTableController implements RoleManagedTableControll
 
     @Getter
     private DeploymentStatus selectedDeploymentStatus;
+
+    private RoleManagerService roleManagerService;
 
     public DeploymentStatusTableController() throws CommonFlkException {}
 
@@ -121,5 +124,10 @@ public class DeploymentStatusTableController implements RoleManagedTableControll
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) throws CommonFlkException {
+        this.roleManagerService = roleManagerService;
     }
 }

@@ -29,7 +29,7 @@ public class RoleManagerServiceImpl implements RoleManagerService {
     @Override
     public boolean checkIfUserCanViewTableByItsEntityClass(RoleManagedTableController roleManagedTableController, DbUser dbUser) throws CommonFlkException {
         if (currentUsersSystemRole == null)
-            currentUsersSystemRole = SystemRoles.valueOf(systemRoleRepository.getSystemRoleById(dbUser.getSystemRoleId()).getRoleName());
+            setCurrentUserRole(dbUser);
         if (currentUsersSystemRole.equals(SystemRoles.ADMIN))
             return true;
         if (currentUsersSystemRole.equals(SystemRoles.ANALYST)) {
@@ -50,7 +50,7 @@ public class RoleManagerServiceImpl implements RoleManagerService {
     @Override
     public boolean checkIfUserCanEditTableDataByItsEntityClass(RoleManagedTableController roleManagedTableController, DbUser dbUser) throws CommonFlkException {
         if (currentUsersSystemRole == null)
-            currentUsersSystemRole = SystemRoles.valueOf(systemRoleRepository.getSystemRoleById(dbUser.getSystemRoleId()).getRoleName());
+            setCurrentUserRole(dbUser);
         if (currentUsersSystemRole.equals(SystemRoles.ADMIN))
             return true;
         if (currentUsersSystemRole.equals(SystemRoles.ANALYST)) {
@@ -66,5 +66,19 @@ public class RoleManagerServiceImpl implements RoleManagerService {
             return roleManagedTableController.getAccessibilityForEditingByDevOps();
         }
         return false;
+    }
+
+    @Override
+    public boolean checkIfCurrentUserAdmin() throws CommonFlkException {
+        if (currentUsersSystemRole == null)
+            throw new CommonFlkException(
+                    "Ошибка определения роли текущего пользователя: пользователь не найден"
+            );
+        return currentUsersSystemRole.equals(SystemRoles.ADMIN);
+    }
+
+    @Override
+    public void setCurrentUserRole(DbUser dbUser) throws CommonFlkException {
+        currentUsersSystemRole = SystemRoles.valueOf(systemRoleRepository.getSystemRoleById(dbUser.getSystemRoleId()).getRoleName());
     }
 }

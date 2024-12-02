@@ -47,8 +47,8 @@ public class AuthenticateController {
         FXMLLoader loader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("main-view.fxml"));
         Parent root = loader.load();
         MainController controller = loader.getController();
-        controller.initialize();
         controller.setCurrentDbUser(authenticatedUser);
+        controller.initialize();
         controller.setDefaultTableViewAndFilters();
 
         Stage stage = (Stage) AuthenticateAuthBt.getScene().getWindow();

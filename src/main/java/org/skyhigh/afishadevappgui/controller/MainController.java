@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.skyhigh.afishadevappgui.AfishaDevGUIApplication;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
@@ -243,16 +244,15 @@ public class MainController {
 
     private final String chosenTableButtonStyle = "-fx-background-color: #000002; -fx-text-fill: white;";
 
+    @Setter
     private DbUser currentDbUser;
 
     private Object selectedRow;
 
-    public void setCurrentDbUser(DbUser currentDbUser) {
-        this.currentDbUser = currentDbUser;
-        this.currentUserLogin.setText(currentDbUser.getUserLogin());
-    }
-
     public void initialize() throws IOException, CommonFlkException {
+        if (currentDbUser != null)
+            this.currentUserLogin.setText(currentDbUser.getUserLogin());
+
         setOnActionForUsersBt();
         setOnActionForAuthorsBt();
         setOnActionForRequirementsBt();
@@ -348,6 +348,7 @@ public class MainController {
                 secretRepository
         );
         roleManagerService = new RoleManagerServiceImpl();
+        if (currentDbUser != null) roleManagerService.setCurrentUserRole(currentDbUser);
     }
 
     public void setDefaultTableViewAndFilters() throws IOException, CommonFlkException {
@@ -360,6 +361,7 @@ public class MainController {
         authorTableController = (AuthorTableController) centerTableLoader.getController();
         authorTableController.initialize();
         authorTableController.fillTable();
+        authorTableController.setRoleManagerService(roleManagerService);
 
         openedTableName.setText(authorsBt.getText());
         tablePane.setCenter(centerTablePane);
@@ -450,6 +452,7 @@ public class MainController {
                 dbUserTableController = (DbUserTableController) centerTableLoader.getController();
                 dbUserTableController.initialize();
                 dbUserTableController.fillTable();
+                dbUserTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(usersBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -498,6 +501,7 @@ public class MainController {
                 authorTableController = (AuthorTableController) centerTableLoader.getController();
                 authorTableController.initialize();
                 authorTableController.fillTable();
+                authorTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(authorsBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -546,6 +550,7 @@ public class MainController {
                 requirementTableController = (RequirementTableController) centerTableLoader.getController();
                 requirementTableController.initialize();
                 requirementTableController.fillTable();
+                requirementTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(requirementsBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -558,11 +563,13 @@ public class MainController {
                 AnchorPane filterPane = (AnchorPane) filtersLoader.load();
                 requirementFiltersController = (RequirementFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
+                requirementFiltersController.setRoleManagerService(roleManagerService);
                 setOnActionFilterTableRowsBtForRequirements();
 
                 FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-requirement-view.fxml"));
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowRequirementController = (RowRequirementController) rowInteractionLoader.getController();
+                rowRequirementController.setRoleManagerService(roleManagerService);
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
                 if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(requirementTableController, currentDbUser)) rowRequirementController.setFieldsEditable(false);
 
@@ -594,6 +601,7 @@ public class MainController {
                 requirementTypeTableController = (RequirementTypeTableController) centerTableLoader.getController();
                 requirementTypeTableController.initialize();
                 requirementTypeTableController.fillTable();
+                requirementTypeTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(requirementTypesBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -642,6 +650,7 @@ public class MainController {
                 projectTableController = (ProjectTableController) centerTableLoader.getController();
                 projectTableController.initialize();
                 projectTableController.fillTable();
+                projectTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(projectsBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -690,6 +699,7 @@ public class MainController {
                 codeFileTableController = (CodeFileTableController) centerTableLoader.getController();
                 codeFileTableController.initialize();
                 codeFileTableController.fillTable();
+                codeFileTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(codeFilesBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -702,11 +712,13 @@ public class MainController {
                 AnchorPane filterPane = (AnchorPane) filtersLoader.load();
                 codeFileFiltersController = (CodeFileFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
+                codeFileFiltersController.setRoleManagerService(roleManagerService);
                 setOnActionFilterTableRowsBtForCodeFiles();
 
                 FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-code-file-view.fxml"));
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowCodeFileController = (RowCodeFileController) rowInteractionLoader.getController();
+                rowCodeFileController.setRoleManagerService(roleManagerService);
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
                 if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(codeFileTableController, currentDbUser)) rowCodeFileController.setFieldsEditable(false);
 
@@ -738,6 +750,7 @@ public class MainController {
                 deploymentTableController = (DeploymentTableController) centerTableLoader.getController();
                 deploymentTableController.initialize();
                 deploymentTableController.fillTable();
+                deploymentTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(deploymentsBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -750,11 +763,13 @@ public class MainController {
                 AnchorPane filterPane = (AnchorPane) filtersLoader.load();
                 deploymentFiltersController = (DeploymentFiltersController) filtersLoader.getController();
                 filtersPane.setCenter(filterPane);
+                deploymentFiltersController.setRoleManagerService(roleManagerService);
                 setOnActionFilterTableRowsBtForDeployments();
 
                 FXMLLoader rowInteractionLoader = new FXMLLoader(AfishaDevGUIApplication.class.getResource("rowinteraction/row-deployment-view.fxml"));
                 AnchorPane rowInteractionAnchorPane = (AnchorPane) rowInteractionLoader.load();
                 rowDeploymentController = (RowDeploymentController) rowInteractionLoader.getController();
+                rowDeploymentController.setRoleManagerService(roleManagerService);
                 rowInteractionPane.setCenter(rowInteractionAnchorPane);
                 if (!roleManagerService.checkIfUserCanEditTableDataByItsEntityClass(deploymentTableController, currentDbUser)) rowDeploymentController.setFieldsEditable(false);
 
@@ -786,6 +801,7 @@ public class MainController {
                 deploymentStatusTableController = (DeploymentStatusTableController) centerTableLoader.getController();
                 deploymentStatusTableController.initialize();
                 deploymentStatusTableController.fillTable();
+                deploymentStatusTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(deploymentStatusesBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -834,6 +850,7 @@ public class MainController {
                 projectAuthorTableController = (ProjectAuthorTableController) centerTableLoader.getController();
                 projectAuthorTableController.initialize();
                 projectAuthorTableController.fillTable();
+                projectAuthorTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(projectAuthorsBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -881,6 +898,7 @@ public class MainController {
                 requirementAuthorTableController = (RequirementAuthorTableController) centerTableLoader.getController();
                 requirementAuthorTableController.initialize();
                 requirementAuthorTableController.fillTable();
+                requirementAuthorTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(requirementAuthorsBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -928,6 +946,7 @@ public class MainController {
                 accessedRoleTableController = (AccessedRoleTableController) centerTableLoader.getController();
                 accessedRoleTableController.initialize();
                 accessedRoleTableController.fillTable();
+                accessedRoleTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(accessibleRolesBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -977,6 +996,7 @@ public class MainController {
                 secretTableController = (SecretTableController) centerTableLoader.getController();
                 secretTableController.initialize();
                 secretTableController.fillTable();
+                secretTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(secretsBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -1025,6 +1045,7 @@ public class MainController {
                 passwordGenRuleTableController = (PasswordGenRuleTableController) centerTableLoader.getController();
                 passwordGenRuleTableController.initialize();
                 passwordGenRuleTableController.fillTable();
+                passwordGenRuleTableController.setRoleManagerService(roleManagerService);
 
                 openedTableName.setText(passGenRuleBt.getText());
                 tablePane.setCenter(centerTablePane);
@@ -1372,6 +1393,8 @@ public class MainController {
                     accessedRoleRepository.saveAccessedRole(accessedRole);
                     accessedRoleTableController.fillTable();
                     rowAccessedRoleController.clearFields();
+                    if (requirementAuthorRepository.getRequirementAuthorByIds(accessedRole.getRequirementId(), currentDbUser.getAuthorId()) == null)
+                        requirementAuthorRepository.saveRequirementAuthor(new RequirementAuthor(accessedRole.getRequirementId(), currentDbUser.getAuthorId()));
                     ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Роль {%s, %s} успешно сохранена", accessedRole.getRequirementId(), accessedRole.getRoleName()));
                 } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
                         "1004001",
@@ -1415,6 +1438,8 @@ public class MainController {
                     UUID id = codeFileRepository.saveCodeFile(codeFile);
                     codeFileTableController.fillTable();
                     rowCodeFileController.clearFields();
+                    if (projectAuthorRepository.getProjectAuthorByIds(codeFile.getProjectId(), currentDbUser.getAuthorId()) == null)
+                        projectAuthorRepository.saveProjectAuthor(new ProjectAuthor(codeFile.getProjectId(), currentDbUser.getAuthorId()));
                     ControllerUtils.showSuccessfulEntitySaveDialog(String.format("Файл с кодом успешно сохранен с id: %s", id));
                 } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
                         "1004001",
@@ -1720,7 +1745,11 @@ public class MainController {
                 } catch (CommonFlkException e) {
                     throw new RuntimeException(e);
                 }
-                rowCodeFileController.autoFillFields(newSelection);
+                try {
+                    rowCodeFileController.autoFillFields(newSelection);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -1788,7 +1817,11 @@ public class MainController {
                 } catch (CommonFlkException e) {
                     throw new RuntimeException(e);
                 }
-                rowDeploymentController.autoFillFields(newSelection);
+                try {
+                    rowDeploymentController.autoFillFields(newSelection);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -1922,7 +1955,11 @@ public class MainController {
                 } catch (CommonFlkException e) {
                     throw new RuntimeException(e);
                 }
-                rowRequirementController.autoFillFields(newSelection);
+                try {
+                    rowRequirementController.autoFillFields(newSelection);
+                } catch (CommonFlkException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -2349,6 +2386,8 @@ public class MainController {
                     );
                     accessedRoleTableController.fillTable();
                     rowAccessedRoleController.clearFields();
+                    if (requirementAuthorRepository.getRequirementAuthorByIds(accessedRole.getRequirementId(), currentDbUser.getAuthorId()) == null)
+                        requirementAuthorRepository.saveRequirementAuthor(new RequirementAuthor(accessedRole.getRequirementId(), currentDbUser.getAuthorId()));
                     ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Роль {%s, %s} изменена успешно", ((AccessedRole) selectedRow).getRequirementId(), ((AccessedRole) selectedRow).getRoleName()));
                 } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
                         "1004001",
@@ -2397,6 +2436,8 @@ public class MainController {
                     );
                     codeFileTableController.fillTable();
                     rowCodeFileController.clearFields();
+                    if (projectAuthorRepository.getProjectAuthorByIds(codeFile.getProjectId(), currentDbUser.getAuthorId()) == null)
+                        projectAuthorRepository.saveProjectAuthor(new ProjectAuthor(codeFile.getProjectId(), currentDbUser.getAuthorId()));
                     ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Файл с кодом с id '%s' изменен успешно", codeFile.getCodeFileId()));
                 } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
                         "1004001",
@@ -2522,6 +2563,8 @@ public class MainController {
                     );
                     projectTableController.fillTable();
                     rowProjectController.clearFields();
+                    if (projectAuthorRepository.getProjectAuthorByIds(project.getProjectId(), currentDbUser.getAuthorId()) == null)
+                        projectAuthorRepository.saveProjectAuthor(new ProjectAuthor(project.getProjectId(), currentDbUser.getAuthorId()));
                     ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Проект с id '%s' изменен успешно", project.getProjectId()));
                 } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
                         "1004001",
@@ -2546,6 +2589,8 @@ public class MainController {
                     );
                     requirementTableController.fillTable();
                     rowRequirementController.clearFields();
+                    if (requirementAuthorRepository.getRequirementAuthorByIds(requirement.getRequirementId(), currentDbUser.getAuthorId()) == null)
+                        requirementAuthorRepository.saveRequirementAuthor(new RequirementAuthor(requirement.getRequirementId(), currentDbUser.getAuthorId()));
                     ControllerUtils.showSuccessfulEntityUpdatingDialog(String.format("Требование с id '%s' изменен успешно", requirement.getRequirementId()));
                 } else ControllerUtils.showCommonFlkExceptionAlert(new CommonUIException(
                         "1004001",

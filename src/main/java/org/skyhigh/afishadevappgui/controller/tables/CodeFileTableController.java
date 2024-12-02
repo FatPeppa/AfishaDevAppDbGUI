@@ -15,6 +15,9 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.CodeFile;
 import org.skyhigh.afishadevappgui.data.repository.CodeFileRepository;
 import org.skyhigh.afishadevappgui.data.repository.CodeFileRepositoryImpl;
+import org.skyhigh.afishadevappgui.data.repository.ProjectRepository;
+import org.skyhigh.afishadevappgui.data.repository.ProjectRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,7 +40,7 @@ public class CodeFileTableController implements RoleManagedTableController {
     private TableColumn<CodeFile, UUID> codeFileIdTableColumn;
 
     @FXML
-    private TableColumn<CodeFile, UUID> projectIdCodeFileTableColumn;
+    private TableColumn<CodeFile, ?> projectIdCodeFileTableColumn;
 
     @FXML
     private TableColumn<CodeFile, String> fileContentCodeFileTableColumn;
@@ -50,9 +53,11 @@ public class CodeFileTableController implements RoleManagedTableController {
     @Getter
     private CodeFile selectedCodeFile;
 
+    private RoleManagerService roleManagerService;
+
     public CodeFileTableController() throws CommonFlkException {}
 
-    public void initialize() {
+    public void initialize() throws CommonFlkException {
         codeFileIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("codeFileId"));
         projectIdCodeFileTableColumn.setCellValueFactory(new PropertyValueFactory<>("projectId"));
         fileContentCodeFileTableColumn.setCellValueFactory(new PropertyValueFactory<>("fileContent"));
@@ -66,12 +71,36 @@ public class CodeFileTableController implements RoleManagedTableController {
                 SortDirection.NONE,
                 null
         );
+
+        ProjectRepository projectRepository = new ProjectRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
+
+        codeFiles.stream().forEach(codeFile -> {
+            try {
+                codeFile.setProjectName(projectRepository.getProjectById(codeFile.getProjectId()).getProjectName());
+            } catch (CommonFlkException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         codeFilesListView.addAll(codeFiles);
         codeFileTable.setItems(codeFilesListView);
     }
 
-    public void fillTable(List<CodeFile> codeFiles) {
+    public void fillTable(List<CodeFile> codeFiles) throws CommonFlkException {
         ObservableList<CodeFile> codeFileObservableList = FXCollections.observableArrayList();
+        ProjectRepository projectRepository = new ProjectRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
+
+        codeFiles.forEach(codeFile -> {
+            try {
+                codeFile.setProjectName(projectRepository.getProjectById(codeFile.getProjectId()).getProjectName());
+            } catch (CommonFlkException e) {
+                throw new RuntimeException(e);
+            }
+        });
         codeFileObservableList.addAll(codeFiles);
         codeFileTable.setItems(codeFileObservableList);
     }
@@ -130,5 +159,15 @@ public class CodeFileTableController implements RoleManagedTableController {
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) throws CommonFlkException {
+        this.roleManagerService = roleManagerService;
+
+        if (!roleManagerService.checkIfCurrentUserAdmin()) {
+            projectIdCodeFileTableColumn.setCellValueFactory(new PropertyValueFactory<>("projectName"));
+            projectIdCodeFileTableColumn.setText("Наименование проекта");
+        }
     }
 }

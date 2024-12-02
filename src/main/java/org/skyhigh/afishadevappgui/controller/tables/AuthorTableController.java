@@ -15,6 +15,7 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Author;
 import org.skyhigh.afishadevappgui.data.repository.AuthorRepository;
 import org.skyhigh.afishadevappgui.data.repository.AuthorRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.util.List;
 import java.util.UUID;
@@ -42,6 +43,8 @@ public class AuthorTableController implements RoleManagedTableController {
 
     @Getter
     private Author selectedAuthor;
+
+    private RoleManagerService roleManagerService;
 
     public AuthorTableController() throws CommonFlkException {}
 
@@ -121,5 +124,10 @@ public class AuthorTableController implements RoleManagedTableController {
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) {
+        this.roleManagerService = roleManagerService;
     }
 }

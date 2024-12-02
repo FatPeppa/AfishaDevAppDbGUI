@@ -15,6 +15,7 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Secret;
 import org.skyhigh.afishadevappgui.data.repository.SecretRepository;
 import org.skyhigh.afishadevappgui.data.repository.SecretRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +52,8 @@ public class SecretTableController implements RoleManagedTableController {
 
     @Getter
     private Secret selectedSecret;
+
+    private RoleManagerService roleManagerService;
 
     public SecretTableController() throws CommonFlkException {}
 
@@ -133,5 +136,10 @@ public class SecretTableController implements RoleManagedTableController {
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) {
+        this.roleManagerService = roleManagerService;
     }
 }

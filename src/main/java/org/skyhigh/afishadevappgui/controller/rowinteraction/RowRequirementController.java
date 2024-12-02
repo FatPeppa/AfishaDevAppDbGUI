@@ -4,10 +4,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
+import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.common.validation.CommonUIException;
 import org.skyhigh.afishadevappgui.common.validation.CommonUIFormatException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Requirement;
+import org.skyhigh.afishadevappgui.data.repository.RequirementTypeRepository;
+import org.skyhigh.afishadevappgui.data.repository.RequirementTypeRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +48,8 @@ public class RowRequirementController {
     @FXML
     Label uploadDateLabel;
 
+    private RoleManagerService roleManagerService;
+
     private String requirementIdFieldPrompt;
     private String requirementTypeIdFieldPrompt;
     private String contentFieldPrompt;
@@ -70,9 +76,15 @@ public class RowRequirementController {
         lastChangeDateFieldBasicStyle = lastChangeDateField.getStyle();
     }
 
-    public void autoFillFields(Requirement requirement) {
+    public void autoFillFields(Requirement requirement) throws CommonFlkException {
+        RequirementTypeRepository requirementTypeRepository = new RequirementTypeRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
         requirementIdField.setText(requirement.getRequirementId().toString());
-        requirementTypeIdField.setText(requirement.getRequirementTypeId().toString());
+        if (roleManagerService.checkIfCurrentUserAdmin())
+            requirementTypeIdField.setText(requirement.getRequirementTypeId().toString());
+        else
+            requirementTypeIdField.setText(requirementTypeRepository.getRequirementTypeById(requirement.getRequirementTypeId()).getRequirementTypeName());
         uploadDateField.setText(requirement.getLoadDate().toString());
         lastChangeDateField.setText(requirement.getLastChangeDate().toString());
         contentField.setText(requirement.getContent().toString());
@@ -88,17 +100,30 @@ public class RowRequirementController {
 
     public Requirement getRequirement() throws CommonFlkException {
         List<String> emptyField = getEmptyNecessaryFields();
+        RequirementTypeRepository requirementTypeRepository = new RequirementTypeRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
         if (emptyField.isEmpty())
             try {
+                UUID requirementTypeId = null;
+                if (!roleManagerService.checkIfCurrentUserAdmin()) {
+                    if (requirementTypeRepository.getRequirementTypeByName(requirementTypeIdField.getText()) == null)
+                        throw new CommonFlkException(
+                                "Тип требования '" + requirementTypeIdField.getText() + "' не найден"
+                        );
+                    requirementTypeId = requirementTypeRepository.getRequirementTypeByName(requirementTypeIdField.getText()).getRequirementTypeId();
+                } else {
+                    requirementTypeId = ControllerUtils.getUUIDFromTextField(
+                            requirementTypeIdField,
+                            ControllerUtils.getFieldLocalNameFromItsLabel(requirementTypeIdLabel)
+                    );
+                }
                 return new Requirement(
                         requirementIdField.getText() != null && !requirementIdField.getText().isEmpty() ? ControllerUtils.getUUIDFromTextField(
                                 requirementIdField,
                                 ControllerUtils.getFieldLocalNameFromItsLabel(requirementIdLabel)
                         ) : null,
-                        ControllerUtils.getUUIDFromTextField(
-                                requirementTypeIdField,
-                                ControllerUtils.getFieldLocalNameFromItsLabel(requirementTypeIdLabel)
-                        ),
+                        requirementTypeId,
                         ControllerUtils.getLocalDateTimeFromTextField(
                                 uploadDateField,
                                 ControllerUtils.getFieldLocalNameFromItsLabel(uploadDateLabel)
@@ -187,6 +212,17 @@ public class RowRequirementController {
             contentField.setPromptText("Заполняется автоматически");
             contentField.setEditable(false);
             contentField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
+    }
+
+    public void setRoleManagerService(RoleManagerService roleManagerService) throws CommonFlkException {
+        this.roleManagerService = roleManagerService;
+
+        if (!roleManagerService.checkIfCurrentUserAdmin()) {
+            if (!requirementTypeIdField.getPromptText().equals("Заполняется автоматически"))
+                requirementTypeIdField.setPromptText("Введите тип требования");
+            requirementTypeIdLabel.setText("Тип требования:");
+            requirementTypeIdFieldPrompt = "Введите тип требования";
         }
     }
 }

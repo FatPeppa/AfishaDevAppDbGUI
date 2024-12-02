@@ -15,6 +15,7 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.RequirementType;
 import org.skyhigh.afishadevappgui.data.repository.RequirementTypeRepository;
 import org.skyhigh.afishadevappgui.data.repository.RequirementTypeRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.util.List;
 import java.util.UUID;
@@ -42,6 +43,8 @@ public class RequirementTypeTableController implements RoleManagedTableControlle
 
     @Getter
     private RequirementType selectedRequirementType;
+
+    private RoleManagerService roleManagerService;
 
     public RequirementTypeTableController() throws CommonFlkException {}
 
@@ -121,5 +124,10 @@ public class RequirementTypeTableController implements RoleManagedTableControlle
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) {
+        this.roleManagerService = roleManagerService;
     }
 }

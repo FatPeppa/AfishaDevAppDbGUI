@@ -23,11 +23,10 @@ import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Deployment;
-import org.skyhigh.afishadevappgui.data.repository.DeploymentRepository;
-import org.skyhigh.afishadevappgui.data.repository.DeploymentRepositoryImpl;
-import org.skyhigh.afishadevappgui.data.repository.SecretRepositoryImpl;
+import org.skyhigh.afishadevappgui.data.repository.*;
 import org.skyhigh.afishadevappgui.service.logic.deploy.DeployService;
 import org.skyhigh.afishadevappgui.service.logic.deploy.DeployServiceImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.io.File;
 import java.util.List;
@@ -76,6 +75,8 @@ public class DeploymentTableController implements RoleManagedTableController {
     @FXML
     private TableColumn<Deployment, UUID> projectIdDeploymentTableColumn;
 
+    private RoleManagerService roleManagerService;
+
     private final DeploymentRepository deploymentRepository = new DeploymentRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
     private final DeployService deployService = new DeployServiceImpl(
@@ -109,12 +110,48 @@ public class DeploymentTableController implements RoleManagedTableController {
                 SortDirection.NONE,
                 null
         );
+        DeploymentStatusRepository deploymentStatusRepository = new DeploymentStatusRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
+        ProjectRepository projectRepository = new ProjectRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
+        deployments.forEach(deployment -> {
+            try {
+                if (deployment.getDeploymentStatusName() == null || deployment.getDeploymentStatusName().isEmpty()) {
+                    deployment.setDeploymentStatusName(deploymentStatusRepository.getDeploymentStatusById(deployment.getDeploymentStatusId()).getStatusName());
+                }
+                if (deployment.getProjectName() == null || deployment.getProjectName().isEmpty()) {
+                    deployment.setProjectName(projectRepository.getProjectById(deployment.getProjectId()).getProjectName());
+                }
+            } catch (CommonFlkException e) {
+                throw new RuntimeException(e);
+            }
+        });
         deploymentListView.addAll(deployments);
         deploymentTable.setItems(deploymentListView);
     }
 
-    public void fillTable(List<Deployment> deployments) {
+    public void fillTable(List<Deployment> deployments) throws CommonFlkException {
         ObservableList<Deployment> deploymentObservableList = FXCollections.observableArrayList();
+        DeploymentStatusRepository deploymentStatusRepository = new DeploymentStatusRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
+        ProjectRepository projectRepository = new ProjectRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
+        deployments.forEach(deployment -> {
+            try {
+                if (deployment.getDeploymentStatusName() == null || deployment.getDeploymentStatusName().isEmpty()) {
+                    deployment.setDeploymentStatusName(deploymentStatusRepository.getDeploymentStatusById(deployment.getDeploymentStatusId()).getStatusName());
+                }
+                if (deployment.getProjectName() == null || deployment.getProjectName().isEmpty()) {
+                    deployment.setProjectName(projectRepository.getProjectById(deployment.getProjectId()).getProjectName());
+                }
+            } catch (CommonFlkException e) {
+                throw new RuntimeException(e);
+            }
+        });
         deploymentObservableList.addAll(deployments);
         deploymentTable.setItems(deploymentObservableList);
     }
@@ -310,5 +347,18 @@ public class DeploymentTableController implements RoleManagedTableController {
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) throws CommonFlkException {
+        this.roleManagerService = roleManagerService;
+
+        if (!roleManagerService.checkIfCurrentUserAdmin()) {
+            deploymentStatusIdDeploymentTableColumn.setCellValueFactory(new PropertyValueFactory<>("deploymentStatusName"));
+            deploymentStatusIdDeploymentTableColumn.setText("Статус");
+
+            projectIdDeploymentTableColumn.setCellValueFactory(new PropertyValueFactory<>("projectName"));
+            projectIdDeploymentTableColumn.setText("Имя проекта");
+        }
     }
 }

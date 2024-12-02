@@ -29,36 +29,6 @@ public class AfishaDevGUIApplication extends Application {
         stage.setTitle("AfishaDevAppGUI");
         stage.setScene(scene);
         stage.show();
-
-        /*try {
-            AuthenticationService service = new AuthenticationServiceImpl(
-                    new DbUserRepositoryImpl(
-                            ApplicationPropertiesReader.getApplicationProperties()
-                    )
-            );
-            //DbUser user = service.register("tfff4fffff", "sdfsssssssss2s");
-            //int a = 0;
-            //DbUser au = service.authenticate("tfff4fffff", "sdfsssssssss2s");
-            //int b = 0;
-            AuthorRepository authorRepository = new AuthorRepositoryImpl(
-                    ApplicationPropertiesReader.getApplicationProperties()
-            );
-            List<Author> authors = authorRepository.getAllAuthors(
-                    SortDirection.NONE,
-                    null
-            );
-            try {
-                FlkExceptionHandlerController.executeMethod(
-                        authorRepository.getClass().getMethod("getAllAuthors", SortDirection.class, String.class)
-
-                );
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            }
-            int a = 0;
-        } catch (CommonFlkException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
     private static void showError(Thread t, Throwable e) {

@@ -16,6 +16,7 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Project;
 import org.skyhigh.afishadevappgui.data.repository.ProjectRepository;
 import org.skyhigh.afishadevappgui.data.repository.ProjectRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -61,6 +62,8 @@ public class ProjectTableController implements RoleManagedTableController {
 
     @Getter
     private Project selectedProject;
+
+    private RoleManagerService roleManagerService;
 
     private final ProjectRepository projectRepository = new ProjectRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
@@ -148,5 +151,10 @@ public class ProjectTableController implements RoleManagedTableController {
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) {
+        this.roleManagerService = roleManagerService;
     }
 }

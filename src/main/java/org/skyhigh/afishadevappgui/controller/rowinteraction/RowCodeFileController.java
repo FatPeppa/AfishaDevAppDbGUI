@@ -3,11 +3,16 @@ package org.skyhigh.afishadevappgui.controller.rowinteraction;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
+import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.common.validation.CommonUIException;
 import org.skyhigh.afishadevappgui.common.validation.CommonUIFormatException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.CodeFile;
+import org.skyhigh.afishadevappgui.data.repository.ProjectRepository;
+import org.skyhigh.afishadevappgui.data.repository.ProjectRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +43,8 @@ public class RowCodeFileController {
     @FXML
     Label uploadDateLabel;
 
+    private RoleManagerService roleManagerService;
+
     private String codeFileIdFieldPrompt;
     private String projectIdFieldPrompt;
     private String contentFieldPrompt;
@@ -60,9 +67,15 @@ public class RowCodeFileController {
         codeFileUploadDateFieldBasicStyle = codeFileUploadDateField.getStyle();
     }
 
-    public void autoFillFields(CodeFile codeFile) {
+    public void autoFillFields(CodeFile codeFile) throws CommonFlkException {
+        ProjectRepository projectRepository = new ProjectRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
         codeFileIdField.setText(codeFile.getCodeFileId().toString());
-        projectIdField.setText(codeFile.getProjectId().toString());
+        if (roleManagerService.checkIfCurrentUserAdmin())
+            projectIdField.setText(codeFile.getProjectId().toString());
+        else
+            projectIdField.setText(projectRepository.getProjectById(codeFile.getProjectId()).getProjectName());
         projectIdField.setEditable(false);
         projectIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
         contentField.setText(codeFile.getFileContent());
@@ -80,17 +93,30 @@ public class RowCodeFileController {
 
     public CodeFile getCodeFile() throws CommonFlkException {
         List<String> emptyField = getEmptyNecessaryFields();
+        ProjectRepository projectRepository = new ProjectRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
         if (emptyField.isEmpty())
             try {
+                UUID projectId = null;
+                if (!roleManagerService.checkIfCurrentUserAdmin()) {
+                    if (projectRepository.getProjectByName(projectIdField.getText()) == null)
+                        throw new CommonFlkException(
+                                "Проект '" + projectIdField.getText() + "' не найден"
+                        );
+                    projectId = projectRepository.getProjectByName(projectIdField.getText()).getProjectId();
+                } else {
+                    projectId =  ControllerUtils.getUUIDFromTextField(
+                            projectIdField,
+                            ControllerUtils.getFieldLocalNameFromItsLabel(projectIdLabel)
+                    );
+                }
                 return new CodeFile(
                         ControllerUtils.getUUIDFromTextField(
                                 codeFileIdField,
                                 ControllerUtils.getFieldLocalNameFromItsLabel(codeFileIdLabel)
                         ),
-                        ControllerUtils.getUUIDFromTextField(
-                                projectIdField,
-                                ControllerUtils.getFieldLocalNameFromItsLabel(projectIdLabel)
-                        ),
+                        projectId,
                         contentField.getText(),
                         codeFileUploadDateField.getText() == null ? null : ControllerUtils.getLocalDateTimeFromTextField(
                                 codeFileUploadDateField,
@@ -160,6 +186,17 @@ public class RowCodeFileController {
             codeFileUploadDateField.setPromptText("Заполняется автоматически");
             codeFileUploadDateField.setEditable(false);
             codeFileUploadDateField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
+    }
+
+    public void setRoleManagerService(RoleManagerService roleManagerService) throws CommonFlkException {
+        this.roleManagerService = roleManagerService;
+
+        if (!roleManagerService.checkIfCurrentUserAdmin()) {
+            if (!projectIdField.getPromptText().equals("Заполняется автоматически"))
+                projectIdField.setPromptText("Введите имя проекта");
+            projectIdLabel.setText("Имя проекта:");
+            projectIdFieldPrompt = "Введите имя проекта";
         }
     }
 }

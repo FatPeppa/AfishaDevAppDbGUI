@@ -15,6 +15,7 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.DbUser;
 import org.skyhigh.afishadevappgui.data.repository.DbUserRepository;
 import org.skyhigh.afishadevappgui.data.repository.DbUserRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +52,8 @@ public class DbUserTableController implements RoleManagedTableController {
 
     @Getter
     private DbUser selectedDbUser;
+
+    private RoleManagerService roleManagerService;
 
     public DbUserTableController() throws CommonFlkException {}
 
@@ -133,5 +136,10 @@ public class DbUserTableController implements RoleManagedTableController {
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) {
+        this.roleManagerService = roleManagerService;
     }
 }

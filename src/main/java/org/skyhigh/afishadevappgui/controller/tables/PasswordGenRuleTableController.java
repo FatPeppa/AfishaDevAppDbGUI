@@ -15,6 +15,7 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.PasswordGenRule;
 import org.skyhigh.afishadevappgui.data.repository.PasswordGenRuleRepository;
 import org.skyhigh.afishadevappgui.data.repository.PasswordGenRuleRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,6 +61,8 @@ public class PasswordGenRuleTableController implements RoleManagedTableControlle
 
     @Getter
     private PasswordGenRule selectedPasswordGenRule;
+
+    private RoleManagerService roleManagerService;
 
     public PasswordGenRuleTableController() throws CommonFlkException {}
 
@@ -145,5 +148,10 @@ public class PasswordGenRuleTableController implements RoleManagedTableControlle
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) {
+        this.roleManagerService = roleManagerService;
     }
 }

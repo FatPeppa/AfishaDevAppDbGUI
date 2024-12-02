@@ -4,7 +4,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
+import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
+import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.common.validation.CommonUIFormatException;
+import org.skyhigh.afishadevappgui.data.datasource.entity.Project;
+import org.skyhigh.afishadevappgui.data.datasource.entity.RequirementType;
+import org.skyhigh.afishadevappgui.data.repository.ProjectRepository;
+import org.skyhigh.afishadevappgui.data.repository.ProjectRepositoryImpl;
+import org.skyhigh.afishadevappgui.data.repository.RequirementTypeRepository;
+import org.skyhigh.afishadevappgui.data.repository.RequirementTypeRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -48,6 +57,8 @@ public class RequirementFiltersController {
     @FXML
     Label lastChangeDateEndLabel;
 
+    private RoleManagerService roleManagerService;
+
     public void initialize() {
         setRequirementIdInputFieldChangeListener();
         setRequirementTypeIdInputFieldChangeListener();
@@ -65,8 +76,20 @@ public class RequirementFiltersController {
         }
     }
 
-    public UUID getRequirementTypeId() {
+    public UUID getRequirementTypeId() throws CommonFlkException {
         try {
+            if (requirementTypeIdInputField.getText() == null || requirementTypeIdInputField.getText().isEmpty())
+                return null;
+            if (roleManagerService != null && !roleManagerService.checkIfCurrentUserAdmin()) {
+                String requirementTypeName = requirementTypeIdInputField.getText();
+                RequirementTypeRepository requirementTypeRepository = new RequirementTypeRepositoryImpl(
+                        ApplicationPropertiesReader.getApplicationProperties()
+                );
+                RequirementType requirementType = requirementTypeRepository.getRequirementTypeByName(requirementTypeName);
+                if (requirementType == null)
+                    throw new CommonFlkException("Тип требования с именем '" + requirementTypeName + "' не существует");
+                return requirementType.getRequirementTypeId();
+            }
             return ControllerUtils.getUUIDFromTextField(requirementTypeIdInputField, getFieldLocalNameFromItsLabel(requirementTypeIdLabel));
         } catch (CommonUIFormatException e) {
             return null;
@@ -159,5 +182,14 @@ public class RequirementFiltersController {
             loadDateStartInputField.setDisable(newValue != null && !newValue.isEmpty());
             loadDateEndInputField.setDisable(newValue != null && !newValue.isEmpty());
         });
+    }
+
+    public void setRoleManagerService(RoleManagerService roleManagerService) throws CommonFlkException {
+        this.roleManagerService = roleManagerService;
+
+        if (!roleManagerService.checkIfCurrentUserAdmin()) {
+            requirementTypeIdInputField.setPromptText("Введите, пожалуйста, тип требования (Строка)");
+            requirementTypeIdLabel.setText("Тип требования:");
+        }
     }
 }

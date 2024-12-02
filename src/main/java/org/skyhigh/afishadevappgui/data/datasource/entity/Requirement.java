@@ -17,4 +17,14 @@ public class Requirement {
     private LocalDateTime loadDate;
     private LocalDateTime lastChangeDate;
     private JSONObject content;
+
+    private String requirementTypeName;
+
+    public Requirement(UUID requirementId, UUID requirementTypeId, LocalDateTime loadDate, LocalDateTime lastChangeDate, JSONObject content) {
+        this.requirementId = requirementId;
+        this.requirementTypeId = requirementTypeId;
+        this.loadDate = loadDate;
+        this.lastChangeDate = lastChangeDate;
+        this.content = content;
+    }
 }

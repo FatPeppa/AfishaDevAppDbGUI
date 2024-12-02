@@ -4,10 +4,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.skyhigh.afishadevappgui.common.controller.ControllerUtils;
+import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.common.validation.CommonUIException;
 import org.skyhigh.afishadevappgui.common.validation.CommonUIFormatException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Deployment;
+import org.skyhigh.afishadevappgui.data.repository.DeploymentStatusRepository;
+import org.skyhigh.afishadevappgui.data.repository.DeploymentStatusRepositoryImpl;
+import org.skyhigh.afishadevappgui.data.repository.ProjectRepository;
+import org.skyhigh.afishadevappgui.data.repository.ProjectRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +68,8 @@ public class RowDeploymentController {
     @FXML
     Label projectIdLabel;
 
+    private RoleManagerService roleManagerService;
+
     private String deploymentIdFieldPrompt;
     private String addressFieldPrompt;
     private String statusIdFieldPrompt;
@@ -100,15 +108,26 @@ public class RowDeploymentController {
         projectIdFieldBasicStyle = projectIdField.getStyle();
     }
 
-    public void autoFillFields(Deployment deployment) {
+    public void autoFillFields(Deployment deployment) throws CommonFlkException {
+        ProjectRepository projectRepository = new ProjectRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
+        DeploymentStatusRepository deploymentStatusRepository = new DeploymentStatusRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
         deploymentIdField.setText(deployment.getDeploymentId().toString());
         if (deployment.getDeploymentPath() != null) {addressField.setText(deployment.getDeploymentPath());}
         if (deployment.getSettings() != null) {settingsField.setText(deployment.getSettings().toString());}
         if (deployment.getBuiltSettings() != null) {builtSettingsField.setText(deployment.getBuiltSettings().toString());}
         if (deployment.getBuiltVersion() != null) {builtVersionField.setText(deployment.getBuiltVersion());}
         if (deployment.getBuilt() != null) {builtField.setText(deployment.getBuilt().toString());}
-        statusIdField.setText(deployment.getDeploymentStatusId().toString());
-        projectIdField.setText(deployment.getProjectId().toString());
+        if (roleManagerService.checkIfCurrentUserAdmin()) {
+            statusIdField.setText(deployment.getDeploymentStatusId().toString());
+            projectIdField.setText(deployment.getProjectId().toString());
+        } else {
+            statusIdField.setText(deploymentStatusRepository.getDeploymentStatusById(deployment.getDeploymentStatusId()).getStatusName());
+            projectIdField.setText(projectRepository.getProjectById(deployment.getProjectId()).getProjectName());
+        }
     }
 
     public void clearFields() {
@@ -124,17 +143,46 @@ public class RowDeploymentController {
 
     public Deployment getDeployment() throws CommonFlkException {
         List<String> emptyField = getEmptyNecessaryFields();
+        ProjectRepository projectRepository = new ProjectRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
+        DeploymentStatusRepository deploymentStatusRepository = new DeploymentStatusRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
         if (emptyField.isEmpty())
             try {
+                UUID projectId = null;
+                if (!roleManagerService.checkIfCurrentUserAdmin()) {
+                    if (projectRepository.getProjectByName(projectIdField.getText()) == null)
+                        throw new CommonFlkException(
+                                "Проект '" + projectIdField.getText() + "' не найден"
+                        );
+                    projectId = projectRepository.getProjectByName(projectIdField.getText()).getProjectId();
+                } else {
+                    projectId =  ControllerUtils.getUUIDFromTextField(
+                            projectIdField,
+                            ControllerUtils.getFieldLocalNameFromItsLabel(projectIdLabel)
+                    );
+                }
+                UUID deploymentStatusId = null;
+                if (!roleManagerService.checkIfCurrentUserAdmin()) {
+                    if (deploymentStatusRepository.getDeploymentStatusByName(statusIdField.getText()) == null)
+                        throw new CommonFlkException(
+                                "Статус развертывания '" + statusIdField.getText() + "' не найден"
+                        );
+                    deploymentStatusId = deploymentStatusRepository.getDeploymentStatusByName(statusIdField.getText()).getDeploymentStatusId();
+                } else {
+                    deploymentStatusId = ControllerUtils.getUUIDFromTextField(
+                            statusIdField,
+                            ControllerUtils.getFieldLocalNameFromItsLabel(statusIdLabel)
+                    );
+                }
                 return new Deployment(
                         ControllerUtils.getUUIDFromTextField(
                                 deploymentIdField,
                                 ControllerUtils.getFieldLocalNameFromItsLabel(deploymentIdLabel)
                         ),
-                        ControllerUtils.getUUIDFromTextField(
-                                statusIdField,
-                                ControllerUtils.getFieldLocalNameFromItsLabel(statusIdLabel)
-                        ),
+                        deploymentStatusId,
                         addressField.getText(),
                         settingsField.getText() == null || settingsField.getText().isEmpty() ? null : ControllerUtils.getJSONFromTextField(
                                 settingsField,
@@ -149,10 +197,7 @@ public class RowDeploymentController {
                                 builtField,
                                 ControllerUtils.getFieldLocalNameFromItsLabel(builtLabel)
                         ),
-                        ControllerUtils.getUUIDFromTextField(
-                                projectIdField,
-                                ControllerUtils.getFieldLocalNameFromItsLabel(projectIdLabel)
-                        )
+                        projectId
                 );
             } catch (CommonUIFormatException e) {
                 return null;
@@ -249,6 +294,22 @@ public class RowDeploymentController {
             projectIdField.setPromptText("Заполняется автоматически");
             projectIdField.setEditable(false);
             projectIdField.setStyle("-fx-background-color: #e6e6e6; -fx-border-color: black;");
+        }
+    }
+
+    public void setRoleManagerService(RoleManagerService roleManagerService) throws CommonFlkException {
+        this.roleManagerService = roleManagerService;
+
+        if (!roleManagerService.checkIfCurrentUserAdmin()) {
+            if (!projectIdField.getPromptText().equals("Заполняется автоматически"))
+                projectIdField.setPromptText("Введите имя проекта");
+            projectIdLabel.setText("Имя проекта:");
+            projectIdFieldPrompt = "Введите имя проекта";
+
+            if (!statusIdField.getPromptText().equals("Заполняется автоматически"))
+                statusIdField.setPromptText("Введите статус развертывания");
+            statusIdLabel.setText("Статус развертывания:");
+            statusIdFieldPrompt = "Введите статус развертывания";
         }
     }
 }

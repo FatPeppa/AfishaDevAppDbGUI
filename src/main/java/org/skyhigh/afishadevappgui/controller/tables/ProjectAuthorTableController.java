@@ -15,19 +15,20 @@ import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.ProjectAuthor;
 import org.skyhigh.afishadevappgui.data.repository.ProjectAuthorRepository;
 import org.skyhigh.afishadevappgui.data.repository.ProjectAuthorRepositoryImpl;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.util.List;
 import java.util.UUID;
 
 public class ProjectAuthorTableController implements RoleManagedTableController {
-    private static final boolean isViewableForAnalyst = true;
-    private static final boolean isViewableForDeveloper = true;
-    private static final boolean isViewableForQA= true;
-    private static final boolean isViewableForDevOps = true;
+    private static final boolean isViewableForAnalyst = false;
+    private static final boolean isViewableForDeveloper = false;
+    private static final boolean isViewableForQA= false;
+    private static final boolean isViewableForDevOps = false;
     private static final boolean isEditableForAnalyst = false;
-    private static final boolean isEditableForDeveloper = true;
-    private static final boolean isEditableForQA= true;
-    private static final boolean isEditableForDevOps = true;
+    private static final boolean isEditableForDeveloper = false;
+    private static final boolean isEditableForQA= false;
+    private static final boolean isEditableForDevOps = false;
 
     @FXML
     private TableView<ProjectAuthor> projectAuthorTable;
@@ -42,6 +43,8 @@ public class ProjectAuthorTableController implements RoleManagedTableController 
 
     @Getter
     private ProjectAuthor selectedProjectAuthor;
+
+    private RoleManagerService roleManagerService;
 
     public ProjectAuthorTableController() throws CommonFlkException {}
 
@@ -121,5 +124,10 @@ public class ProjectAuthorTableController implements RoleManagedTableController 
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) {
+        this.roleManagerService = roleManagerService;
     }
 }

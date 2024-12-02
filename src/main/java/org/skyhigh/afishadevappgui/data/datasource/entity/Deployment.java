@@ -20,4 +20,18 @@ public class Deployment {
     private JSONObject builtSettings;
     private File built;
     private UUID projectId;
+
+    private String deploymentStatusName;
+    private String projectName;
+
+    public Deployment(UUID deploymentId, UUID deploymentStatusId, String deploymentPath, JSONObject settings, String builtVersion, JSONObject builtSettings, File built, UUID projectId) {
+        this.deploymentId = deploymentId;
+        this.deploymentStatusId = deploymentStatusId;
+        this.deploymentPath = deploymentPath;
+        this.settings = settings;
+        this.builtVersion = builtVersion;
+        this.builtSettings = builtSettings;
+        this.projectId = projectId;
+        this.built = built;
+    }
 }

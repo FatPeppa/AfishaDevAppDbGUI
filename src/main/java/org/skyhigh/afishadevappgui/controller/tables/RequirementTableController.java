@@ -14,8 +14,8 @@ import org.skyhigh.afishadevappgui.common.properties.ApplicationPropertiesReader
 import org.skyhigh.afishadevappgui.common.sort.SortDirection;
 import org.skyhigh.afishadevappgui.common.validation.CommonFlkException;
 import org.skyhigh.afishadevappgui.data.datasource.entity.Requirement;
-import org.skyhigh.afishadevappgui.data.repository.RequirementRepository;
-import org.skyhigh.afishadevappgui.data.repository.RequirementRepositoryImpl;
+import org.skyhigh.afishadevappgui.data.repository.*;
+import org.skyhigh.afishadevappgui.service.logic.role.RoleManagerService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,10 +54,14 @@ public class RequirementTableController implements RoleManagedTableController {
 
     private final RequirementRepository requirementRepository = new RequirementRepositoryImpl(ApplicationPropertiesReader.getApplicationProperties());
 
-    public RequirementTableController() throws CommonFlkException {}
+    private RoleManagerService roleManagerService;
+
+    public RequirementTableController() throws CommonFlkException {
+    }
 
     public void initialize() {
         requirementIdRequirementTableColumn.setCellValueFactory(new PropertyValueFactory<>("requirementId"));
+
         requirementTypeIdRequirementTableColumn.setCellValueFactory(new PropertyValueFactory<>("requirementTypeId"));
         loadDateRequirementTableColumn.setCellValueFactory(new PropertyValueFactory<>("loadDate"));
         lastChangeDateRequirementTableColumn.setCellValueFactory(new PropertyValueFactory<>("lastChangeDate"));
@@ -65,18 +69,44 @@ public class RequirementTableController implements RoleManagedTableController {
         setRequirementTableSelectedItemPropertyListener();
     }
 
+
+
     public void fillTable() throws CommonFlkException {
         ObservableList<Requirement> requirementsListView = FXCollections.observableArrayList();
         List<Requirement> requirements = requirementRepository.getAllRequirements(
                 SortDirection.NONE,
                 null
         );
+        RequirementTypeRepository requirementTypeRepository = new RequirementTypeRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
+        requirements.forEach(requirement -> {
+            try {
+                if (requirement.getRequirementTypeName() == null || requirement.getRequirementTypeName().isEmpty()) {
+                    requirement.setRequirementTypeName(requirementTypeRepository.getRequirementTypeById(requirement.getRequirementTypeId()).getRequirementTypeName());
+                }
+            } catch (CommonFlkException e) {
+                throw new RuntimeException(e);
+            }
+        });
         requirementsListView.addAll(requirements);
         requirementTable.setItems(requirementsListView);
     }
 
-    public void fillTable(List<Requirement> requirements) {
+    public void fillTable(List<Requirement> requirements) throws CommonFlkException {
         ObservableList<Requirement> requirementObservableList = FXCollections.observableArrayList();
+        RequirementTypeRepository requirementTypeRepository = new RequirementTypeRepositoryImpl(
+                ApplicationPropertiesReader.getApplicationProperties()
+        );
+        requirements.forEach(requirement -> {
+            try {
+                if (requirement.getRequirementTypeName() == null || requirement.getRequirementTypeName().isEmpty()) {
+                    requirement.setRequirementTypeName(requirementTypeRepository.getRequirementTypeById(requirement.getRequirementTypeId()).getRequirementTypeName());
+                }
+            } catch (CommonFlkException e) {
+                throw new RuntimeException(e);
+            }
+        });
         requirementObservableList.addAll(requirements);
         requirementTable.setItems(requirementObservableList);
     }
@@ -135,5 +165,15 @@ public class RequirementTableController implements RoleManagedTableController {
     @Override
     public boolean getAccessibilityForEditingByDevOps() {
         return isEditableForDevOps;
+    }
+
+    @Override
+    public void setRoleManagerService(RoleManagerService roleManagerService) throws CommonFlkException {
+        this.roleManagerService = roleManagerService;
+
+        if (!roleManagerService.checkIfCurrentUserAdmin()) {
+            requirementTypeIdRequirementTableColumn.setCellValueFactory(new PropertyValueFactory<>("requirementTypeName"));
+            requirementTypeIdRequirementTableColumn.setText("Тип");
+        }
     }
 }
